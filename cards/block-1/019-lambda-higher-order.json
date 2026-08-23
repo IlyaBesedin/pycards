@@ -1,0 +1,172 @@
+{
+  "topic": 19,
+  "cards": [
+    {
+      "id": "b1-019-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def size(x):\n    return len(x)\n\ncheck = size\nprint(check(\"api\"))",
+      "answer": "3",
+      "accepted": [],
+      "explanation": "A function name without parentheses is the function object itself, so `check` becomes a second name for `size`. Calling either name runs the same code.",
+      "tags": [
+        "first-class",
+        "reference"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-019-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "steps = [str.upper, str.title]\nword = \"qa\"\nfor step in steps:\n    print(step(word))",
+      "answer": "QA\nQa",
+      "accepted": [],
+      "explanation": "Functions are ordinary objects: they can be stored in a list and called later through the variable. `str.upper` and `str.title` are just values here.",
+      "tags": [
+        "first-class",
+        "callbacks"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-019-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "runs = [(\"ui\", 7), (\"api\", 3), (\"db\", 5)]\nruns.sort(key=lambda r: r[1])\nprint(runs)",
+      "answer": "[('api', 3), ('db', 5), ('ui', 7)]",
+      "accepted": [],
+      "explanation": "The `key` function is called on each element, and elements are ordered by what it returns — here the number at index 1. This is the main home of `lambda`.",
+      "tags": [
+        "lambda",
+        "sort-key"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-019-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "names = [\"bb\", \"a\", \"cccc\"]\nprint(sorted(names, key=len, reverse=True))",
+      "answer": "['cccc', 'bb', 'a']",
+      "accepted": [],
+      "explanation": "With a ready-made function like `len` no `lambda` is needed — pass it directly as `key`. `reverse=True` flips the order.",
+      "tags": [
+        "sort-key",
+        "higher-order"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-019-05",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "(lambda x, y: x * y)(3, 4)",
+      "answer": "12",
+      "accepted": [],
+      "explanation": "A `lambda` is an expression that evaluates to a function object, so it can be called on the spot. `lambda x, y: x * y` multiplies its two arguments.",
+      "tags": [
+        "lambda"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-019-06",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "bump = lambda x: x = x + 1\nprint(bump(3))",
+      "answer": "SyntaxError",
+      "accepted": [],
+      "explanation": "A `lambda` body must be a single expression — assignments, loops and `try` are not allowed. If you need statements, write a `def`.",
+      "tags": [
+        "lambda",
+        "syntax"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-019-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def on_pass(name):\n    return \"OK: \" + name\n\ndef on_fail(name):\n    return \"BAD: \" + name\n\nacts = {\"pass\": on_pass, \"fail\": on_fail}\nprint(acts[\"fail\"](\"login\"))",
+      "answer": "BAD: login",
+      "accepted": [],
+      "explanation": "A dispatch dict maps keys to functions: look the handler up by key, then call it. This replaces long `if/elif` chains.",
+      "tags": [
+        "dispatch",
+        "first-class"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-019-08",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "def is_ready():\n    return False\n\ndef wait_for(cond):\n    return cond()\n\nprint(wait_for(is_ready()))",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`is_ready()` is called immediately, so `wait_for` receives `False`, and `False()` raises `TypeError: 'bool' object is not callable`. Pass the function itself: `wait_for(is_ready)`.",
+      "tags": [
+        "callable",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-019-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def make_adder(n):\n    return lambda x: x + n\n\nadd5 = make_adder(5)\nprint(add5(10), make_adder(2)(1))",
+      "answer": "15 3",
+      "accepted": [],
+      "explanation": "`make_adder` is a higher-order function: it returns a new function that remembers its own `n`. Each call to the factory builds an independent adder.",
+      "tags": [
+        "higher-order",
+        "factory"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-019-10",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "type(lambda: 0).__name__",
+      "answer": "'function'",
+      "accepted": [],
+      "explanation": "A `lambda` produces a completely ordinary function object — same type as one made with `def`. Only the syntax and the missing name differ.",
+      "tags": [
+        "lambda",
+        "type"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-019-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "sign = lambda n: \"neg\" if n < 0 else \"pos\"\nprint(sign(-3), sign(7))",
+      "answer": "neg pos",
+      "accepted": [],
+      "explanation": "A conditional expression is still one expression, so it fits in a `lambda`. Note: binding a `lambda` to a name is a PEP 8 antipattern — use `def` when it needs a name.",
+      "tags": [
+        "lambda",
+        "conditional-expression"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-019-12",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "mul = lambda a, b: a * b\nprint(mul(3))",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "Lambdas follow the same calling rules as any function: `mul` declares two parameters, and a call with one raises `TypeError: missing a required positional argument`.",
+      "tags": [
+        "lambda",
+        "arguments"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

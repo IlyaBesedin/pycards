@@ -1,0 +1,175 @@
+{
+  "topic": 36,
+  "cards": [
+    {
+      "id": "b1-036-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Point:\n    def __repr__(self):\n        return \"Point(1, 2)\"\n\n    def __str__(self):\n        return \"(1, 2)\"\n\np = Point()\nprint(p)\nprint([p])",
+      "answer": "(1, 2)\n[Point(1, 2)]",
+      "accepted": [],
+      "explanation": "`print` uses `__str__`, but containers format their items with `__repr__` — that is why the list shows `Point(1, 2)`.",
+      "tags": [
+        "repr",
+        "str"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-036-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Tag:\n    def __repr__(self):\n        return \"Tag<x>\"\n\nprint(Tag())",
+      "answer": "Tag<x>",
+      "accepted": [],
+      "explanation": "When `__str__` is missing, `str()` and `print` fall back to `__repr__`. Defining just `__repr__` is the usual minimum for debuggable objects.",
+      "tags": [
+        "repr",
+        "str"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-036-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Resp:\n    def __init__(self, code):\n        self.code = code\n\na = Resp(200)\nb = Resp(200)\nprint(a == b, a == a)",
+      "answer": "False True",
+      "accepted": [],
+      "explanation": "The default `==` compares identity, not data: two distinct `Resp` objects are unequal even with equal fields. `a == a` is the same object, so `True`.",
+      "tags": [
+        "eq",
+        "identity"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-036-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Item:\n    def __init__(self, sku):\n        self.sku = sku\n\n    def __eq__(self, other):\n        return self.sku == other.sku\n\nprint(Item(\"a1\") == Item(\"a1\"))",
+      "answer": "True",
+      "accepted": [],
+      "explanation": "`__eq__` makes `==` compare data instead of identity, which is exactly what test assertions need.",
+      "tags": [
+        "eq"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-036-05",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class Key:\n    def __init__(self, k):\n        self.k = k\n\n    def __eq__(self, other):\n        return self.k == other.k\n\nprint({Key(1), Key(2)})",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "Defining `__eq__` without `__hash__` sets `__hash__` to `None`, making instances unhashable — building the set raises `TypeError`. Add a consistent `__hash__` if you need set/dict keys.",
+      "tags": [
+        "eq",
+        "hash",
+        "unhashable"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-036-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Response:\n    def __init__(self, status):\n        self.status = status\n\n    def __bool__(self):\n        return self.status < 400\n\nr = Response(404)\nprint(bool(r), \"bad\" if not r else \"ok\")",
+      "answer": "False bad",
+      "accepted": [],
+      "explanation": "`__bool__` decides truthiness: status 404 makes the response falsy, so `not r` is `True` and the conditional picks `\"bad\"`.",
+      "tags": [
+        "bool",
+        "truthiness"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-036-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Batch:\n    def __len__(self):\n        return 0\n\nb = Batch()\nprint(len(b), bool(b))",
+      "answer": "0 False",
+      "accepted": [],
+      "explanation": "Without `__bool__`, truthiness falls back to `__len__`: a length of 0 makes the object falsy — the same rule that makes empty lists falsy.",
+      "tags": [
+        "len",
+        "bool",
+        "truthiness"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-036-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Deck:\n    def __getitem__(self, i):\n        if i > 2:\n            raise IndexError\n        return i * 10\n\nd = Deck()\nprint(d[1])\nprint(list(d))",
+      "answer": "10\n[0, 10, 20]",
+      "accepted": [],
+      "explanation": "`__getitem__` alone also enables iteration: `list()` calls indexes 0, 1, 2, ... until `IndexError` stops it.",
+      "tags": [
+        "getitem",
+        "iteration"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-036-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Money:\n    def __init__(self, c):\n        self.c = c\n\n    def __add__(self, other):\n        return Money(self.c + other.c)\n\nm = Money(150) + Money(50)\nprint(m.c)",
+      "answer": "200",
+      "accepted": [],
+      "explanation": "`__add__` defines what `+` means for the class; it receives the right-hand operand and returns a new object.",
+      "tags": [
+        "add",
+        "operators"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-036-10",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class ApiResp:\n    def __init__(self, body):\n        self.body = body\n\n    def __contains__(self, key):\n        return key in self.body\n\nr = ApiResp({\"id\": 7})\nprint(\"id\" in r, \"name\" in r)",
+      "answer": "True False",
+      "accepted": [],
+      "explanation": "The `in` operator calls `__contains__` when it is defined, so membership can mean 'key present in the response body'.",
+      "tags": [
+        "contains",
+        "in"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-036-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Timer:\n    def __enter__(self):\n        print(\"start\")\n        return self\n\n    def __exit__(self, *args):\n        print(\"stop\")\n\nwith Timer():\n    print(\"work\")",
+      "answer": "start\nwork\nstop",
+      "accepted": [],
+      "explanation": "`with` calls `__enter__` on entry and `__exit__` on exit — this minimal pair is all it takes to make a context manager.",
+      "tags": [
+        "enter",
+        "exit",
+        "context-manager"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-036-12",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class Score:\n    def __init__(self, v):\n        self.v = v\n\na = Score(1)\nprint(a < Score(2))",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`<` needs `__lt__` (or another ordering dunder); Python only provides default equality, so comparing raises `TypeError`.",
+      "tags": [
+        "lt",
+        "ordering"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

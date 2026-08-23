@@ -1,0 +1,150 @@
+{
+  "topic": 32,
+  "cards": [
+    {
+      "id": "b1-032-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Client:\n    def __init__(self, host):\n        self.host = host\n\nclass AdminClient(Client):\n    pass\n\na = AdminClient(\"api.local\")\nprint(a.host)",
+      "answer": "api.local",
+      "accepted": [],
+      "explanation": "`AdminClient` defines no `__init__`, so it inherits `Client.__init__` unchanged; the instance gets `host` exactly as the parent would set it.",
+      "tags": [
+        "inheritance",
+        "init"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-032-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Animal:\n    def sound(self):\n        return \"...\"\n\nclass Dog(Animal):\n    def sound(self):\n        return \"woof\"\n\nprint(Dog().sound(), Animal().sound())",
+      "answer": "woof ...",
+      "accepted": [],
+      "explanation": "`Dog` overrides `sound`, so `Dog().sound()` uses the child version. The parent keeps its own method — overriding never touches the base class.",
+      "tags": [
+        "inheritance",
+        "override"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-032-03",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class Base:\n    def __init__(self):\n        self.name = \"base\"\n\nclass Child(Base):\n    def __init__(self, tag):\n        self.tag = tag\n\nprint(Child(\"x\").name)",
+      "answer": "AttributeError",
+      "accepted": [],
+      "explanation": "`Child.__init__` replaces the parent's and never calls `super().__init__()`, so `self.name` is never created. This forgotten `super()` call is the most common inheritance bug.",
+      "tags": [
+        "inheritance",
+        "super",
+        "init"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-032-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Vehicle:\n    def __init__(self, wheels):\n        self.wheels = wheels\n\nclass Bike(Vehicle):\n    def __init__(self):\n        super().__init__(2)\n        self.bell = True\n\nb = Bike()\nprint(b.wheels, b.bell)",
+      "answer": "2 True",
+      "accepted": [],
+      "explanation": "`super().__init__(2)` runs the parent constructor, which sets `wheels`; the child then adds `bell`. Both attributes end up on the same instance.",
+      "tags": [
+        "inheritance",
+        "super",
+        "init"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-032-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class A: pass\nclass B(A): pass\nclass C(A): pass\nclass D(B, C): pass\n\nnames = [k.__name__ for k in D.__mro__]\nprint(names)",
+      "answer": "['D', 'B', 'C', 'A', 'object']",
+      "accepted": [],
+      "explanation": "`__mro__` is the method lookup order: the class itself, then its bases left to right, ending at `object`. Python linearizes the diamond `D(B, C)` to D, B, C, A, object.",
+      "tags": [
+        "mro",
+        "multiple-inheritance"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-032-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Email:\n    def send(self):\n        return \"email\"\n\nclass Sms:\n    def send(self):\n        return \"sms\"\n\nclass Alert(Email, Sms):\n    pass\n\nprint(Alert().send())",
+      "answer": "email",
+      "accepted": [],
+      "explanation": "With `class Alert(Email, Sms)` the MRO searches bases left to right: `Email.send` is found first, so `Sms.send` is never consulted.",
+      "tags": [
+        "mro",
+        "multiple-inheritance"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-032-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Logger:\n    def log(self, msg):\n        return f\"[log] {msg}\"\n\nclass TimedLogger(Logger):\n    def log(self, msg):\n        base = super().log(msg)\n        return base + \"!\"\n\nprint(TimedLogger().log(\"go\"))",
+      "answer": "[log] go!",
+      "accepted": [],
+      "explanation": "The child method extends rather than replaces: `super().log(msg)` calls the parent implementation and the child appends to its result.",
+      "tags": [
+        "inheritance",
+        "super",
+        "override"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-032-08",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "class Shape: pass\nclass Circle(Shape): pass\n\na = isinstance(Circle(), Shape)\nb = issubclass(Shape, Circle)\n(a, b)",
+      "answer": "(True, False)",
+      "accepted": [],
+      "explanation": "`isinstance` walks up the hierarchy, so a `Circle` is a `Shape`. `issubclass(Shape, Circle)` asks the opposite direction — a parent is not a subclass of its child.",
+      "tags": [
+        "isinstance",
+        "issubclass"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-032-09",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class Page:\n    def __init__(self, url):\n        self.url = url\n\nclass Home(Page):\n    def __init__(self):\n        super().__init__()\n\nh = Home()",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`Home.__init__` calls `super().__init__()` without the required `url` argument, so the parent constructor raises `TypeError`. `super()` does not fill in arguments for you.",
+      "tags": [
+        "inheritance",
+        "super",
+        "init"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-032-10",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class A:\n    def t(self): return \"A\"\n\nclass B(A):\n    def t(self): return \"B\" + super().t()\n\nclass C(A):\n    def t(self): return \"C\" + super().t()\n\nclass D(B, C): pass\n\nprint(D().t())",
+      "answer": "BCA",
+      "accepted": [],
+      "explanation": "`super()` follows the MRO of the instance's class (D, B, C, A), not the static parent: from `B.t`, `super().t()` lands in `C`, then `A`. That is how cooperative multiple inheritance chains calls.",
+      "tags": [
+        "mro",
+        "super",
+        "multiple-inheritance"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

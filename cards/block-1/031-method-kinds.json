@@ -1,0 +1,177 @@
+{
+  "topic": 31,
+  "cards": [
+    {
+      "id": "b1-031-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class User:\n    def __init__(self, name):\n        self.name = name\n    @classmethod\n    def from_email(cls, email):\n        return cls(email.split(\"@\")[0])\nu = User.from_email(\"dana@x.io\")\nprint(u.name)",
+      "answer": "dana",
+      "accepted": [],
+      "explanation": "A `classmethod` receives the class as `cls`, so `cls(...)` builds an instance — the standard pattern for alternative constructors like `from_json` or `from_env`.",
+      "tags": [
+        "classmethod",
+        "alternative-constructor"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-031-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Base:\n    @classmethod\n    def which(cls):\n        return cls.__name__\nclass Child(Base):\n    pass\nprint(Child.which())",
+      "answer": "Child",
+      "accepted": [],
+      "explanation": "`cls` is the class the method was actually called on, not where it was defined. That is why `cls(...)` in a factory builds the right subclass.",
+      "tags": [
+        "classmethod",
+        "cls",
+        "inheritance"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-031-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Checker:\n    @staticmethod\n    def ok(code):\n        return 200 <= code < 300\nc = Checker()\nprint(Checker.ok(204), c.ok(500))",
+      "answer": "True False",
+      "accepted": [],
+      "explanation": "A `staticmethod` gets neither `self` nor `cls` — it is a plain function stored in the class for organization, callable on the class or an instance alike.",
+      "tags": [
+        "staticmethod"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-031-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Circle:\n    def __init__(self, r):\n        self.r = r\n    @property\n    def area(self):\n        return self.r * self.r * 3\nc = Circle(2)\nprint(c.area)",
+      "answer": "12",
+      "accepted": [],
+      "explanation": "`@property` turns a method into a computed attribute: it is read without parentheses, and the body runs on each access.",
+      "tags": [
+        "property",
+        "computed-attribute"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-031-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Order:\n    def __init__(self):\n        self.items = [10, 20]\n    @property\n    def total(self):\n        return sum(self.items)\no = Order()\nprint(o.total)\no.items.append(5)\nprint(o.total)",
+      "answer": "30\n35",
+      "accepted": [],
+      "explanation": "The property recomputes on every read, so `total` reflects the updated list automatically — no stale cached value to keep in sync.",
+      "tags": [
+        "property",
+        "recomputed"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-031-06",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class Job:\n    @property\n    def state(self):\n        return \"queued\"\nj = Job()\nprint(j.state())",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`j.state` already invokes the getter and yields the string `\"queued\"`; the extra `()` then tries to call a string — `TypeError`. Properties are read without parentheses.",
+      "tags": [
+        "property",
+        "typeerror",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-031-07",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class Item:\n    @property\n    def price(self):\n        return 100\ni = Item()\ni.price = 50",
+      "answer": "AttributeError",
+      "accepted": [],
+      "explanation": "A property without a setter is read-only: assigning to it raises `AttributeError`. Add an `@price.setter` method to allow writes.",
+      "tags": [
+        "property",
+        "read-only"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-031-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Acc:\n    @property\n    def email(self):\n        return self._email\n    @email.setter\n    def email(self, v):\n        if \"@\" not in v:\n            raise ValueError(v)\n        self._email = v\na = Acc()\na.email = \"qa@x.io\"\nprint(a.email)",
+      "answer": "qa@x.io",
+      "accepted": [],
+      "explanation": "The `@email.setter` runs on assignment and validates before storing into `self._email`; the getter reads it back. Callers keep plain attribute syntax.",
+      "tags": [
+        "property",
+        "setter",
+        "validation"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-031-09",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class Cfg:\n    @property\n    def mode(self):\n        return self._mode\n    @mode.setter\n    def mode(self, v):\n        self.mode = v\nc = Cfg()\nc.mode = \"fast\"",
+      "answer": "RecursionError",
+      "accepted": [],
+      "explanation": "`self.mode = v` inside the setter triggers the setter again, forever. Store to the backing field `self._mode` inside the setter instead.",
+      "tags": [
+        "property",
+        "setter",
+        "recursion"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-031-10",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Box:\n    def kind(cls):\n        return cls\nb = Box()\nprint(b.kind() is Box, b.kind() is b)",
+      "answer": "False True",
+      "accepted": [],
+      "explanation": "Naming the parameter `cls` changes nothing: without `@classmethod` this is an ordinary method, so the first argument is the instance `b`, not the class.",
+      "tags": [
+        "classmethod",
+        "trap",
+        "self"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-031-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Report:\n    @classmethod\n    def build(cls):\n        return cls.__name__ + \"!\"\nr = Report()\nprint(r.build())",
+      "answer": "Report!",
+      "accepted": [],
+      "explanation": "Calling a `classmethod` through an instance still passes the class as `cls`, never the instance. Instance data is invisible to it.",
+      "tags": [
+        "classmethod",
+        "instance-call"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-031-12",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "class Temp:\n    @staticmethod\n    def to_f(c):\n        return c * 9 // 5 + 32\nTemp.to_f(100)",
+      "answer": "212",
+      "accepted": [],
+      "explanation": "A `staticmethod` is invoked straight on the class without creating an instance — it is just a namespaced function. `//` keeps the result an `int`.",
+      "tags": [
+        "staticmethod",
+        "value"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

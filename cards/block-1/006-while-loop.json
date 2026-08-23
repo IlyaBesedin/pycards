@@ -1,0 +1,175 @@
+{
+  "topic": 6,
+  "cards": [
+    {
+      "id": "b1-006-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "n = 3\nwhile n > 0:\n    print(n, end=\" \")\n    n -= 1\nprint(\"go\")",
+      "answer": "3 2 1 go",
+      "accepted": [],
+      "explanation": "The condition is checked before each iteration; `n -= 1` is what eventually makes it false. Without that line the loop would never end.",
+      "tags": [
+        "while",
+        "counter"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-006-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "x = 10\nwhile x < 10:\n    print(\"body\")\n    x += 1\nprint(x)",
+      "answer": "10",
+      "accepted": [],
+      "explanation": "`while` tests its condition before the first iteration. `10 < 10` is false immediately, so the body never runs — unlike a do-while loop in other languages.",
+      "tags": [
+        "while",
+        "condition"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-006-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "total = 0\nwhile True:\n    total += 4\n    if total > 10:\n        break\nprint(total)",
+      "answer": "12",
+      "accepted": [],
+      "explanation": "`while True` with a `break` in the body is the standard shape when the exit condition is only known mid-iteration. The check happens after adding, so the loop stops at 12, the first value above 10.",
+      "tags": [
+        "while-true",
+        "break"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-006-04",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "k = 0\nwhile k < 7:\n    k += 3\nk",
+      "answer": "9",
+      "accepted": [],
+      "explanation": "The condition is only checked at the top of each iteration. When `k` is 6 the test passes, the body adds 3, and the loop exits with `k == 9` — overshooting the bound.",
+      "tags": [
+        "while",
+        "condition"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-006-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "i = 0\nwhile i < 5:\n    i += 1\n    if i % 2:\n        continue\n    print(i, end=\" \")",
+      "answer": "2 4",
+      "accepted": [],
+      "explanation": "`continue` skips the rest of the body for odd `i` and jumps back to the condition. The increment sits before `continue`, so the loop still advances — put it after and the loop would hang forever.",
+      "tags": [
+        "continue",
+        "while"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-006-06",
+      "kind": "truth",
+      "question": "True or False?",
+      "code": "i = 0\nwhile i < 3:\n    if i == 1:\n        continue\n    print(i)\n    i += 1\n# Claim: this loop terminates",
+      "answer": "False",
+      "accepted": [],
+      "explanation": "When `i == 1`, `continue` jumps back to the condition before `i += 1` runs, so `i` stays 1 forever. Make sure every path through the body moves the loop toward its exit — in CI such a test eats the whole job timeout.",
+      "tags": [
+        "continue",
+        "infinite-loop"
+      ],
+      "verify": "manual"
+    },
+    {
+      "id": "b1-006-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "i = 0\nwhile i < 2:\n    i += 1\nelse:\n    print(\"done\", i)",
+      "answer": "done 2",
+      "accepted": [],
+      "explanation": "The `else` of a loop runs when the condition becomes false naturally, i.e. the loop finished without `break`. Here there is no `break` at all, so `else` always runs.",
+      "tags": [
+        "while-else"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-006-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "i = 0\nwhile i < 5:\n    i += 1\n    if i == 2:\n        break\nelse:\n    print(\"no break\")\nprint(i)",
+      "answer": "2",
+      "accepted": [],
+      "explanation": "`break` exits the loop and skips its `else` clause — `else` runs only on normal completion. The loop ends with `i == 2`, so just `2` is printed.",
+      "tags": [
+        "while-else",
+        "break"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-006-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "checks = [False, False, True]\nattempt = 0\nwhile attempt < 5:\n    ready = checks[attempt]\n    attempt += 1\n    if ready:\n        print(\"ready on\", attempt)\n        break\nelse:\n    print(\"timeout\")",
+      "answer": "ready on 3",
+      "accepted": [],
+      "explanation": "This is the polling pattern: check, count the attempt, stop on success. The third check is `True`, so `break` fires with `attempt == 3` and the `else` (timeout) branch is skipped.",
+      "tags": [
+        "polling",
+        "while-else",
+        "break"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-006-10",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "attempts = 0\nwhile attempts < 3:\n    attempts += 1\nelse:\n    raise TimeoutError(\"gave up\")",
+      "answer": "TimeoutError",
+      "accepted": [],
+      "explanation": "The loop never hits `break`, so after three attempts its `else` clause runs and raises. This is how a bounded wait reports failure: `else` after `while` is the \"all attempts exhausted\" branch.",
+      "tags": [
+        "polling",
+        "while-else",
+        "timeouterror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-006-11",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "n = 0\nif n == 0:\n    break\nprint(\"after\")",
+      "answer": "SyntaxError",
+      "accepted": [],
+      "explanation": "`break` is only legal inside a `for` or `while` body. Using it in a bare `if` is rejected at compile time with `SyntaxError: 'break' outside loop` — nothing runs, not even the lines before it.",
+      "tags": [
+        "break",
+        "syntaxerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-006-12",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "queue = [\"a\", \"b\", \"c\"]\nwhile queue:\n    print(queue.pop(), end=\"\")\nprint()\nprint(queue)",
+      "answer": "cba\n[]",
+      "accepted": [],
+      "explanation": "A non-empty list is truthy, so `while queue:` runs until it is drained. `pop()` takes from the end, hence the reversed order. This is one of the few cases where `while` beats `for` over a collection.",
+      "tags": [
+        "while",
+        "truthiness",
+        "pop"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

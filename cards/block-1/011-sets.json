@@ -1,0 +1,182 @@
+{
+  "topic": 11,
+  "cards": [
+    {
+      "id": "b1-011-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "emails = [\"a@x.io\", \"b@x.io\", \"a@x.io\"]\nunique = set(emails)\nprint(len(emails), len(unique))",
+      "answer": "3 2",
+      "accepted": [],
+      "explanation": "A set keeps only unique elements, so the duplicate address collapses. `len(items) != len(set(items))` is the quick duplicate check for test data.",
+      "tags": [
+        "set",
+        "dedup",
+        "len"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-011-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "empty = {}\nprint(type(empty).__name__)\nprint(type(set()).__name__)",
+      "answer": "dict\nset",
+      "accepted": [],
+      "explanation": "`{}` is an empty dict — the braces literal belongs to dicts. The only way to write an empty set is `set()`.",
+      "tags": [
+        "set",
+        "dict",
+        "literal"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-011-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "run1 = {\"login\", \"search\", \"cart\"}\nrun2 = {\"search\", \"pay\"}\nprint(sorted(run2 - run1))\nprint(sorted(run1 & run2))",
+      "answer": "['pay']\n['search']",
+      "accepted": [],
+      "explanation": "`run2 - run1` keeps what only the second run has (new failures); `&` keeps the common part (still failing). `sorted()` is used because set printing order is not guaranteed.",
+      "tags": [
+        "set",
+        "difference",
+        "intersection"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-011-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "a = {1, 2, 3}\nb = {3, 4}\nprint(a ^ b == {1, 2, 4})\nprint(a | b == {1, 2, 3, 4})",
+      "answer": "True\nTrue",
+      "accepted": [],
+      "explanation": "`^` is symmetric difference — elements in exactly one of the sets, so the shared 3 drops out. `|` is union. Sets compare by contents with `==`, order-free.",
+      "tags": [
+        "set",
+        "union",
+        "symmetric-difference"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-011-05",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "tags = {\"smoke\", \"ui\"}\ntags.discard(\"api\")\ntags.remove(\"api\")\nprint(len(tags))",
+      "answer": "KeyError",
+      "accepted": [],
+      "explanation": "`discard()` ignores a missing element, `remove()` raises `KeyError` for it. Use `discard` for clean-up where the element may already be gone.",
+      "tags": [
+        "set",
+        "remove",
+        "discard"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-011-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "required = {\"id\", \"email\"}\nactual = {\"id\", \"email\", \"age\"}\nprint(required <= actual)\nprint(actual <= required)",
+      "answer": "True\nFalse",
+      "accepted": [],
+      "explanation": "`<=` tests the subset relation: every required field is present in `actual`, but not vice versa. Ideal for asserting an API response has all mandatory fields.",
+      "tags": [
+        "set",
+        "subset"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-011-07",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "seen = set()\nseen.add([\"GET\", \"/users\"])\nprint(len(seen))",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "Set elements must be hashable, and lists are not. Store the pair as a tuple: `seen.add((\"GET\", \"/users\"))`.",
+      "tags": [
+        "set",
+        "hashable",
+        "typeerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-011-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "letters = set(\"test\")\nprint(len(letters))\nprint(\"e\" in letters, \"test\" in letters)",
+      "answer": "3\nTrue False",
+      "accepted": [],
+      "explanation": "`set()` iterates its argument, and iterating a string yields characters: `{'t', 'e', 's'}` — the duplicate `t` collapses. The set holds characters, not the whole word.",
+      "tags": [
+        "set",
+        "string",
+        "in"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-011-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "runs = [\"b\", \"a\", \"b\", \"c\", \"a\"]\nprint(list(dict.fromkeys(runs)))",
+      "answer": "['b', 'a', 'c']",
+      "accepted": [],
+      "explanation": "`set()` would lose the original order; `dict.fromkeys()` deduplicates while keeping first-seen order, because dicts preserve insertion order.",
+      "tags": [
+        "set",
+        "dedup",
+        "order"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-011-10",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "got = [\"ui\", \"api\", \"ui\"]\nwant = [\"api\", \"ui\"]\nset(got) == set(want)",
+      "answer": "True",
+      "accepted": [],
+      "explanation": "Converting to sets ignores both order and duplicates, so the lists compare equal. Handy when order does not matter — but note it would also hide a genuinely duplicated item.",
+      "tags": [
+        "set",
+        "comparison"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-011-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "ids = {1, 2}\nids.add(2)\nids.add(3)\nprint(len(ids), sorted(ids))",
+      "answer": "3 [1, 2, 3]",
+      "accepted": [],
+      "explanation": "Adding an element that is already present is a silent no-op — sets never hold duplicates. Only the 3 is actually new.",
+      "tags": [
+        "set",
+        "add"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-011-12",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "perms = {frozenset({\"r\", \"w\"}): \"rw\"}\nkey = frozenset({\"w\", \"r\"})\nprint(perms[key])",
+      "answer": "rw",
+      "accepted": [],
+      "explanation": "A plain set is mutable and unhashable, but `frozenset` can be a dict key. Equal frozensets hash equally, so element order in the literal does not matter for the lookup.",
+      "tags": [
+        "set",
+        "frozenset",
+        "dict"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

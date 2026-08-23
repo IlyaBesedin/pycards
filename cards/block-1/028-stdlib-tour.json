@@ -1,0 +1,182 @@
+{
+  "topic": 28,
+  "cards": [
+    {
+      "id": "b1-028-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from datetime import datetime, timedelta\nfmt = \"%Y-%m-%d\"\nd = datetime.strptime(\"2026-08-30\", fmt)\nend = d + timedelta(days=3)\nprint(end.strftime(fmt))",
+      "answer": "2026-09-02",
+      "accepted": [],
+      "explanation": "`strptime` parses a string into a `datetime`, `timedelta` does calendar-aware arithmetic (August has 31 days), and `strftime` formats the result back into a string.",
+      "tags": [
+        "datetime",
+        "strptime",
+        "timedelta"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-028-02",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "\"09.01.2026\" < \"10.05.2025\"",
+      "answer": "True",
+      "accepted": [],
+      "explanation": "These are strings, so Python compares them character by character: `\"0\" < \"1\"`. Comparing dates as strings only works for ISO `YYYY-MM-DD`; for `DD.MM.YYYY` parse into `datetime` first.",
+      "tags": [
+        "datetime",
+        "string-comparison",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-028-03",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "from datetime import datetime\ns = \"02.07.2026\"\nd = datetime.strptime(s, \"%Y-%m-%d\")\nprint(d.year)",
+      "answer": "ValueError",
+      "accepted": [],
+      "explanation": "The format string must match the data exactly: `%Y-%m-%d` expects dashes and a 4-digit year first, but the string uses `DD.MM.YYYY`. Mismatches raise `ValueError`.",
+      "tags": [
+        "datetime",
+        "strptime",
+        "valueerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-028-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from datetime import timedelta\ngap = timedelta(minutes=2, seconds=5)\nprint(gap.total_seconds())",
+      "answer": "125.0",
+      "accepted": [],
+      "explanation": "`total_seconds()` converts the whole duration to seconds and always returns a `float`, hence `125.0`. The `.seconds` attribute is a different thing — only the leftover after full days.",
+      "tags": [
+        "timedelta",
+        "total_seconds"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-028-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from pathlib import Path\np = Path(\"logs\") / \"e2e\" / \"run01.log\"\nprint(p.name, p.suffix, p.stem)",
+      "answer": "run01.log .log run01",
+      "accepted": [],
+      "explanation": "`/` joins path parts portably. `name` is the last component, `suffix` the extension with the dot, and `stem` the name without the extension.",
+      "tags": [
+        "pathlib",
+        "path",
+        "suffix"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-028-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "import os\nos.environ[\"DEBUG\"] = \"false\"\nflag = os.environ[\"DEBUG\"]\nprint(bool(flag), flag == \"true\")",
+      "answer": "True False",
+      "accepted": [],
+      "explanation": "Environment variables are always strings, and any non-empty string — including `\"false\"` — is truthy. Compare against the expected text instead of calling `bool()`.",
+      "tags": [
+        "os-environ",
+        "truthiness",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-028-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "import random\nrandom.seed(7)\na = random.randint(1, 100)\nrandom.seed(7)\nb = random.randint(1, 100)\nprint(a == b)",
+      "answer": "True",
+      "accepted": [],
+      "explanation": "`random.seed` fixes the generator's starting state, so the same seed replays the same sequence. That is how you reproduce a failing test that used random data.",
+      "tags": [
+        "random",
+        "seed",
+        "reproducibility"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-028-08",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "import random\nnums = [3, 1, 2]\nrandom.shuffle(nums)",
+      "answer": "None",
+      "accepted": [],
+      "explanation": "`shuffle` reorders the list in place and returns `None`, like `list.sort`. Writing `nums = random.shuffle(nums)` silently replaces your data with `None`.",
+      "tags": [
+        "random",
+        "shuffle",
+        "in-place"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-028-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "import re\nlog = \"retry ORD-311 after ORD-27 failed\"\nprint(re.findall(r\"ORD-\\d+\", log))",
+      "answer": "['ORD-311', 'ORD-27']",
+      "accepted": [],
+      "explanation": "`findall` returns every non-overlapping match as a list of strings, in order of appearance. `\\d+` greedily takes all consecutive digits.",
+      "tags": [
+        "re",
+        "findall"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-028-10",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "import re\nline = \"user id=42 logged in\"\nprint(re.match(r\"\\d+\", line))\nprint(re.search(r\"\\d+\", line).group())",
+      "answer": "None\n42",
+      "accepted": [],
+      "explanation": "`match` anchors at the start of the string — `line` starts with `u`, so it returns `None`. `search` scans the whole string and finds `42`.",
+      "tags": [
+        "re",
+        "match",
+        "search"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-028-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "import re\ntext = \"port=8080, ssl=1\"\nm = re.search(r\"(\\w+)=(\\d+)\", text)\nprint(m.group(1), m.group(2))",
+      "answer": "port 8080",
+      "accepted": [],
+      "explanation": "Parentheses create capture groups, numbered from 1 left to right; `group(0)` is the whole match. `search` stops at the first match, so `ssl=1` is never reached.",
+      "tags": [
+        "re",
+        "groups"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-028-12",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "import re\nm = re.match(r\"ERROR\", \"WARN: disk full\")\nprint(m.group())",
+      "answer": "AttributeError",
+      "accepted": [],
+      "explanation": "When there is no match, `re.match` returns `None`, and `None.group()` raises `AttributeError`. Always check `if m:` before using the match object.",
+      "tags": [
+        "re",
+        "none",
+        "attributeerror"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

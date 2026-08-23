@@ -1,0 +1,147 @@
+{
+  "topic": 33,
+  "cards": [
+    {
+      "id": "b1-033-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Config:\n    def __init__(self):\n        self._mode = \"debug\"\n\nc = Config()\nprint(c._mode)",
+      "answer": "debug",
+      "accepted": [],
+      "explanation": "A single leading underscore is only a naming convention: `_mode` is a normal attribute, fully readable from outside. Python trusts you not to touch it.",
+      "tags": [
+        "protected",
+        "convention"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-033-02",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "class Runner:\n    def _setup(self):\n        return \"ready\"\n\nRunner()._setup()",
+      "answer": "'ready'",
+      "accepted": [],
+      "explanation": "`_setup` is protected by convention only; nothing stops the call. The underscore is a message to readers and linters, not an access modifier.",
+      "tags": [
+        "protected",
+        "convention"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-033-03",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class Account:\n    def __init__(self):\n        self.__pin = \"1234\"\n\na = Account()\nprint(a.__pin)",
+      "answer": "AttributeError",
+      "accepted": [],
+      "explanation": "Inside the class body `self.__pin` is mangled to `_Account__pin`, but `a.__pin` outside a class is not mangled — that literal name does not exist on the instance.",
+      "tags": [
+        "private",
+        "name-mangling"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-033-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Wallet:\n    def __init__(self):\n        self.__pin = \"9910\"\n\nw = Wallet()\nprint(w._Wallet__pin)",
+      "answer": "9910",
+      "accepted": [],
+      "explanation": "Name mangling just renames `__pin` to `_Wallet__pin`. Knowing the pattern, you can still reach it — mangling is collision protection, not security.",
+      "tags": [
+        "private",
+        "name-mangling"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-033-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Token:\n    def __init__(self, raw):\n        self.__raw = raw\n\n    def masked(self):\n        return self.__raw[:2] + \"***\"\n\nt = Token(\"abcdef\")\nprint(t.masked())",
+      "answer": "ab***",
+      "accepted": [],
+      "explanation": "Within the class, `self.__raw` transparently resolves to the mangled `_Token__raw`, so private attributes work normally inside methods.",
+      "tags": [
+        "private",
+        "name-mangling"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-033-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Box:\n    def __init__(self):\n        self.__size = 1\n\n    def size(self):\n        return self.__size\n\nb = Box()\nb.__size = 99\nprint(b.size(), b.__size)",
+      "answer": "1 99",
+      "accepted": [],
+      "explanation": "Mangling happens only inside a class body. `b.__size = 99` at module level creates a genuinely new `__size` attribute, while `size()` still reads the mangled `_Box__size`, which is untouched.",
+      "tags": [
+        "private",
+        "name-mangling"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-033-07",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "class Vault:\n    __key = \"k1\"\n\n[k for k in vars(Vault) if \"key\" in k]",
+      "answer": "['_Vault__key']",
+      "accepted": [],
+      "explanation": "Class-body names with two leading underscores are stored under the mangled name `_Vault__key` — that is what actually appears in the class dict.",
+      "tags": [
+        "private",
+        "name-mangling"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-033-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Base:\n    def __init__(self):\n        self.__tag = \"base\"\n    def tag(self):\n        return self.__tag\n\nclass Child(Base):\n    def __init__(self):\n        super().__init__()\n        self.__tag = \"child\"\n\nprint(Child().tag())",
+      "answer": "base",
+      "accepted": [],
+      "explanation": "This is what mangling is for: `Child`'s `self.__tag` becomes `_Child__tag`, a different attribute from `Base`'s `_Base__tag`, so the parent method still sees its own value.",
+      "tags": [
+        "private",
+        "name-mangling",
+        "inheritance"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-033-09",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class Api:\n    def __init__(self):\n        self.__key = \"s3cr3t\"\n\nclass Client(Api):\n    def show(self):\n        return self.__key\n\nprint(Client().show())",
+      "answer": "AttributeError",
+      "accepted": [],
+      "explanation": "Each class mangles with its own name: in `Client.show`, `self.__key` means `_Client__key`, but the attribute was stored as `_Api__key`. Private attributes are hidden even from subclasses.",
+      "tags": [
+        "private",
+        "name-mangling",
+        "inheritance"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-033-10",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class Temp:\n    def __init__(self):\n        self._c = 20\n\n    @property\n    def celsius(self):\n        return self._c\n\nt = Temp()\nt.celsius = 25",
+      "answer": "AttributeError",
+      "accepted": [],
+      "explanation": "`celsius` is a read-only `property` — it has a getter but no setter, so assignment raises `AttributeError`. Properties give controlled access to the protected `_c`.",
+      "tags": [
+        "property",
+        "encapsulation"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

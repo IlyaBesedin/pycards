@@ -1,0 +1,180 @@
+{
+  "topic": 16,
+  "cards": [
+    {
+      "id": "b1-016-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "pairs = [(\"login\", \"ok\"), (\"cart\", \"err\")]\nd = {n: s for n, s in pairs}\nprint(d)",
+      "answer": "{'login': 'ok', 'cart': 'err'}",
+      "accepted": [],
+      "explanation": "A dict comprehension is `{key: value for ...}` — each pair unpacks into name and status, and the colon builds the mapping. Insertion order follows the source list.",
+      "tags": [
+        "dict-comprehension"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-016-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "status = {\"a\": 1, \"b\": 2}\ninv = {v: k for k, v in status.items()}\nprint(inv)",
+      "answer": "{1: 'a', 2: 'b'}",
+      "accepted": [],
+      "explanation": "Swapping `k` and `v` around the colon inverts the dict: old values become keys. Safe only while the values are unique and hashable.",
+      "tags": [
+        "dict-comprehension",
+        "invert"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-016-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "owner = {\"t1\": \"ana\", \"t2\": \"ana\"}\nby_owner = {v: k for k, v in\n            owner.items()}\nprint(by_owner)",
+      "answer": "{'ana': 't2'}",
+      "accepted": [],
+      "explanation": "Inverting a dict with duplicate values silently loses data: both entries map to the key `'ana'`, and the LAST assignment wins. Check value uniqueness before inverting.",
+      "tags": [
+        "dict-comprehension",
+        "invert",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-016-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "cfg = {\"url\": \"x\", \"proxy\": \"\",\n       \"retries\": 0, \"timeout\": 30}\nclean = {k: v for k, v in cfg.items()\n         if v}\nprint(clean)",
+      "answer": "{'url': 'x', 'timeout': 30}",
+      "accepted": [],
+      "explanation": "`if v` keeps only truthy values — but it drops `retries: 0` along with the empty string, because `0` is falsy too. Filter with `if v is not None` to keep legitimate zeros.",
+      "tags": [
+        "dict-comprehension",
+        "filter",
+        "truthiness"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-016-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "mails = [\"a@x.io\", \"b@y.io\", \"c@x.io\"]\ndoms = {m.split(\"@\")[1] for m in mails}\nprint(sorted(doms))",
+      "answer": "['x.io', 'y.io']",
+      "accepted": [],
+      "explanation": "Braces without a colon build a SET, so the duplicate domain `x.io` collapses. `sorted()` is used for printing because sets have no guaranteed order.",
+      "tags": [
+        "set-comprehension",
+        "dedup"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-016-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "users = [{\"id\": 1, \"name\": \"A\"},\n         {\"id\": 2, \"name\": \"B\"}]\nby_id = {u[\"id\"]: u for u in users}\nprint(by_id[2][\"name\"])",
+      "answer": "B",
+      "accepted": [],
+      "explanation": "Turning a list of dicts into a dict keyed by `id` is the standard API-testing pattern: after it, any record is one O(1) lookup away instead of a list scan.",
+      "tags": [
+        "dict-comprehension",
+        "by-id"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-016-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "rows = [{\"id\": 1, \"v\": \"old\"},\n        {\"id\": 1, \"v\": \"new\"}]\nby_id = {r[\"id\"]: r[\"v\"] for r in rows}\nprint(len(by_id), by_id[1])",
+      "answer": "1 new",
+      "accepted": [],
+      "explanation": "Duplicate keys collapse silently — the later row overwrites the earlier one. If duplicates are possible, compare `len(rows)` with `len(by_id)` first.",
+      "tags": [
+        "dict-comprehension",
+        "duplicates",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-016-08",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "a = {x for x in range(3)}\nb = {x: x for x in range(3)}\n(type(a).__name__, type(b).__name__)",
+      "answer": "('set', 'dict')",
+      "accepted": [],
+      "explanation": "Both use braces; the colon decides the type. `{x for ...}` is a set comprehension, `{x: y for ...}` a dict comprehension — easy to misread in review.",
+      "tags": [
+        "set-comprehension",
+        "dict-comprehension",
+        "type"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-016-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "runs = [{\"ok\": True}, {\"ok\": False}]\nprint(any(not r[\"ok\"] for r in runs))\nprint(all(r[\"ok\"] for r in runs))",
+      "answer": "True\nFalse",
+      "accepted": [],
+      "explanation": "`any`/`all` consume a generator expression lazily: `any` stops at the first truthy item, `all` at the first falsy one. The go-to combo for test assertions over collections.",
+      "tags": [
+        "generator",
+        "any",
+        "all"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-016-10",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "gen = (n * n for n in [1, 2, 3])\nprint(sum(gen))\nprint(sum(gen))",
+      "answer": "14\n0",
+      "accepted": [],
+      "explanation": "Round brackets make a one-shot generator: the first `sum()` exhausts it, so the second sees no items and returns 0. Materialize with `list()` if you need two passes.",
+      "tags": [
+        "generator",
+        "exhaustion",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-016-11",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "data = [([\"GET\"], 1)]\nd = {k: v for k, v in data}\nprint(d)",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "Dict comprehension keys obey the same rule as any dict key: they must be hashable. A list key raises `TypeError: unhashable type: 'list'` — use a tuple instead.",
+      "tags": [
+        "dict-comprehension",
+        "hashable",
+        "typeerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-016-12",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "gen = (c for c in \"ab\")\nprint(next(gen))\nprint(next(gen))\nprint(next(gen))",
+      "answer": "StopIteration",
+      "accepted": [],
+      "explanation": "A generator yields each item once; after `'a'` and `'b'` it is exhausted, and the third `next()` raises `StopIteration`. Loops catch this signal internally — bare `next()` does not.",
+      "tags": [
+        "generator",
+        "next",
+        "stopiteration"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "topic": 8,
+  "cards": [
+    {
+      "id": "b1-008-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "print(list(\"abc\"), list(range(3)))",
+      "answer": "['a', 'b', 'c'] [0, 1, 2]",
+      "accepted": [],
+      "explanation": "`list()` builds a list from any iterable: a string contributes its characters one by one, a `range` contributes its numbers.",
+      "tags": [
+        "list",
+        "constructor"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-008-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "a = [\"x\"]\na.append([\"y\", \"z\"])\nb = [\"x\"]\nb.extend([\"y\", \"z\"])\nprint(a)\nprint(b)",
+      "answer": "['x', ['y', 'z']]\n['x', 'y', 'z']",
+      "accepted": [],
+      "explanation": "`append` adds its argument as a single element — here a nested list. `extend` iterates over the argument and adds each item separately.",
+      "tags": [
+        "append",
+        "extend"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-008-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "levels = [1]\nlevels.extend(\"ab\")\nprint(levels)",
+      "answer": "[1, 'a', 'b']",
+      "accepted": [],
+      "explanation": "`extend` takes any iterable, and a string iterates character by character — so the string is split into separate elements. To add the whole string as one item use `append(\"ab\")`.",
+      "tags": [
+        "extend",
+        "string",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-008-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "runs = [3, 1, 2]\nresult = runs.sort()\nprint(result, runs)",
+      "answer": "None [1, 2, 3]",
+      "accepted": [],
+      "explanation": "`sort()` reorders the list in place and returns `None` — the convention for all mutating list methods (`reverse`, `append`, ...). Use `sorted(runs)` when you want a new sorted list back.",
+      "tags": [
+        "sort",
+        "in-place",
+        "none"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-008-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "steps = [\"a\", \"b\", \"c\"]\nback = steps[::-1]\nprint(steps, back)",
+      "answer": "['a', 'b', 'c'] ['c', 'b', 'a']",
+      "accepted": [],
+      "explanation": "A slice always returns a new list, so `[::-1]` is a reversed copy and `steps` stays as it was. `steps.reverse()` would flip it in place and return `None`.",
+      "tags": [
+        "slice",
+        "reverse",
+        "copy"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-008-06",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "tests = [\"login\", \"search\"]\ntests.remove(\"logout\")\nprint(tests)",
+      "answer": "ValueError",
+      "accepted": [],
+      "explanation": "`remove()` raises `ValueError` when the value is absent. Guard with `if \"logout\" in tests:` or catch the exception when the element may be missing.",
+      "tags": [
+        "remove",
+        "valueerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-008-07",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "tags = [\"x\", \"y\", \"x\"]\ntags.remove(\"x\")\ntags",
+      "answer": "['y', 'x']",
+      "accepted": [],
+      "explanation": "`remove()` deletes only the first matching element and stops. To drop every occurrence, filter: `[t for t in tags if t != \"x\"]`.",
+      "tags": [
+        "remove",
+        "first-occurrence"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-008-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "q = [\"smoke\", \"api\", \"ui\"]\nfirst = q.pop(0)\nlast = q.pop()\nprint(first, last, q)",
+      "answer": "smoke ui ['api']",
+      "accepted": [],
+      "explanation": "`pop()` removes and returns the last element; `pop(0)` does the same for the first. Both mutate the list, leaving only `\"api\"`. Note that `pop(0)` is O(n) — use `collections.deque` for queues.",
+      "tags": [
+        "pop",
+        "queue"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-008-09",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "items = [10, 20, 30]\nprint(items[-3])\nprint(items[-4])",
+      "answer": "IndexError",
+      "accepted": [],
+      "explanation": "Negative indexes count from the end: `-3` is the first element and prints `10`. `-4` is beyond the start of a 3-element list, so it raises `IndexError` just like a too-large positive index.",
+      "tags": [
+        "index",
+        "negative-index",
+        "indexerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-008-10",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "[10, 20, 30][5:]",
+      "answer": "[]",
+      "accepted": [],
+      "explanation": "Slicing never raises: bounds past the end are clipped, so a start beyond the list yields an empty list. Only direct indexing (`[5]`) raises `IndexError`.",
+      "tags": [
+        "slice",
+        "out-of-range"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-008-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "a = [1, 2]\nb = a\nc = a[:]\nb.append(3)\nprint(a, c)",
+      "answer": "[1, 2, 3] [1, 2]",
+      "accepted": [],
+      "explanation": "`b = a` binds a second name to the same list, so appending through `b` changes `a`. `a[:]` creates a new list with the same elements, so `c` is unaffected.",
+      "tags": [
+        "aliasing",
+        "copy",
+        "mutability"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-008-12",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "tests = [\"login\"]\ntests.append(\"search\", \"logout\")\nprint(tests)",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`append()` takes exactly one argument — calling it with two raises `TypeError`. To add several elements use `extend([...])` or `+=`.",
+      "tags": [
+        "append",
+        "typeerror"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

@@ -1,0 +1,179 @@
+{
+  "topic": 13,
+  "cards": [
+    {
+      "id": "b1-013-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "steps = [\"open\", \"login\", \"submit\"]\nfor n, step in enumerate(steps, 1):\n    print(n, step)",
+      "answer": "1 open\n2 login\n3 submit",
+      "accepted": [],
+      "explanation": "`enumerate(steps, 1)` yields `(number, element)` pairs starting from 1 — the idiom for human-facing numbering of test steps, replacing `range(len(steps))`.",
+      "tags": [
+        "enumerate",
+        "start"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-013-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "for i, tag in enumerate([\"ui\", \"api\"]):\n    print(i, tag)",
+      "answer": "0 ui\n1 api",
+      "accepted": [],
+      "explanation": "Without a `start` argument `enumerate` counts from 0. Pass `start=1` when the numbers are for people, not indices.",
+      "tags": [
+        "enumerate"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-013-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "want = [\"ok\", \"ok\", \"ok\"]\ngot = [\"ok\", \"fail\"]\npairs = list(zip(want, got))\nprint(len(pairs))\nprint(pairs[-1])",
+      "answer": "2\n('ok', 'fail')",
+      "accepted": [],
+      "explanation": "`zip` silently stops at the SHORTEST input: the third expected value is never paired, so a test comparing this way would skip a check. Compare lengths or use `strict=True`.",
+      "tags": [
+        "zip",
+        "truncation",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-013-04",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "want = [\"a\", \"b\", \"c\"]\ngot = [\"a\", \"b\"]\nz = zip(want, got, strict=True)\nprint(list(z))",
+      "answer": "ValueError",
+      "accepted": [],
+      "explanation": "`strict=True` (Python 3.10+) makes `zip` raise `ValueError` when the inputs have different lengths — the safe mode for element-wise comparison in tests.",
+      "tags": [
+        "zip",
+        "strict",
+        "valueerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-013-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "cols = [\"name\", \"role\"]\nrow = [\"Ana\", \"admin\"]\nuser = dict(zip(cols, row))\nprint(user)",
+      "answer": "{'name': 'Ana', 'role': 'admin'}",
+      "accepted": [],
+      "explanation": "`zip` pairs each header with its cell and `dict()` consumes the pairs — the classic way to turn a CSV header plus a data row into a dict.",
+      "tags": [
+        "zip",
+        "dict"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-013-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "pairs = zip([1, 2], [\"a\", \"b\"])\nprint(len(list(pairs)))\nprint(len(list(pairs)))",
+      "answer": "2\n0",
+      "accepted": [],
+      "explanation": "`zip` returns a one-shot iterator: the first `list()` exhausts it, so the second pass sees nothing. Wrap in `list()` once and reuse that if you need multiple passes.",
+      "tags": [
+        "zip",
+        "iterator",
+        "exhaustion"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-013-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "want = [\"ok\", \"ok\"]\ngot = [\"ok\", \"err\"]\nz = zip(want, got)\nfor i, (w, g) in enumerate(z, 1):\n    if w != g:\n        print(i, w, g)",
+      "answer": "2 ok err",
+      "accepted": [],
+      "explanation": "`enumerate` wraps each `zip` pair into `(number, (w, g))`, so the nested target `i, (w, g)` mirrors that shape. Position 2 is the only mismatch.",
+      "tags": [
+        "enumerate",
+        "zip",
+        "unpacking"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-013-08",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "list(enumerate([\"a\", \"b\"]))",
+      "answer": "[(0, 'a'), (1, 'b')]",
+      "accepted": [],
+      "explanation": "`enumerate` produces an iterator of `(index, element)` tuples; `list()` materializes it. This shape is why loop targets are written `for i, x in ...`.",
+      "tags": [
+        "enumerate",
+        "tuple"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-013-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "names = [\"t1\", \"t2\"]\ntimes = [3, 5]\nfor name, t in zip(names, times):\n    print(f\"{name}: {t}s\")",
+      "answer": "t1: 3s\nt2: 5s",
+      "accepted": [],
+      "explanation": "`zip` walks both lists in parallel, yielding one pair per step — no index bookkeeping needed, unlike `for i in range(len(names))`.",
+      "tags": [
+        "zip",
+        "iteration"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-013-10",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "want = [\"ok\"]\ngot = [\"ok\"]\nz = zip(want, got)\nfor i, w, g in enumerate(z, 1):\n    print(i, w, g)",
+      "answer": "ValueError",
+      "accepted": [],
+      "explanation": "`enumerate` yields 2-tuples like `(1, (\"ok\", \"ok\"))`, but the target asks for three names — `ValueError: not enough values to unpack`. The pair needs its own parentheses: `i, (w, g)`.",
+      "tags": [
+        "enumerate",
+        "zip",
+        "unpacking",
+        "valueerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-013-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "pairs = [(\"a\", 1), (\"b\", 2)]\nnames, nums = zip(*pairs)\nprint(names)\nprint(nums)",
+      "answer": "('a', 'b')\n(1, 2)",
+      "accepted": [],
+      "explanation": "`zip(*pairs)` transposes: the star spreads the pairs as separate arguments, so `zip` regroups first elements together and second elements together, as tuples.",
+      "tags": [
+        "zip",
+        "star",
+        "transpose"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-013-12",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "a = [1, 2]\nb = [10, 20]\nc = [100, 200]\nfor x, y, z in zip(a, b, c):\n    print(x + y + z)",
+      "answer": "111\n222",
+      "accepted": [],
+      "explanation": "`zip` accepts any number of iterables and yields one tuple per step with an element from each — here a 3-tuple unpacked into three loop variables.",
+      "tags": [
+        "zip",
+        "iteration"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

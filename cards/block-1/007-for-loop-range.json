@@ -1,0 +1,179 @@
+{
+  "topic": 7,
+  "cards": [
+    {
+      "id": "b1-007-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "for i in range(1, 10, 3):\n    print(i, end=\" \")",
+      "answer": "1 4 7",
+      "accepted": [],
+      "explanation": "`range(start, stop, step)` starts at 1, adds 3 each time and stops before reaching 10. The stop value itself is never included.",
+      "tags": [
+        "range",
+        "step"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-007-02",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "list(range(10, 0, -3))",
+      "answer": "[10, 7, 4, 1]",
+      "accepted": [],
+      "explanation": "A negative step counts down; the sequence continues while values stay above the stop (`0`), which is excluded. `range` is lazy, so `list()` is needed to see the numbers.",
+      "tags": [
+        "range",
+        "negative-step"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-007-03",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "list(range(5, 2))",
+      "answer": "[]",
+      "accepted": [],
+      "explanation": "With the default step of `+1`, `range` is empty when `start >= stop` — it never wraps around or counts down on its own. Use `range(5, 2, -1)` to get `5, 4, 3`.",
+      "tags": [
+        "range",
+        "empty"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-007-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "cfg = {\"host\": \"qa\", \"port\": 80}\nfor item in cfg:\n    print(item, end=\" \")",
+      "answer": "host port",
+      "accepted": [],
+      "explanation": "Iterating a dict directly yields its keys, in insertion order. For values use `.values()`, for pairs use `.items()`.",
+      "tags": [
+        "dict",
+        "for",
+        "keys"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-007-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "cfg = {\"host\": \"qa\", \"port\": 80}\nfor k, v in cfg.items():\n    print(f\"{k}={v}\")",
+      "answer": "host=qa\nport=80",
+      "accepted": [],
+      "explanation": "`.items()` yields `(key, value)` tuples, which the `for` target unpacks into `k` and `v`. Dicts keep insertion order, so the output order is predictable.",
+      "tags": [
+        "dict",
+        "items",
+        "unpacking"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-007-06",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "cfg = {\"host\": \"qa\", \"port\": 80}\nfor k, v in cfg:\n    print(k, v)",
+      "answer": "ValueError",
+      "accepted": [],
+      "explanation": "Iterating a dict yields keys, so each step tries to unpack the string `\"host\"` into two names. Four characters into two targets raises `ValueError: too many values to unpack`. Use `.items()`.",
+      "tags": [
+        "dict",
+        "unpacking",
+        "valueerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-007-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "results = [\"pass\", \"pass\", \"pass\"]\nfor r in results:\n    if r == \"fail\":\n        print(\"found failure\")\n        break\nelse:\n    print(\"all green\")",
+      "answer": "all green",
+      "accepted": [],
+      "explanation": "`for ... else` runs the `else` block only when the loop was not ended by `break`. No element matched, so the loop completed normally and `else` fired — the \"not found\" idiom.",
+      "tags": [
+        "for-else",
+        "break"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-007-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "nums = [2, 4, 6, 8]\nfor n in nums:\n    if n % 2 == 0:\n        nums.remove(n)\nprint(nums)",
+      "answer": "[4, 8]",
+      "accepted": [],
+      "explanation": "Removing during iteration shifts the remaining elements left, so the loop skips every second one: after `2` goes, `4` slides into index 0 and the iterator moves on to `6`. Build a new list instead: `[n for n in nums if n % 2]`.",
+      "tags": [
+        "for",
+        "remove",
+        "mutation-during-iteration"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-007-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "for i in range(3):\n    pass\nprint(i)",
+      "answer": "2",
+      "accepted": [],
+      "explanation": "The loop variable is an ordinary variable in the enclosing scope; it keeps the last value assigned, `2`, after the loop ends. Relying on it is a common source of subtle bugs.",
+      "tags": [
+        "for",
+        "loop-variable",
+        "scope"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-007-10",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "for i in range(0):\n    pass\nprint(i)",
+      "answer": "NameError",
+      "accepted": [],
+      "explanation": "`range(0)` is empty, so the body never runs and `i` is never assigned. Reading it afterwards raises `NameError` — the loop variable exists only if at least one iteration happened.",
+      "tags": [
+        "for",
+        "loop-variable",
+        "nameerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-007-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "for b in [\"chrome\", \"ff\"]:\n    for w in [800, 1200]:\n        print(f\"{b}-{w}\", end=\" \")",
+      "answer": "chrome-800 chrome-1200 ff-800 ff-1200",
+      "accepted": [],
+      "explanation": "The inner loop runs to completion for every value of the outer loop, producing every combination: 2 × 2 = 4 pairs. With N values each, nested loops cost N² iterations.",
+      "tags": [
+        "nested-loops",
+        "combinations"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-007-12",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "for i in range(2):\n    for j in range(3):\n        if j == 1:\n            break\n        print(i, j)",
+      "answer": "0 0\n1 0",
+      "accepted": [],
+      "explanation": "`break` only leaves the innermost loop. Each time `j` reaches 1 the inner loop stops, but the outer loop carries on with the next `i`. To exit both, use a flag, a function with `return`, or restructure.",
+      "tags": [
+        "nested-loops",
+        "break"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

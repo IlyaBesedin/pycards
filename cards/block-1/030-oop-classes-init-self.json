@@ -1,0 +1,176 @@
+{
+  "topic": 30,
+  "cards": [
+    {
+      "id": "b1-030-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Ticket:\n    def __init__(self, code):\n        self.code = code\n    def label(self):\n        return \"BUG-\" + self.code\nt = Ticket(\"42\")\nprint(t.label())",
+      "answer": "BUG-42",
+      "accepted": [],
+      "explanation": "`Ticket(\"42\")` calls `__init__` automatically to set up the new object; `t.label()` is a method call where Python passes `t` as `self`.",
+      "tags": [
+        "class",
+        "init",
+        "method"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-030-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Cart:\n    def __init__(self):\n        self.total = 0\n    def add(self, x):\n        self.total += x\na = Cart()\nb = Cart()\na.add(5)\nprint(a.total, b.total)",
+      "answer": "5 0",
+      "accepted": [],
+      "explanation": "Each call to the class creates a fresh object with its own `__init__`-created attributes. Changing `a.total` cannot affect `b` — instance state is per object.",
+      "tags": [
+        "instance-attribute",
+        "state"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-030-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Job:\n    made = 0\n    def __init__(self):\n        Job.made += 1\na = Job()\nb = Job()\nprint(Job.made, a.made)",
+      "answer": "2 2",
+      "accepted": [],
+      "explanation": "`made` is a class attribute — one shared value. Reading `a.made` finds no instance attribute, so lookup falls back to the class, which is why both prints show `2`.",
+      "tags": [
+        "class-attribute",
+        "lookup"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-030-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Suite:\n    tests = []\n    def add(self, name):\n        self.tests.append(name)\ns1 = Suite()\ns2 = Suite()\ns1.add(\"login\")\nprint(s2.tests)",
+      "answer": "['login']",
+      "accepted": [],
+      "explanation": "A mutable class attribute is shared by every instance: `self.tests` finds the one class-level list and appends to it, so `s2` sees `s1`'s data. Create the list in `__init__` instead.",
+      "tags": [
+        "class-attribute",
+        "mutable",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-030-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Plan:\n    def __init__(self):\n        self.steps = []\np1 = Plan()\np2 = Plan()\np1.steps.append(\"smoke\")\nprint(p2.steps)",
+      "answer": "[]",
+      "accepted": [],
+      "explanation": "Here the list is created inside `__init__`, so every instance gets its own. This is the fix for the shared mutable class attribute trap.",
+      "tags": [
+        "instance-attribute",
+        "init"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-030-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Cfg:\n    env = \"prod\"\nc1 = Cfg()\nc2 = Cfg()\nc1.env = \"stage\"\nprint(c1.env, c2.env, Cfg.env)",
+      "answer": "stage prod prod",
+      "accepted": [],
+      "explanation": "Assigning through an instance creates a new instance attribute that shadows the class one — only on `c1`. The class attribute and `c2` are untouched.",
+      "tags": [
+        "class-attribute",
+        "shadowing"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-030-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Run:\n    def __init__(self):\n        self.status = \"new\"\n    def fail(self):\n        status = \"failed\"\nr = Run()\nr.fail()\nprint(r.status)",
+      "answer": "new",
+      "accepted": [],
+      "explanation": "Inside `fail`, `status = ...` without `self.` creates a local variable that vanishes when the method returns. The object's attribute is only changed via `self.status = ...`.",
+      "tags": [
+        "self",
+        "local-variable",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-030-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Meter:\n    def __init__(self):\n        self.n = 0\n    def bump(self):\n        self.n += 1\n        return self.n\nm = Meter()\nm.bump()\nprint(m.bump())",
+      "answer": "2",
+      "accepted": [],
+      "explanation": "The object keeps its state between method calls: the first `bump` sets `n` to 1, the second increments it to 2. That persistence is the point of objects.",
+      "tags": [
+        "state",
+        "method"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-030-09",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class Api:\n    def ping():\n        return \"pong\"\na = Api()\nprint(a.ping())",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`a.ping()` implicitly passes `a` as the first argument, but `ping` declares no parameters — `TypeError`: takes 0 positional arguments but 1 was given. Add `self`.",
+      "tags": [
+        "self",
+        "typeerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-030-10",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class User:\n    def __init__(self):\n        self.name = \"guest\"\nu = User\nprint(u.name)",
+      "answer": "AttributeError",
+      "accepted": [],
+      "explanation": "Without parentheses `User` is just a reference to the class — `__init__` never runs, so there is no `name` attribute. Instantiate with `User()`.",
+      "tags": [
+        "instantiation",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-030-11",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class Case:\n    def fail(self, why):\n        self.reason = why\nc = Case()\nprint(c.reason)",
+      "answer": "AttributeError",
+      "accepted": [],
+      "explanation": "`reason` would only be created when `fail` runs; it was never called, so the attribute does not exist. Initialize all attributes in `__init__` to avoid this.",
+      "tags": [
+        "attributes",
+        "init"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-030-12",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "class Greeter:\n    def __init__(self, name):\n        self.name = name\n    def hello(self):\n        return \"hi \" + self.name\ng = Greeter(\"QA\")\nGreeter.hello(g)",
+      "answer": "'hi QA'",
+      "accepted": [],
+      "explanation": "`g.hello()` is sugar for `Greeter.hello(g)` — the instance is simply passed as `self`. The method returns a string, so the repr is quoted.",
+      "tags": [
+        "self",
+        "method-call"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

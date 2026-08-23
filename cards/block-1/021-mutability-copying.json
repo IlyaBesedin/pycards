@@ -1,0 +1,176 @@
+{
+  "topic": 21,
+  "cards": [
+    {
+      "id": "b1-021-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "a = [\"smoke\", \"unit\"]\nb = a\nb.append(\"e2e\")\nprint(a)",
+      "answer": "['smoke', 'unit', 'e2e']",
+      "accepted": [],
+      "explanation": "`b = a` copies the reference, not the list — both names point at one object, so mutating through `b` is visible through `a`.",
+      "tags": [
+        "aliasing",
+        "references"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-021-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "s = \"qa\"\nt = s\nt = t.upper()\nprint(s, t)",
+      "answer": "qa QA",
+      "accepted": [],
+      "explanation": "Strings are immutable: `t.upper()` builds a new string and `t` is rebound to it. The original object that `s` still points to is untouched.",
+      "tags": [
+        "immutability",
+        "strings"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-021-03",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "x = [1, 2]\ny = [1, 2]\n(x == y, x is y)",
+      "answer": "(True, False)",
+      "accepted": [],
+      "explanation": "`==` compares contents, `is` compares identity. Two separately built lists are equal but are two distinct objects.",
+      "tags": [
+        "is-vs-eq",
+        "identity"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-021-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "a = [1, 2]\nb = a\nc = a[:]\nprint(b is a, c is a, c == a)",
+      "answer": "True False True",
+      "accepted": [],
+      "explanation": "Assignment aliases the same object; a slice `a[:]` builds a new (shallow) copy — a different object with equal contents.",
+      "tags": [
+        "aliasing",
+        "copy",
+        "slice"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-021-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "import copy\nuser = {\"name\": \"Ann\", \"roles\": [\"qa\"]}\nclone = copy.copy(user)\nclone[\"name\"] = \"Bob\"\nclone[\"roles\"].append(\"dev\")\nprint(user)",
+      "answer": "{'name': 'Ann', 'roles': ['qa', 'dev']}",
+      "accepted": [],
+      "explanation": "A shallow copy duplicates only the top level: replacing `clone[\"name\"]` is safe, but the nested `roles` list is still shared, so the append leaks into `user`.",
+      "tags": [
+        "shallow-copy",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-021-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "import copy\nenv = {\"host\": \"db\", \"tags\": [\"fast\"]}\nclone = copy.deepcopy(env)\nclone[\"tags\"].append(\"slow\")\nprint(env[\"tags\"])",
+      "answer": "['fast']",
+      "accepted": [],
+      "explanation": "`deepcopy` recursively copies the whole structure, nested lists included, so the clone is fully independent of the original.",
+      "tags": [
+        "deepcopy"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-021-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def add_header(rows):\n    rows.insert(0, \"name\")\n\ndata = [\"ann\", \"bob\"]\nadd_header(data)\nprint(data)",
+      "answer": "['name', 'ann', 'bob']",
+      "accepted": [],
+      "explanation": "The parameter `rows` is another reference to the caller's list, so the function mutates the caller's data. A hidden side effect — copy on entry or document the mutation.",
+      "tags": [
+        "side-effects",
+        "functions"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-021-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "a = [1]\nb = a\na += [2]\nprint(b)\na = a + [3]\nprint(b)",
+      "answer": "[1, 2]\n[1, 2]",
+      "accepted": [],
+      "explanation": "On lists `+=` mutates in place, so the alias `b` sees `[1, 2]`. Plain `a + [3]` builds a new list and rebinds only `a`, leaving `b` behind.",
+      "tags": [
+        "augmented-assignment",
+        "aliasing",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-021-09",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "box = ([1, 2], \"id\")\nbox[0] += [3]",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`box[0] += [3]` extends the list, then tries to assign the result back into the tuple — which raises `TypeError`. Sneakily, the list has already been mutated to `[1, 2, 3]` by then.",
+      "tags": [
+        "tuple",
+        "augmented-assignment",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-021-10",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "codes = (200, 404)\ncodes.append(500)",
+      "answer": "AttributeError",
+      "accepted": [],
+      "explanation": "Tuples are immutable and have no mutating methods — no `append`, so the lookup itself fails with `AttributeError`. Build a new tuple instead: `codes + (500,)`.",
+      "tags": [
+        "tuple",
+        "immutability"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-021-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "grid = [[0] * 2] * 3\ngrid[0][0] = 9\nprint(grid)",
+      "answer": "[[9, 0], [9, 0], [9, 0]]",
+      "accepted": [],
+      "explanation": "`* 3` repeats the reference, not the list: all three rows are the same inner object. Use a comprehension (`[[0] * 2 for _ in range(3)]`) for independent rows.",
+      "tags": [
+        "aliasing",
+        "list-multiplication",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-021-12",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "row = (\"id\", [1, 2])\nrow[1].append(3)\nprint(row)",
+      "answer": "('id', [1, 2, 3])",
+      "accepted": [],
+      "explanation": "Tuple immutability is shallow: the tuple's slots cannot be reassigned, but a mutable object inside can still be changed through its own methods.",
+      "tags": [
+        "tuple",
+        "mutability"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

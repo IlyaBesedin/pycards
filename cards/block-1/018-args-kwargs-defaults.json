@@ -1,0 +1,173 @@
+{
+  "topic": 18,
+  "cards": [
+    {
+      "id": "b1-018-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def collect(*items):\n    print(type(items).__name__, items)\n\ncollect(1, 2)",
+      "answer": "tuple (1, 2)",
+      "accepted": [],
+      "explanation": "`*items` gathers all extra positional arguments into a tuple — always a tuple, even for zero or one argument.",
+      "tags": [
+        "args",
+        "tuple"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-018-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def add_tag(tag, tags=[]):\n    tags.append(tag)\n    return tags\n\nprint(add_tag(\"api\"))\nprint(add_tag(\"ui\"))",
+      "answer": "['api']\n['api', 'ui']",
+      "accepted": [],
+      "explanation": "The default list is created once, at `def` time, and shared by every call that omits `tags`. The first call's `\"api\"` leaks into the second — the classic mutable default trap.",
+      "tags": [
+        "mutable-default",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-018-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def add_tag(tag, tags=None):\n    if tags is None:\n        tags = []\n    tags.append(tag)\n    return tags\n\nprint(add_tag(\"api\"))\nprint(add_tag(\"ui\"))",
+      "answer": "['api']\n['ui']",
+      "accepted": [],
+      "explanation": "The canonical fix: default to `None` and create a fresh list inside the function, so each call gets its own list and nothing leaks between calls.",
+      "tags": [
+        "mutable-default",
+        "none"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-018-04",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "def fetch(url, *, timeout):\n    return f\"{url} {timeout}\"\n\nprint(fetch(\"/users\", 5))",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "Everything after the bare `*` is keyword-only: `timeout` must be passed as `timeout=5`. Passing it positionally raises `TypeError`.",
+      "tags": [
+        "keyword-only",
+        "signature"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-018-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def report(env, build, *, verbose):\n    print(env, build, verbose)\n\nargs = [\"stage\", 42]\nopts = {\"verbose\": True}\nreport(*args, **opts)",
+      "answer": "stage 42 True",
+      "accepted": [],
+      "explanation": "At the call site the stars unpack: `*args` spreads the list into positional arguments, `**opts` spreads the dict into keyword arguments.",
+      "tags": [
+        "unpacking",
+        "call"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-018-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def ping(host, port=80):\n    return f\"{host}:{port}\"\n\ncfg = {\"host\": \"db\", \"port\": 5432}\nprint(ping(cfg))",
+      "answer": "{'host': 'db', 'port': 5432}:80",
+      "accepted": [],
+      "explanation": "Without `**`, the whole dict is passed as the single positional argument `host`, and `port` keeps its default. `ping(**cfg)` would unpack it into `host=\"db\", port=5432`.",
+      "tags": [
+        "unpacking",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-018-07",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "def double(x, /):\n    return x * 2\n\nprint(double(x=4))",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "Parameters before `/` are positional-only: `x` cannot be passed by name. Call it as `double(4)`.",
+      "tags": [
+        "positional-only",
+        "signature"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-018-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def log(msg, seen=[]):\n    seen.append(msg)\n    return len(seen)\n\nprint(log(\"a\"), log(\"b\"), log(\"c\", []))",
+      "answer": "1 2 1",
+      "accepted": [],
+      "explanation": "The first two calls share the one default list (`['a']`, then `['a', 'b']`), but the third call passes its own fresh list, so the default is bypassed entirely.",
+      "tags": [
+        "mutable-default",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-018-09",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "n = 10\n\ndef batch_size(limit=n):\n    return limit\n\nn = 99\nbatch_size()",
+      "answer": "10",
+      "accepted": [],
+      "explanation": "Default values are evaluated once, when `def` runs — `limit=n` captured `10`. Rebinding `n` later does not change the stored default.",
+      "tags": [
+        "defaults",
+        "def-time"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-018-10",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "def setup(**options, mode):\n    return mode\n\nprint(setup(mode=\"fast\"))",
+      "answer": "SyntaxError",
+      "accepted": [],
+      "explanation": "Signature order is strict: regular parameters, then `*args`, keyword-only, and `**kwargs` last. A parameter after `**options` is a `SyntaxError` before the code even runs.",
+      "tags": [
+        "signature",
+        "kwargs"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-018-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def join(a, b, sep=\"-\"):\n    return f\"{a}{sep}{b}\"\n\ndef loud(*args, **kwargs):\n    return join(*args, **kwargs).upper()\n\nprint(loud(\"q\", \"a\", sep=\"+\"))",
+      "answer": "Q+A",
+      "accepted": [],
+      "explanation": "`*args, **kwargs` accept anything and forward it unchanged to the inner function — the standard pattern for wrappers and decorators.",
+      "tags": [
+        "forwarding",
+        "wrapper"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-018-12",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "def move(src, dst):\n    return src + dst\n\nprint(move(\"a\", src=\"b\"))",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`\"a\"` already fills `src` positionally, so `src=\"b\"` supplies it a second time: `TypeError: got multiple values for argument 'src'`.",
+      "tags": [
+        "arguments",
+        "trap"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

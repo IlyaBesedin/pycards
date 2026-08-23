@@ -1,0 +1,93 @@
+{
+  "topic": 1,
+  "cards": [
+    {
+      "id": "b1-001-01",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "import sys\nsys.version_info >= (3, 12)",
+      "answer": "True",
+      "accepted": [],
+      "explanation": "`sys.version_info` is a named tuple `(major, minor, micro, ...)`, so it compares element-wise with a plain tuple. This is the idiomatic way to assert a minimum Python version from code.",
+      "tags": [
+        "sys",
+        "version"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-001-02",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "import sys\nlen(sys.argv)",
+      "answer": "1",
+      "accepted": [],
+      "explanation": "When you run `python script.py` with no arguments, `sys.argv` still holds one item: the script path itself at index 0. Real command-line arguments start at `sys.argv[1]`.",
+      "tags": [
+        "sys",
+        "argv",
+        "cli"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-001-03",
+      "kind": "truth",
+      "question": "True or False?",
+      "code": "$ python3 -m venv .venv\n$ pip install requests\n# Claim: requests is now inside .venv",
+      "answer": "False",
+      "accepted": [],
+      "explanation": "Creating a venv does not activate it. Without `source .venv/bin/activate` (or `.venv\\Scripts\\activate` on Windows) `pip` is still the system pip, so the package lands in the global Python and the project will not see it.",
+      "tags": [
+        "venv",
+        "pip",
+        "activate"
+      ],
+      "verify": "manual"
+    },
+    {
+      "id": "b1-001-04",
+      "kind": "truth",
+      "question": "True or False?",
+      "code": "$ deactivate\n$ pip freeze > requirements.txt\n# Claim: requirements.txt now lists only\n# this project's dependencies",
+      "answer": "False",
+      "accepted": [],
+      "explanation": "After `deactivate` you are back in the system Python, so `pip freeze` dumps every package installed globally. Freeze only from inside the project's activated venv, then commit the file.",
+      "tags": [
+        "pip",
+        "freeze",
+        "requirements"
+      ],
+      "verify": "manual"
+    },
+    {
+      "id": "b1-001-05",
+      "kind": "truth",
+      "question": "True or False?",
+      "code": "$ python3 -m venv .venv\n$ python3 venv .venv\n# Claim: both commands do the same thing",
+      "answer": "False",
+      "accepted": [],
+      "explanation": "`-m venv` runs the standard-library `venv` module by name. Without `-m`, `python3 venv` looks for a file called `venv` in the current directory and fails with \"can't open file\".",
+      "tags": [
+        "python-m",
+        "venv"
+      ],
+      "verify": "manual"
+    },
+    {
+      "id": "b1-001-06",
+      "kind": "truth",
+      "question": "True or False?",
+      "code": "$ source .venv/bin/activate\n(.venv) $ which python\n# Claim: the path printed ends\n# with .venv/bin/python",
+      "answer": "True",
+      "accepted": [],
+      "explanation": "Activation puts `.venv/bin` first on `PATH`, so both `python` and `python3` resolve to the venv's interpreter. The `(.venv)` prompt prefix and `which python` are the two ways to confirm the right Python is running.",
+      "tags": [
+        "venv",
+        "activate",
+        "which"
+      ],
+      "verify": "manual"
+    }
+  ]
+}

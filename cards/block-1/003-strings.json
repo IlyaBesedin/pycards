@@ -1,0 +1,177 @@
+{
+  "topic": 3,
+  "cards": [
+    {
+      "id": "b1-003-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "path = \"a-b-c\"\npath.replace(\"-\", \"_\")\nprint(path)",
+      "answer": "a-b-c",
+      "accepted": [],
+      "explanation": "Strings are immutable: `replace()` returns a new string and leaves the original untouched. The result was never assigned, so `path` is unchanged — write `path = path.replace(\"-\", \"_\")`.",
+      "tags": [
+        "immutability",
+        "replace"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-003-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "s = \"BUG-1042: Crash\"\nprint(s[:8])\nprint(s[10:])",
+      "answer": "BUG-1042\nCrash",
+      "accepted": [],
+      "explanation": "`s[:8]` means `s[0:8]` — the first 8 characters, stop index excluded. `s[10:]` runs from index 10 to the end. A missing bound defaults to the start or the end of the string.",
+      "tags": [
+        "slice"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-003-03",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "\"QA-2024\"[::-1]",
+      "answer": "'4202-AQ'",
+      "accepted": [],
+      "explanation": "A step of `-1` walks the string backwards from the end, so `[::-1]` is the one-slice idiom for reversing. The result is a new string; the original is untouched.",
+      "tags": [
+        "slice",
+        "reverse"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-003-04",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "code = \"403\"\nprint(code[1:10])\nprint(code[10])",
+      "answer": "IndexError",
+      "accepted": [],
+      "explanation": "Slices never fail — out-of-range bounds are clipped, so `code[1:10]` prints `03`. Indexing is strict: `code[10]` on a 3-character string raises `IndexError`.",
+      "tags": [
+        "slice",
+        "index",
+        "indexerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-003-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "line = \"  a  b \"\nprint(len(line.split()))\nprint(len(line.split(\" \")))",
+      "answer": "2\n6",
+      "accepted": [],
+      "explanation": "`split()` with no argument collapses any run of whitespace and drops empty pieces: `['a', 'b']`. `split(\" \")` cuts at every single space and keeps the empty strings between them: `['', '', 'a', '', 'b', '']`.",
+      "tags": [
+        "split",
+        "whitespace"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-003-06",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "\"WARN: disk: 91%\".split(\": \", 1)",
+      "answer": "['WARN', 'disk: 91%']",
+      "accepted": [],
+      "explanation": "The second argument is `maxsplit`: at most one cut is made, at the first `\": \"`. The rest of the string stays intact — the idiom for splitting a log line into level and message.",
+      "tags": [
+        "split",
+        "maxsplit"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-003-07",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "ids = [101, 102]\nprint(\", \".join(ids))",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`join()` accepts only strings; an `int` element raises `TypeError`. Convert first: `\", \".join(str(i) for i in ids)` or `\", \".join(map(str, ids))`.",
+      "tags": [
+        "join",
+        "typeerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-003-08",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "name = \"report.log\"\nprint(name.find(\"z\"))\nprint(name.index(\"z\"))",
+      "answer": "ValueError",
+      "accepted": [],
+      "explanation": "`find()` returns `-1` when the substring is absent, so the first line prints `-1`. `index()` does the same search but raises `ValueError` instead — use it when a miss is a genuine error.",
+      "tags": [
+        "find",
+        "index",
+        "valueerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-003-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "elapsed = 0.98765\nprint(f\"took {elapsed:.1f}s\")",
+      "answer": "took 1.0s",
+      "accepted": [],
+      "explanation": "`:.1f` formats the float with exactly one decimal place, rounding as needed: 0.98765 becomes `1.0`. The precision is fixed, so the trailing zero is kept.",
+      "tags": [
+        "f-string",
+        "format",
+        "float"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-003-10",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "env = \"prod\"\nprint(f\"{env=}\")",
+      "answer": "env='prod'",
+      "accepted": [],
+      "explanation": "The `=` specifier prints the expression text followed by its `repr()`, so a string shows up with quotes. Handy for debugging: `f\"{x=}\"` instead of `f\"x={x}\"`.",
+      "tags": [
+        "f-string",
+        "debug",
+        "repr"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-003-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "print(len(r\"\\n\"), len(\"\\n\"))",
+      "answer": "2 1",
+      "accepted": [],
+      "explanation": "In a raw string the backslash is a literal character, so `r\"\\n\"` is two characters. In a normal string `\\n` is one escape sequence: a single newline. Raw strings are the default choice for regexes and Windows paths.",
+      "tags": [
+        "raw-string",
+        "escape"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-003-12",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "a = \"Ivan@Mail.ru \"\nb = \"ivan@mail.ru\"\nprint(a == b)\nprint(a.strip().lower() == b)",
+      "answer": "False\nTrue",
+      "accepted": [],
+      "explanation": "String comparison is exact: different case and a trailing space both break equality. Normalize both sides with `.strip().lower()` before comparing user-entered values like emails.",
+      "tags": [
+        "strip",
+        "lower",
+        "comparison"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

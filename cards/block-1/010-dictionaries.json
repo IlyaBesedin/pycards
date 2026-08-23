@@ -1,0 +1,179 @@
+{
+  "topic": 10,
+  "cards": [
+    {
+      "id": "b1-010-01",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "config = {\"timeout\": 30}\nprint(config[\"retries\"])",
+      "answer": "KeyError",
+      "accepted": [],
+      "explanation": "Square-bracket access on a missing key raises `KeyError`. That is the right behaviour for mandatory fields — a loud failure instead of a silent `None`.",
+      "tags": [
+        "dict",
+        "keyerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-010-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "cfg = {\"timeout\": 30}\nprint(cfg.get(\"retries\"))\nprint(cfg.get(\"retries\", 3))",
+      "answer": "None\n3",
+      "accepted": [],
+      "explanation": "`get()` never raises: with one argument a missing key yields `None`, with two it yields the given default. Use it only when the key is genuinely optional.",
+      "tags": [
+        "dict",
+        "get"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-010-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "base = {\"timeout\": 30, \"retries\": 3}\nstage = {\"timeout\": 60}\nprint(base | stage)",
+      "answer": "{'timeout': 60, 'retries': 3}",
+      "accepted": [],
+      "explanation": "`|` merges dicts; on a key conflict the right operand wins. Key order follows the left dict, so `timeout` stays first but carries the value 60.",
+      "tags": [
+        "dict",
+        "merge"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-010-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "scores = {\"smoke\": 10}\nprint(\"smoke\" in scores, 10 in scores)",
+      "answer": "True False",
+      "accepted": [],
+      "explanation": "`in` on a dict tests keys, never values. To search values, use `10 in scores.values()`.",
+      "tags": [
+        "dict",
+        "in"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-010-05",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "counts = {\"a\": 1, \"b\": 0, \"c\": 0}\nfor key in counts:\n    if counts[key] == 0:\n        del counts[key]\nprint(counts)",
+      "answer": "RuntimeError",
+      "accepted": [],
+      "explanation": "Deleting keys while iterating over the dict raises `RuntimeError: dictionary changed size during iteration`. Iterate over `list(counts)` — a snapshot — when you need to delete.",
+      "tags": [
+        "dict",
+        "iteration",
+        "runtimeerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-010-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "report = {\"passed\": 2, \"failed\": 1}\nfor name, n in report.items():\n    print(name, n)",
+      "answer": "passed 2\nfailed 1",
+      "accepted": [],
+      "explanation": "`items()` yields `(key, value)` tuples that unpack straight into two loop variables. Dicts iterate in insertion order (guaranteed since Python 3.7).",
+      "tags": [
+        "dict",
+        "items",
+        "iteration"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-010-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "groups = {}\nfor name in [\"ui_a\", \"api_b\", \"ui_c\"]:\n    kind = name.split(\"_\")[0]\n    groups.setdefault(kind, []).append(name)\nprint(groups[\"ui\"])",
+      "answer": "['ui_a', 'ui_c']",
+      "accepted": [],
+      "explanation": "`setdefault(k, [])` inserts an empty list only when the key is absent and returns the stored list either way, so appends accumulate per group without any `if` checks.",
+      "tags": [
+        "dict",
+        "setdefault",
+        "grouping"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-010-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "headers = {\"Accept\": \"text/html\"}\nheaders[\"Accept\"] = \"application/json\"\nprint(len(headers))\nprint(headers[\"Accept\"])",
+      "answer": "1\napplication/json",
+      "accepted": [],
+      "explanation": "Assigning to an existing key overwrites the value in place — dicts never hold duplicate keys, so the length stays 1.",
+      "tags": [
+        "dict",
+        "assignment"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-010-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "h = {}\nh[\"Token\"] = \"abc\"\nh[\"token\"] = \"xyz\"\nprint(len(h), h.get(\"TOKEN\"))",
+      "answer": "2 None",
+      "accepted": [],
+      "explanation": "Plain dict keys are case-sensitive: `\"Token\"` and `\"token\"` are two different keys, and `\"TOKEN\"` matches neither. HTTP-header lookups need a case-insensitive mapping.",
+      "tags": [
+        "dict",
+        "keys",
+        "case"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-010-10",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "jobs = {\"build\": \"ok\"}\nprint(jobs.pop(\"deploy\", \"missing\"))\nprint(jobs.pop(\"build\"))\nprint(jobs)",
+      "answer": "missing\nok\n{}",
+      "accepted": [],
+      "explanation": "`pop(key, default)` returns the default when the key is absent; without a default a missing key would raise `KeyError`. Popping the last key leaves an empty dict.",
+      "tags": [
+        "dict",
+        "pop"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-010-11",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "d = {\"b\": 1, \"a\": 2}\nlist(d)",
+      "answer": "['b', 'a']",
+      "accepted": [],
+      "explanation": "Iterating a dict yields its keys in insertion order — not sorted order. `list(d)` is therefore `['b', 'a']`.",
+      "tags": [
+        "dict",
+        "order",
+        "keys"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-010-12",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "resp = {\"id\": 1}\nwant = {\"id\": 1}\ngot = resp.get(\"name\")\nprint(got == want.get(\"name\"))",
+      "answer": "True",
+      "accepted": [],
+      "explanation": "Both `get(\"name\")` calls return `None`, and `None == None` is `True` — the check passes although neither dict has the field. For mandatory fields use `[]` so a missing key fails loudly.",
+      "tags": [
+        "dict",
+        "get",
+        "trap"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

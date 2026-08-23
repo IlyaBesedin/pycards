@@ -1,0 +1,175 @@
+{
+  "topic": 29,
+  "cards": [
+    {
+      "id": "b1-029-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from collections import Counter\nruns = \"fail pass fail skip fail\".split()\nc = Counter(runs)\nprint(c.most_common(1), c[\"absent\"])",
+      "answer": "[('fail', 3)] 0",
+      "accepted": [],
+      "explanation": "`Counter` counts occurrences; `most_common(n)` returns the top `n` as `(item, count)` pairs. Unlike a plain dict, a missing key gives `0` instead of raising `KeyError`.",
+      "tags": [
+        "counter",
+        "most_common"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-029-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from collections import defaultdict\ngroups = defaultdict(list)\nnames = [\"api_get\", \"ui_login\", \"api_put\"]\nfor n in names:\n    groups[n[:2]].append(n)\nprint(groups[\"ap\"])",
+      "answer": "['api_get', 'api_put']",
+      "accepted": [],
+      "explanation": "`defaultdict(list)` creates an empty list the first time a key is touched, so grouping needs no `if key in d` dance — just append.",
+      "tags": [
+        "defaultdict",
+        "grouping"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-029-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from collections import defaultdict\nseen = defaultdict(int)\nif seen[\"deploy\"]:\n    print(\"found\")\nprint(len(seen), \"deploy\" in seen)",
+      "answer": "1 True",
+      "accepted": [],
+      "explanation": "Merely reading `seen[\"deploy\"]` inserts the key with the default `0` — even inside an `if`. To test membership without side effects, use `\"deploy\" in seen`.",
+      "tags": [
+        "defaultdict",
+        "side-effect",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-029-04",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "from collections import defaultdict\nd = defaultdict()\nd[\"runs\"].append(1)\nprint(d)",
+      "answer": "KeyError",
+      "accepted": [],
+      "explanation": "`defaultdict()` without a factory behaves like a plain dict: `default_factory` is `None`, so a missing key raises `KeyError`. Pass the factory: `defaultdict(list)`.",
+      "tags": [
+        "defaultdict",
+        "keyerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-029-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from collections import namedtuple\nCase = namedtuple(\"Case\", \"name status\")\nc = Case(\"login\", \"ok\")\nprint(c.status, c[0])",
+      "answer": "ok login",
+      "accepted": [],
+      "explanation": "`namedtuple` fields are readable both by name (`c.status`) and by position (`c[0]`) — it is still a tuple underneath, just with named fields.",
+      "tags": [
+        "namedtuple",
+        "fields"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-029-06",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "from collections import namedtuple\nPoint = namedtuple(\"Point\", \"x y\")\npt = Point(3, 4)\npt.x = 10",
+      "answer": "AttributeError",
+      "accepted": [],
+      "explanation": "Tuples are immutable, and `namedtuple` inherits that: assigning to a field raises `AttributeError`. Use `pt._replace(x=10)` to get a modified copy.",
+      "tags": [
+        "namedtuple",
+        "immutability"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-029-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from collections import deque\nq = deque([\"t2\", \"t3\"])\nq.appendleft(\"t1\")\nq.append(\"t4\")\nprint(q.popleft(), q.pop())",
+      "answer": "t1 t4",
+      "accepted": [],
+      "explanation": "`deque` supports O(1) operations on both ends: `appendleft`/`popleft` work at the front, `append`/`pop` at the back. `list.pop(0)` is O(n) — that is the reason to use `deque`.",
+      "tags": [
+        "deque",
+        "queue"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-029-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from itertools import product\ncombos = list(product(\"ab\", [1, 2]))\nprint(len(combos))\nprint(combos[0], combos[3])",
+      "answer": "4\n('a', 1) ('b', 2)",
+      "accepted": [],
+      "explanation": "`product` yields every combination as a tuple, in nested-loop order: 2 × 2 = 4. Handy for test-config matrices — but sizes multiply fast.",
+      "tags": [
+        "itertools",
+        "product"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-029-09",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "from itertools import chain\nlist(chain([\"s1\"], [\"e1\", \"e2\"]))",
+      "answer": "['s1', 'e1', 'e2']",
+      "accepted": [],
+      "explanation": "`chain` walks each iterable in turn, producing one flat sequence without building intermediate copies. `list()` materializes the lazy iterator.",
+      "tags": [
+        "itertools",
+        "chain"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-029-10",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from itertools import groupby\nwords = [\"ok\", \"yes\", \"no\"]\nfor k, g in groupby(words, key=len):\n    print(k, list(g))",
+      "answer": "2 ['ok']\n3 ['yes']\n2 ['no']",
+      "accepted": [],
+      "explanation": "`groupby` groups only consecutive elements with the same key. The two 2-letter words are separated by `\"yes\"`, so length 2 appears twice — sort by the key first to group globally.",
+      "tags": [
+        "itertools",
+        "groupby",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-029-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from functools import partial\ndef power(base, exp):\n    return base ** exp\nsquare = partial(power, exp=2)\nprint(square(6))",
+      "answer": "36",
+      "accepted": [],
+      "explanation": "`partial` pre-fills some arguments and returns a new callable — here `exp=2` is fixed, so `square(6)` calls `power(6, exp=2)`.",
+      "tags": [
+        "functools",
+        "partial"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-029-12",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from functools import lru_cache\n@lru_cache\ndef area(n):\n    return n * n\narea(3)\narea(3)\narea(3)\ninfo = area.cache_info()\nprint(info.hits, info.misses)",
+      "answer": "2 1",
+      "accepted": [],
+      "explanation": "Only the first `area(3)` runs the body (one miss); the next two calls are served from the cache (two hits). Cached state persists between calls — which can break test isolation.",
+      "tags": [
+        "functools",
+        "lru_cache"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

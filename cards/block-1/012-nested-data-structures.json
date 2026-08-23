@@ -1,0 +1,183 @@
+{
+  "topic": 12,
+  "cards": [
+    {
+      "id": "b1-012-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "resp = {\"user\": {\"addr\": {\"city\": \"Oslo\"}}}\nprint(resp[\"user\"][\"addr\"][\"city\"])",
+      "answer": "Oslo",
+      "accepted": [],
+      "explanation": "Chained subscripts walk one level per bracket: dict, inner dict, inner-inner dict. Each `[...]` is evaluated left to right on the object the previous one returned.",
+      "tags": [
+        "nested",
+        "dict",
+        "access"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-012-02",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "order = {\"customer\": {\"address\": None}}\naddr = order[\"customer\"][\"address\"]\nprint(addr[\"city\"])",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "The chain breaks at the first bad link: `address` exists but holds `None`, and `None[\"city\"]` raises `TypeError: 'NoneType' object is not subscriptable`.",
+      "tags": [
+        "nested",
+        "none",
+        "typeerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-012-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "user = {\"address\": None}\naddr = user.get(\"address\", {})\nprint(addr)",
+      "answer": "None",
+      "accepted": [],
+      "explanation": "`get()` returns the default only when the key is ABSENT. The key `address` is present with value `None`, so the `{}` default is never used.",
+      "tags": [
+        "nested",
+        "get",
+        "none"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-012-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "user = {\"address\": None}\naddr = user.get(\"address\") or {}\nprint(addr.get(\"city\", \"unknown\"))",
+      "answer": "unknown",
+      "accepted": [],
+      "explanation": "`or {}` replaces any falsy value — including a present-but-`None` address — with an empty dict, so the next `get()` is safe. This is the standard fix for `None` inside JSON.",
+      "tags": [
+        "nested",
+        "get",
+        "or"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-012-05",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "resp = {\"orders\": []}\nfirst = resp[\"orders\"][0]\nprint(first[\"id\"])",
+      "answer": "IndexError",
+      "accepted": [],
+      "explanation": "The key `orders` exists, but the list is empty, so `[0]` raises `IndexError`. Check `len()` or truthiness before indexing into API data.",
+      "tags": [
+        "nested",
+        "indexerror",
+        "list"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-012-06",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "resp = {\"orders\": [{\"id\": 7}]}\nprint(resp[\"orders\"][\"id\"])",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`resp[\"orders\"]` is a list, and list indices must be integers — a level was skipped. The correct chain is `resp[\"orders\"][0][\"id\"]`.",
+      "tags": [
+        "nested",
+        "typeerror",
+        "levels"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-012-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "orders = [{\"id\": 1, \"st\": \"ok\"},\n          {\"id\": 2, \"st\": \"fail\"}]\nids = [o[\"id\"] for o in orders]\nprint(ids)",
+      "answer": "[1, 2]",
+      "accepted": [],
+      "explanation": "A list comprehension over a list of dicts pulls one field from each element — the idiomatic way to project a column out of an API response.",
+      "tags": [
+        "nested",
+        "comprehension"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-012-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "orders = [{\"items\": [\"a\", \"b\"]},\n          {\"items\": []},\n          {\"items\": [\"c\"]}]\nnames = [i for o in orders\n         for i in o[\"items\"]]\nprint(names)",
+      "answer": "['a', 'b', 'c']",
+      "accepted": [],
+      "explanation": "Two `for` clauses flatten one level of nesting: outer loop over orders, inner over each order's items. The empty list simply contributes nothing.",
+      "tags": [
+        "nested",
+        "flatten",
+        "comprehension"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-012-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "order = {\"items\": [{\"price\": 5},\n                   {\"price\": 7}]}\ntotal = sum(i[\"price\"]\n            for i in order[\"items\"])\nprint(total)",
+      "answer": "12",
+      "accepted": [],
+      "explanation": "`sum()` consumes a generator that extracts `price` from every item dict — the standard one-liner for an order total in API checks.",
+      "tags": [
+        "nested",
+        "sum",
+        "generator"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-012-10",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "cfg = {\"db\": {\"host\": \"x\"}}\ncopy = dict(cfg)\ncopy[\"db\"][\"host\"] = \"y\"\nprint(cfg[\"db\"][\"host\"])",
+      "answer": "y",
+      "accepted": [],
+      "explanation": "`dict(cfg)` copies only the top level; both dicts still share the SAME inner `db` dict, so mutating it through the copy shows through the original. Deep structures need `copy.deepcopy`.",
+      "tags": [
+        "nested",
+        "shallow-copy",
+        "mutability"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-012-11",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "import json\ndata = {\"ok\": True, \"ids\": [1, 2]}\njson.dumps(data)",
+      "answer": "'{\"ok\": true, \"ids\": [1, 2]}'",
+      "accepted": [],
+      "explanation": "`json.dumps` serializes to a JSON string: Python `True` becomes lowercase `true`, and keys get double quotes. The repr shows the surrounding string quotes.",
+      "tags": [
+        "nested",
+        "json"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-012-12",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "orders = [{\"st\": \"ok\"}, {\"st\": \"err\"},\n          {\"st\": \"ok\"}]\nn = sum(o[\"st\"] == \"ok\" for o in orders)\nprint(n)",
+      "answer": "2",
+      "accepted": [],
+      "explanation": "Each comparison yields `True`/`False`, and `bool` is an `int` (1/0), so `sum()` counts the matching orders directly.",
+      "tags": [
+        "nested",
+        "sum",
+        "bool"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+{
+  "topic": 20,
+  "cards": [
+    {
+      "id": "b1-020-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "nums = [\"1\", \"2\"]\nresult = map(int, nums)\nprint(type(result).__name__)",
+      "answer": "map",
+      "accepted": [],
+      "explanation": "`map` returns a lazy map object, not a list — nothing is converted yet. Wrap it in `list()` (or iterate) to actually get the values.",
+      "tags": [
+        "map",
+        "lazy"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-020-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "raw = [\"3\", \"11\", \"7\"]\nprint(sorted(raw))\nprint(sorted(map(int, raw)))",
+      "answer": "['11', '3', '7']\n[3, 7, 11]",
+      "accepted": [],
+      "explanation": "Strings sort character by character, so `\"11\"` comes before `\"3\"`. `map(int, raw)` converts the batch first, giving a numeric sort.",
+      "tags": [
+        "map",
+        "sorting"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-020-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "nums = [4, 9, 12, 15, 20]\nbyth = filter(lambda n: n % 3 == 0, nums)\nprint(list(byth))",
+      "answer": "[9, 12, 15]",
+      "accepted": [],
+      "explanation": "`filter` keeps the elements for which the function returns a truthy value — here the multiples of 3.",
+      "tags": [
+        "filter",
+        "lambda"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-020-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "data = [\"ok\", \"\", None, \"go\", 0]\nprint(list(filter(None, data)))",
+      "answer": "['ok', 'go']",
+      "accepted": [],
+      "explanation": "`filter(None, ...)` uses truthiness itself as the test, dropping every falsy element: `\"\"`, `None` and `0`.",
+      "tags": [
+        "filter",
+        "truthiness"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-020-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "caps = map(str.upper, [\"a\", \"b\"])\nprint(list(caps))\nprint(list(caps))",
+      "answer": "['A', 'B']\n[]",
+      "accepted": [],
+      "explanation": "A map object is a one-shot iterator: the first `list()` consumes it, the second finds it empty — silently, with no error. Store the `list` if you need it twice.",
+      "tags": [
+        "map",
+        "iterator",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-020-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from functools import reduce\nruns = [4, 2, 3]\nprint(reduce(lambda a, x: a + x, runs))",
+      "answer": "9",
+      "accepted": [],
+      "explanation": "`reduce` folds the list into one value: `(4 + 2) + 3`. For sums prefer the built-in `sum(runs)` — `reduce` is rarely needed.",
+      "tags": [
+        "reduce"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-020-07",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "from functools import reduce\nitems = []\nprint(reduce(lambda a, x: a + x, items))",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "With no initial value, `reduce` needs at least one element to start from; an empty iterable raises `TypeError`. Pass an initial value as the third argument.",
+      "tags": [
+        "reduce",
+        "empty"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-020-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from functools import reduce\nmult = lambda a, x: a * x\nprint(reduce(mult, [], 10))\nprint(reduce(mult, [2, 3], 10))",
+      "answer": "10\n60",
+      "accepted": [],
+      "explanation": "The third argument is the starting accumulator: on an empty iterable it is returned as-is, otherwise folding starts from it (`10 * 2 * 3`).",
+      "tags": [
+        "reduce",
+        "initial-value"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-020-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def tag(x):\n    print(\"seen\", x)\n    return x\n\nlazy = map(tag, [7])\nprint(\"before\")\nprint(list(lazy))",
+      "answer": "before\nseen 7\n[7]",
+      "accepted": [],
+      "explanation": "`map` does not call `tag` when it is created — only when the iterator is consumed. That is why `before` prints first.",
+      "tags": [
+        "map",
+        "lazy"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-020-10",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "words = [\"api\", \"ui\", \"db\"]\nsum(map(len, words))",
+      "answer": "7",
+      "accepted": [],
+      "explanation": "`map(len, words)` yields `3, 2, 2` lazily and `sum` consumes them: 7. Built-in folds like `sum`, `any`, `max` replace most uses of `reduce`.",
+      "tags": [
+        "map",
+        "sum"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-020-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "a = [1, 2, 3]\nb = [10, 20]\nprint(list(map(lambda x, y: x + y, a, b)))",
+      "answer": "[11, 22]",
+      "accepted": [],
+      "explanation": "With two iterables, `map` calls the function with a pair from each — and stops at the shortest one, so `3` is never used.",
+      "tags": [
+        "map",
+        "zip-like"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-020-12",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "vals = map(int, [\"1\", \"x\"])\nprint(\"created\")\nprint(list(vals))",
+      "answer": "ValueError",
+      "accepted": [],
+      "explanation": "Creating the map object cannot fail — conversion is lazy. The crash (`int(\"x\")` → `ValueError`) happens only when `list()` consumes the iterator.",
+      "tags": [
+        "map",
+        "lazy",
+        "trap"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

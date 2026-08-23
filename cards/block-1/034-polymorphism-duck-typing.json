@@ -1,0 +1,159 @@
+{
+  "topic": 34,
+  "cards": [
+    {
+      "id": "b1-034-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Cat:\n    def speak(self):\n        return \"meow\"\n\nclass Duck:\n    def speak(self):\n        return \"quack\"\n\nfor a in (Cat(), Duck()):\n    print(a.speak())",
+      "answer": "meow\nquack",
+      "accepted": [],
+      "explanation": "Both classes expose the same `speak()` interface, so the loop calls each object's own implementation — polymorphism without any shared base class.",
+      "tags": [
+        "polymorphism",
+        "duck-typing"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-034-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Suite:\n    def __init__(self, tests):\n        self.tests = tests\n\n    def __len__(self):\n        return len(self.tests)\n\ns = Suite([\"t1\", \"t2\", \"t3\"])\nprint(len(s))",
+      "answer": "3",
+      "accepted": [],
+      "explanation": "Defining `__len__` is enough for the built-in `len()` to work on your class — `len()` cares about the interface, not the concrete type.",
+      "tags": [
+        "duck-typing",
+        "len"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-034-03",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class Robot:\n    def beep(self):\n        return \"beep\"\n\ndef greet(x):\n    return x.speak()\n\nprint(greet(Robot()))",
+      "answer": "AttributeError",
+      "accepted": [],
+      "explanation": "Duck typing is checked at call time: `Robot` has no `speak` method, so the lookup fails with `AttributeError` only when `greet` actually calls it — not before.",
+      "tags": [
+        "duck-typing",
+        "attributeerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-034-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class ConsoleOut:\n    def write(self, msg):\n        return f\"console:{msg}\"\n\nclass FileOut:\n    def write(self, msg):\n        return f\"file:{msg}\"\n\ndef flush(sink):\n    print(sink.write(\"ok\"))\n\nflush(FileOut())",
+      "answer": "file:ok",
+      "accepted": [],
+      "explanation": "`flush` works with any object that has a matching `write` method — it never checks the type. Adding a new sink class requires no change to `flush`.",
+      "tags": [
+        "polymorphism",
+        "duck-typing"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-034-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Calc:\n    def add(self, a, b):\n        return a + b\n\n    def add(self, a):\n        return a + 1\n\nc = Calc()\nprint(c.add(5))",
+      "answer": "6",
+      "accepted": [],
+      "explanation": "Python has no method overloading: the second `def add` silently replaces the first in the class namespace. Only the one-argument version survives.",
+      "tags": [
+        "overloading",
+        "polymorphism"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-034-06",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class Mixer:\n    def mix(self, a, b):\n        return a + b\n\n    def mix(self, a):\n        return a * 2\n\nprint(Mixer().mix(1, 2))",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "The second `def mix` replaced the two-argument version, so calling with two arguments raises `TypeError`. In Python the last definition of a name wins.",
+      "tags": [
+        "overloading",
+        "typeerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-034-07",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "def middle(seq):\n    return seq[len(seq) // 2]\n\n(middle(\"abc\"), middle([10, 20, 30]))",
+      "answer": "('b', 20)",
+      "accepted": [],
+      "explanation": "`middle` only needs indexing and `len()`, so both a string and a list qualify. The interface, not the type, decides what is accepted.",
+      "tags": [
+        "duck-typing",
+        "sequence"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-034-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def total(items):\n    out = 0\n    for i in items:\n        out += i\n    return out\n\nprint(total([1, 2]), total((3, 4)))\nprint(total(range(3)))",
+      "answer": "3 7\n3",
+      "accepted": [],
+      "explanation": "`total` iterates whatever it is given — a list, a tuple and a `range` all support iteration, so one function serves them all.",
+      "tags": [
+        "duck-typing",
+        "iteration"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-034-09",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class Probe:\n    def __init__(self):\n        self.n = 3\n\nprint(len(Probe()))",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`len()` requires the object to implement `__len__`; merely having a numeric attribute is not enough, so Python raises `TypeError`.",
+      "tags": [
+        "duck-typing",
+        "len"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-034-10",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "class Wav:\n    def play(self):\n        return \"wav\"\n\ns = Wav()\n(hasattr(s, \"play\"), hasattr(s, \"stop\"))",
+      "answer": "(True, False)",
+      "accepted": [],
+      "explanation": "`hasattr` is the look-before-you-leap way to test an object's interface: `Wav` provides `play` but no `stop`.",
+      "tags": [
+        "duck-typing",
+        "hasattr"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-034-11",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class Parrot:\n    speak = \"polly\"\n\ndef talk(a):\n    return a.speak()\n\nprint(talk(Parrot()))",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "The attribute lookup succeeds, but `speak` is a string, not a method — calling it raises `TypeError` (`'str' object is not callable`), not `AttributeError`.",
+      "tags": [
+        "duck-typing",
+        "typeerror"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

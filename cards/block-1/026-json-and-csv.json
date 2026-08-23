@@ -1,0 +1,182 @@
+{
+  "topic": 26,
+  "cards": [
+    {
+      "id": "b1-026-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "import json\nraw = '{\"id\": 3, \"on\": true, \"tag\": null}'\ndata = json.loads(raw)\nprint(data[\"on\"], data[\"tag\"])",
+      "answer": "True None",
+      "accepted": [],
+      "explanation": "`json.loads` parses a string into Python objects: JSON `true` becomes `True`, `null` becomes `None`. The `s` in `loads` means it takes a string, not a file.",
+      "tags": [
+        "json",
+        "loads",
+        "types"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-026-02",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "import json\njson.dumps([True, None])",
+      "answer": "'[true, null]'",
+      "accepted": [],
+      "explanation": "Serialization goes the other way: `True` becomes JSON `true` and `None` becomes `null`. `dumps` returns a string, so the repr is quoted.",
+      "tags": [
+        "json",
+        "dumps",
+        "types"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-026-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "import json\nd = {1: \"one\"}\nback = json.loads(json.dumps(d))\nprint(back)\nprint(back == d)",
+      "answer": "{'1': 'one'}\nFalse",
+      "accepted": [],
+      "explanation": "JSON object keys are always strings, so `dumps` converts the int key `1` to `\"1\"`. The round trip returns a different dict — a classic surprise when comparing API data.",
+      "tags": [
+        "json",
+        "keys",
+        "round-trip"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-026-04",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "import json\njson.loads(json.dumps((1, 2)))",
+      "answer": "[1, 2]",
+      "accepted": [],
+      "explanation": "JSON has no tuple type: `dumps` writes a tuple as a JSON array, and `loads` reads arrays back as lists. Type information is lost in the round trip.",
+      "tags": [
+        "json",
+        "tuple",
+        "round-trip"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-026-05",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "import json\nids = {101, 102}\nprint(json.dumps(ids))",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`json.dumps` cannot serialize a `set` (nor `datetime` or `Decimal`) — it raises `TypeError`. Convert to a `list` first or pass `default=str`.",
+      "tags": [
+        "json",
+        "dumps",
+        "typeerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-026-06",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "import json\ndata = json.loads(\"{'ok': 1}\")\nprint(data)",
+      "answer": "JSONDecodeError",
+      "accepted": [],
+      "explanation": "JSON requires double quotes; single quotes are invalid, so parsing fails with `json.JSONDecodeError` (a subclass of `ValueError`). Python dict syntax is not JSON.",
+      "tags": [
+        "json",
+        "jsondecodeerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-026-07",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "import json\ndata = json.load('{\"n\": 5}')\nprint(data[\"n\"])",
+      "answer": "AttributeError",
+      "accepted": [],
+      "explanation": "`json.load` expects an open file object and calls `.read()` on it; a string has no `read` method, so it raises `AttributeError`. For strings use `json.loads`.",
+      "tags": [
+        "json",
+        "load",
+        "loads"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-026-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "import json\ncfg = {\"retry\": 3, \"base\": \"x.io\"}\nprint(json.dumps(cfg, sort_keys=True))",
+      "answer": "{\"base\": \"x.io\", \"retry\": 3}",
+      "accepted": [],
+      "explanation": "`sort_keys=True` orders keys alphabetically in the output — handy for stable diffs of API responses. Without it, keys keep dict insertion order.",
+      "tags": [
+        "json",
+        "dumps",
+        "sort_keys"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-026-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "import json\nprint(json.dumps(\"Ян\", ensure_ascii=False))\nprint(json.dumps(\"Ян\"))",
+      "answer": "\"Ян\"\n\"\\u042f\\u043d\"",
+      "accepted": [],
+      "explanation": "By default `dumps` escapes every non-ASCII character as `\\uXXXX`. `ensure_ascii=False` keeps the text readable — always set it when writing Cyrillic.",
+      "tags": [
+        "json",
+        "ensure_ascii"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-026-10",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "import csv, io\nt = \"email,role\\na@x.io,qa\\nb@x.io,dev\\n\"\nrows = list(csv.DictReader(io.StringIO(t)))\nprint(rows[1][\"role\"])",
+      "answer": "dev",
+      "accepted": [],
+      "explanation": "`DictReader` uses the first line as the header and yields one dict per data row, so `rows[1]` is the second data row and the column is accessed by name.",
+      "tags": [
+        "csv",
+        "dictreader"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-026-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "import csv, io\nsrc = \"name,age\\nAnn,30\\n\"\nrow = next(csv.DictReader(io.StringIO(src)))\nprint(row[\"age\"] == 30, row[\"age\"] == \"30\")",
+      "answer": "False True",
+      "accepted": [],
+      "explanation": "CSV has no types: every value comes back as a string, so `\"30\" == 30` is `False`. Convert numbers and flags yourself with `int()`, `float()`, etc.",
+      "tags": [
+        "csv",
+        "strings",
+        "types"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-026-12",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "import csv, io\nf = io.StringIO(\"a;b\\n1;2\\n\")\nr = csv.reader(f, delimiter=\";\")\nprint(list(r)[1])",
+      "answer": "['1', '2']",
+      "accepted": [],
+      "explanation": "`csv.reader` yields plain lists, and `delimiter=\";\"` switches the separator from the default comma. Values are strings here too.",
+      "tags": [
+        "csv",
+        "reader",
+        "delimiter"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

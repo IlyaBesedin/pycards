@@ -1,0 +1,175 @@
+{
+  "topic": 38,
+  "cards": [
+    {
+      "id": "b1-038-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from dataclasses import dataclass\n\n@dataclass\nclass Book:\n    title: str\n    pages: int = 100\n\nprint(Book(\"Dune\"))",
+      "answer": "Book(title='Dune', pages=100)",
+      "accepted": [],
+      "explanation": "`@dataclass` generates `__init__` and `__repr__` from the field annotations; the default `pages=100` fills in and the repr lists every field.",
+      "tags": [
+        "dataclass",
+        "repr"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-038-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from dataclasses import dataclass\n\n@dataclass\nclass Pt:\n    x: int\n    y: int\n\nprint(Pt(1, 2) == Pt(1, 2))",
+      "answer": "True",
+      "accepted": [],
+      "explanation": "The generated `__eq__` compares instances field by field, so two separately built `Pt` objects with the same data are equal.",
+      "tags": [
+        "dataclass",
+        "eq"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-038-03",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "from dataclasses import dataclass\n\n@dataclass\nclass Cart:\n    items: list = []",
+      "answer": "ValueError",
+      "accepted": [],
+      "explanation": "A mutable default like `= []` would be shared by every instance, so `dataclass` rejects it with `ValueError` at class-creation time. Use `field(default_factory=list)` instead.",
+      "tags": [
+        "dataclass",
+        "mutable-default"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-038-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from dataclasses import dataclass, field\n\n@dataclass\nclass Order:\n    tags: list = field(default_factory=list)\n\na = Order()\na.tags.append(\"vip\")\nb = Order()\nprint(a.tags, b.tags)",
+      "answer": "['vip'] []",
+      "accepted": [],
+      "explanation": "`default_factory=list` calls `list()` for every new instance, so each `Order` gets its own list — mutating one does not leak into the other.",
+      "tags": [
+        "dataclass",
+        "default-factory"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-038-05",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "from dataclasses import dataclass\n\n@dataclass(frozen=True)\nclass Cfg:\n    host: str\n\nc = Cfg(\"api.local\")\nc.host = \"other\"",
+      "answer": "FrozenInstanceError",
+      "accepted": [],
+      "explanation": "`frozen=True` makes instances immutable: any assignment after `__init__` raises `dataclasses.FrozenInstanceError`. Good for reference test data that must not drift.",
+      "tags": [
+        "dataclass",
+        "frozen"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-038-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from dataclasses import dataclass\n\n@dataclass(order=True)\nclass Ver:\n    major: int\n    minor: int\n\nprint(Ver(1, 9) < Ver(2, 0))\nprint(sorted([Ver(2, 0), Ver(1, 9)])[0])",
+      "answer": "True\nVer(major=1, minor=9)",
+      "accepted": [],
+      "explanation": "`order=True` generates `__lt__` and friends that compare the fields as a tuple: `(1, 9) < (2, 0)`. The printed element uses the generated `__repr__`.",
+      "tags": [
+        "dataclass",
+        "order"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-038-07",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "from dataclasses import dataclass\n\n@dataclass\nclass Rank:\n    v: int\n\nprint(Rank(1) < Rank(2))",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "By default a dataclass generates only `__eq__`; ordering methods require `order=True`, so `<` raises `TypeError`.",
+      "tags": [
+        "dataclass",
+        "order"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-038-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from dataclasses import dataclass\n\n@dataclass\nclass User:\n    age: int\n\nu = User(\"18\")\nprint(type(u.age).__name__)",
+      "answer": "str",
+      "accepted": [],
+      "explanation": "Type annotations are not enforced at runtime: nothing stops passing the string `\"18\"` into an `int`-annotated field. Only mypy or an IDE would flag it.",
+      "tags": [
+        "dataclass",
+        "annotations",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-038-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from dataclasses import dataclass\n\n@dataclass\nclass Job:\n    name: str\n    retries = 3\n\nj = Job(\"build\")\nprint(j.name, j.retries)",
+      "answer": "build 3",
+      "accepted": [],
+      "explanation": "A class attribute without an annotation is invisible to `@dataclass`: `retries` is not a field and not an `__init__` parameter — just a shared class attribute.",
+      "tags": [
+        "dataclass",
+        "annotations"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-038-10",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "from dataclasses import dataclass\n\n@dataclass\nclass Task:\n    name: str\n    prio = 1\n\nt = Task(\"deploy\", 2)",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`prio` has no annotation, so it is not a field: the generated `__init__` accepts only `name`, and the extra argument raises `TypeError`.",
+      "tags": [
+        "dataclass",
+        "annotations",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-038-11",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "from dataclasses import dataclass\n\n@dataclass\nclass Env:\n    debug: bool = False\n    name: str",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "Fields without defaults must come before fields with defaults, because they become `__init__` parameters in the same order — `name` after `debug: bool = False` raises `TypeError`.",
+      "tags": [
+        "dataclass",
+        "field-order"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-038-12",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "def add(a: int, b: int) -> int:\n    return a + b\n\nadd(\"x\", \"y\")",
+      "answer": "'xy'",
+      "accepted": [],
+      "explanation": "Function annotations are documentation for tools, not runtime checks: `add(\"x\", \"y\")` happily concatenates the strings.",
+      "tags": [
+        "annotations",
+        "trap"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

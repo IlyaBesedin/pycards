@@ -1,0 +1,106 @@
+{
+  "topic": 37,
+  "cards": [
+    {
+      "id": "b1-037-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Engine:\n    def start(self):\n        return \"vroom\"\n\nclass Car:\n    def __init__(self):\n        self.engine = Engine()\n\n    def start(self):\n        return self.engine.start()\n\nprint(Car().start())",
+      "answer": "vroom",
+      "accepted": [],
+      "explanation": "`Car` has an `Engine` (composition) and delegates `start` to it. The behavior is reused without any inheritance relationship.",
+      "tags": [
+        "composition",
+        "delegation"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-037-02",
+      "kind": "truth",
+      "question": "True or False?",
+      "code": "class Driver:\n    pass\n\nclass Page:\n    def __init__(self, driver):\n        self.driver = driver\n\np = Page(Driver())\nisinstance(p, Driver)",
+      "answer": "False",
+      "accepted": [],
+      "explanation": "Composition creates no is-a relation: `Page` holds a `Driver` but is not one, so `isinstance` is `False`. Inheriting from `Driver` would make it `True` — and would be a design mistake.",
+      "tags": [
+        "composition",
+        "is-a"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-037-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class FakeApi:\n    def get(self):\n        return \"stub\"\n\nclass Service:\n    def __init__(self, api):\n        self.api = api\n\n    def fetch(self):\n        return self.api.get()\n\nprint(Service(FakeApi()).fetch())",
+      "answer": "stub",
+      "accepted": [],
+      "explanation": "The dependency is injected through the constructor (Dependency Inversion), so a fake API replaces the real one without changing `Service` — that is what makes it testable.",
+      "tags": [
+        "dip",
+        "dependency-injection",
+        "solid"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-037-04",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class Wheels:\n    def roll(self):\n        return \"rolling\"\n\nclass Truck:\n    def __init__(self):\n        self.wheels = Wheels()\n\nt = Truck()\nprint(t.roll())",
+      "answer": "AttributeError",
+      "accepted": [],
+      "explanation": "Composition does not expose the inner object's methods automatically: `Truck` has no `roll`; only `t.wheels.roll()` exists. Delegate explicitly or call through the attribute.",
+      "tags": [
+        "composition",
+        "delegation"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-037-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class Logger:\n    def info(self, m):\n        return f\"INFO {m}\"\n\nclass App:\n    def __init__(self):\n        self.log = Logger()\n\n    def __getattr__(self, name):\n        return getattr(self.log, name)\n\nprint(App().info(\"up\"))",
+      "answer": "INFO up",
+      "accepted": [],
+      "explanation": "`App` has no `info` attribute, so `__getattr__` forwards the lookup to the wrapped `Logger` — explicit delegation, composition's answer to inheriting methods.",
+      "tags": [
+        "composition",
+        "delegation",
+        "getattr"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-037-06",
+      "kind": "truth",
+      "question": "True or False?",
+      "code": "class Store:\n    def save(self, x):\n        return len(x)\n\nclass DbStore(Store):\n    pass\n\ndef use(store):\n    return store.save(\"abc\")\n\nuse(DbStore()) == use(Store())",
+      "answer": "True",
+      "accepted": [],
+      "explanation": "Liskov Substitution: a subclass instance must be usable wherever the parent is expected. `DbStore` changes nothing, so `use` behaves identically with both.",
+      "tags": [
+        "lsp",
+        "solid",
+        "inheritance"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-037-07",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class Db:\n    def query(self):\n        return [\"row\"]\n\nclass Report:\n    def __init__(self, db):\n        self.db = db\n\nr = Report(Db)\nprint(r.db.query())",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`Report` was given the class `Db`, not an instance, so `query()` is called without a `self` and raises `TypeError`. Injected dependencies must be instances.",
+      "tags": [
+        "dependency-injection",
+        "trap"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+{
+  "topic": 17,
+  "cards": [
+    {
+      "id": "b1-017-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def greet(name):\n    print(\"Hi\", name)\n\nresult = greet(\"Ann\")\nprint(result)",
+      "answer": "Hi Ann\nNone",
+      "accepted": [],
+      "explanation": "A function without `return` returns `None`. The call prints `Hi Ann` as a side effect, then `result` holds `None`.",
+      "tags": [
+        "return",
+        "none"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-017-02",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "def normalize(text):\n    text.strip().lower()\n\nprint(normalize(\"  QA \").upper())",
+      "answer": "AttributeError",
+      "accepted": [],
+      "explanation": "The forgotten `return` makes `normalize` return `None`, and `None.upper()` raises `AttributeError`. A classic symptom of a missing `return`.",
+      "tags": [
+        "return",
+        "none"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-017-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def grade(score):\n    if score >= 90:\n        return \"A\"\n    if score >= 70:\n        return \"B\"\n    return \"C\"\n\nprint(grade(95), grade(70), grade(10))",
+      "answer": "A B C",
+      "accepted": [],
+      "explanation": "`return` exits the function immediately, so each call stops at the first matching guard clause. `70 >= 70`, so the second call returns `B`.",
+      "tags": [
+        "return",
+        "guard-clause"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-017-04",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "def split_name(full):\n    first, last = full.split()\n    return last, first\n\nsplit_name(\"Ada Lovelace\")",
+      "answer": "('Lovelace', 'Ada')",
+      "accepted": [],
+      "explanation": "`return last, first` packs the values into a tuple — that is how Python returns \"multiple values\". Note the swapped order.",
+      "tags": [
+        "return",
+        "tuple"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-017-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "timeout = 30\n\ndef fast_check():\n    timeout = 5\n    return timeout\n\nprint(fast_check(), timeout)",
+      "answer": "5 30",
+      "accepted": [],
+      "explanation": "Assignment inside a function creates a new local variable that shadows the global one. The global `timeout` is untouched.",
+      "tags": [
+        "scope",
+        "shadowing"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-017-06",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "retries = 3\n\ndef attempt():\n    print(retries)\n    retries = 0\n\nattempt()",
+      "answer": "UnboundLocalError",
+      "accepted": [],
+      "explanation": "The assignment anywhere in `attempt` makes `retries` local for the whole function, so `print(retries)` reads a local that has no value yet.",
+      "tags": [
+        "scope",
+        "unboundlocalerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-017-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "counter = 0\n\ndef bump():\n    global counter\n    counter += 1\n\nbump()\nbump()\nprint(counter)",
+      "answer": "2",
+      "accepted": [],
+      "explanation": "`global counter` makes the assignment rebind the module-level name, so both calls mutate shared state. It works, but hidden side effects make functions hard to test.",
+      "tags": [
+        "scope",
+        "global"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-017-08",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "def connect(host, port=80):\n    return f\"{host}:{port}\"\n\nprint(connect(port=8080))",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`host` has no default and no argument supplies it, so the call raises `TypeError: missing a required positional argument`. Defaults only cover the parameters that have them.",
+      "tags": [
+        "parameters",
+        "defaults"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-017-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def first_even(nums):\n    for n in nums:\n        if n % 2 == 0:\n            return n\n    return\n\nprint(first_even([3, 8]), first_even([1]))",
+      "answer": "8 None",
+      "accepted": [],
+      "explanation": "`return n` exits on the first even number. A bare `return` (or falling off the end of the function) returns `None`.",
+      "tags": [
+        "return",
+        "early-exit"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-017-10",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "events = []\n\ndef record(name):\n    events.append(name)\n\nrecord(\"start\")\nrecord(\"stop\")\nprint(events)",
+      "answer": "['start', 'stop']",
+      "accepted": [],
+      "explanation": "Reading a global and calling a method on it needs no declaration — `global` is only required to rebind the name. Mutating shared state still makes the function impure.",
+      "tags": [
+        "scope",
+        "mutation"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-017-11",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "events = []\n\ndef record(name):\n    events += [name]\n\nrecord(\"start\")\nprint(events)",
+      "answer": "UnboundLocalError",
+      "accepted": [],
+      "explanation": "`events += [name]` is an assignment, which makes `events` local to `record` — and it is read before it has a value. `events.append(name)` works because it only reads the name.",
+      "tags": [
+        "scope",
+        "augmented-assignment"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-017-12",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def len(items):\n    return 99\n\nprint(len(\"automation\"))",
+      "answer": "99",
+      "accepted": [],
+      "explanation": "LEGB: the global scope is searched before built-ins, so the module-level `len` shadows the built-in one. Shadowing built-in names is a common source of confusing bugs.",
+      "tags": [
+        "scope",
+        "legb",
+        "shadowing"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "topic": 24,
+  "cards": [
+    {
+      "id": "b1-024-01",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "def set_timeout(sec):\n    if sec <= 0:\n        raise ValueError(f\"bad: {sec}\")\n    return sec\n\nprint(set_timeout(-1))",
+      "answer": "ValueError",
+      "accepted": [],
+      "explanation": "`raise` throws the exception explicitly when the code detects an impossible situation. Including the actual value (`-1`) in the message is what makes it debuggable later.",
+      "tags": [
+        "raise",
+        "validation"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-024-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class ApiError(Exception):\n    pass\n\ntry:\n    raise ApiError(\"token expired\")\nexcept ApiError as e:\n    print(\"caught:\", e)",
+      "answer": "caught: token expired",
+      "accepted": [],
+      "explanation": "A custom exception is just a class inheriting from `Exception`. Printing the instance shows the message it was constructed with.",
+      "tags": [
+        "custom-exceptions"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-024-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class ApiError(Exception):\n    pass\n\nclass AuthError(ApiError):\n    pass\n\ntry:\n    raise AuthError(\"401\")\nexcept ApiError:\n    print(\"api issue\")",
+      "answer": "api issue",
+      "accepted": [],
+      "explanation": "Custom hierarchies work like built-in ones: `AuthError` is an `ApiError`, so the base-class branch catches it. One `except ApiError` handles the whole family.",
+      "tags": [
+        "custom-exceptions",
+        "hierarchy"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-024-04",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class ApiError(Exception):\n    pass\n\nclass DbError(Exception):\n    pass\n\ntry:\n    raise DbError(\"down\")\nexcept ApiError:\n    print(\"api\")",
+      "answer": "DbError",
+      "accepted": [],
+      "explanation": "`DbError` and `ApiError` are unrelated siblings — `except ApiError` does not match, so the `DbError` propagates uncaught. Only base classes catch their subclasses.",
+      "tags": [
+        "custom-exceptions",
+        "hierarchy"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-024-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def check(code):\n    try:\n        if code >= 400:\n            raise ValueError(code)\n    except ValueError:\n        print(\"logging\", code)\n        raise\n\ntry:\n    check(500)\nexcept ValueError as e:\n    print(\"outer\", e)",
+      "answer": "logging 500\nouter 500",
+      "accepted": [],
+      "explanation": "A bare `raise` inside `except` re-raises the current exception after the local handling (logging), so the caller still sees the original `ValueError`.",
+      "tags": [
+        "raise",
+        "re-raise"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-024-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class ConfigError(Exception):\n    pass\n\ntry:\n    try:\n        int(\"abc\")\n    except ValueError as e:\n        raise ConfigError(\"bad\") from e\nexcept ConfigError as e:\n    print(type(e.__cause__).__name__)",
+      "answer": "ValueError",
+      "accepted": [],
+      "explanation": "`raise ... from e` stores the original exception in `__cause__`, keeping the root cause visible in the traceback (\"the direct cause of...\"). Without `from`, the chain is easy to lose.",
+      "tags": [
+        "raise-from",
+        "chaining"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-024-07",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "def fail():\n    raise\n\nfail()",
+      "answer": "RuntimeError",
+      "accepted": [],
+      "explanation": "A bare `raise` only re-raises the exception currently being handled. With no active exception it raises `RuntimeError: No active exception to re-raise`.",
+      "tags": [
+        "raise",
+        "re-raise"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-024-08",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "class Report:\n    pass\n\nraise Report()",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "Only instances (or classes) derived from `BaseException` can be raised. Raising a plain object is a `TypeError` — inherit from `Exception` for your own errors.",
+      "tags": [
+        "raise",
+        "custom-exceptions"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-024-09",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "def avg(nums):\n    assert nums, \"empty list\"\n    return sum(nums) / len(nums)\n\nprint(avg([]))",
+      "answer": "AssertionError",
+      "accepted": [],
+      "explanation": "A failing `assert` raises `AssertionError`. Use `assert` for test checks and internal invariants only — `python -O` strips asserts, so library code must `raise` real exceptions.",
+      "tags": [
+        "assert"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-024-10",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "def find(users, name):\n    for u in users:\n        if u == name:\n            return u\n\nhit = find([\"ann\", \"bob\"], \"eve\")\nprint(hit.upper())",
+      "answer": "AttributeError",
+      "accepted": [],
+      "explanation": "Returning `None` instead of raising moves the crash far from the cause: the caller forgets to check and `None.upper()` fails later. For a real error, `raise` at the point of failure.",
+      "tags": [
+        "none",
+        "antipattern"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-024-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "class ApiError(Exception):\n    pass\n\nclass NotFound(ApiError):\n    pass\n\ntry:\n    raise NotFound(\"x\")\nexcept NotFound:\n    print(\"specific\")\nexcept ApiError:\n    print(\"general\")",
+      "answer": "specific",
+      "accepted": [],
+      "explanation": "Branches are tried top to bottom and the first match wins, so putting the subclass first allows a targeted reaction while `ApiError` below stays as the fallback.",
+      "tags": [
+        "custom-exceptions",
+        "order"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-024-12",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "class ApiError(Exception):\n    pass\n\nclass AuthError(ApiError):\n    pass\n\nissubclass(AuthError, Exception)",
+      "answer": "True",
+      "accepted": [],
+      "explanation": "Inheritance is transitive: `AuthError` → `ApiError` → `Exception`. That is why one `except Exception` (or any base) can catch the entire custom hierarchy.",
+      "tags": [
+        "custom-exceptions",
+        "hierarchy"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "topic": 25,
+  "cards": [
+    {
+      "id": "b1-025-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "with open(\"run.log\", \"w\") as f:\n    f.write(\"passed\")\nwith open(\"run.log\") as f:\n    print(f.read())",
+      "answer": "passed",
+      "accepted": [],
+      "explanation": "`\"w\"` opens the file for writing (creating it if needed); after the `with` block the file is guaranteed closed and flushed, so the second `open` sees the text.",
+      "tags": [
+        "open",
+        "with",
+        "write"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-025-02",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "from pathlib import Path\nPath(\"r.txt\").write_text(\"fail\", \"utf-8\")",
+      "answer": "4",
+      "accepted": [],
+      "explanation": "`write_text` writes the whole string and returns the number of characters written, like `file.write`. The second positional argument is the encoding.",
+      "tags": [
+        "pathlib",
+        "write_text",
+        "return-value"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-025-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "with open(\"data.txt\", \"w\") as f:\n    f.write(\"first\\n\")\nwith open(\"data.txt\", \"w\") as f:\n    f.write(\"second\\n\")\nwith open(\"data.txt\") as f:\n    print(f.read().strip())",
+      "answer": "second",
+      "accepted": [],
+      "explanation": "Mode `\"w\"` truncates an existing file to zero length before writing. Opening the log with `\"w\"` instead of `\"a\"` silently destroys everything already in it.",
+      "tags": [
+        "mode-w",
+        "truncate"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-025-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "with open(\"res.txt\", \"w\") as f:\n    f.write(\"A\\n\")\nwith open(\"res.txt\", \"a\") as f:\n    f.write(\"B\\n\")\nwith open(\"res.txt\") as f:\n    print(f.read().strip())",
+      "answer": "A\nB",
+      "accepted": [],
+      "explanation": "Mode `\"a\"` appends to the end instead of truncating, so both lines survive. Use `\"a\"` to extend a log, `\"w\"` to replace it.",
+      "tags": [
+        "mode-a",
+        "append"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-025-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "with open(\"out.txt\", \"w\") as f:\n    f.write(\"QA\")\n    f.write(\"42\")\nwith open(\"out.txt\") as f:\n    print(f.read())",
+      "answer": "QA42",
+      "accepted": [],
+      "explanation": "Unlike `print`, `write` adds no newline. Two calls land on one line unless you write `\"\\n\"` yourself.",
+      "tags": [
+        "write",
+        "newline"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-025-06",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "with open(\"missing.txt\") as f:\n    print(f.read())",
+      "answer": "FileNotFoundError",
+      "accepted": [],
+      "explanation": "The default mode is `\"r\"`, and reading requires the file to exist. Only `\"w\"` and `\"a\"` create a missing file.",
+      "tags": [
+        "mode-r",
+        "filenotfounderror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-025-07",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "with open(\"notes.txt\", \"w\") as f:\n    f.write(\"draft\")\ntext = f.read()\nprint(text)",
+      "answer": "ValueError",
+      "accepted": [],
+      "explanation": "Leaving the `with` block closes the file; any I/O on a closed file raises `ValueError`. That is the whole point of `with` — no leaked handles.",
+      "tags": [
+        "with",
+        "closed-file"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-025-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "try:\n    with open(\"tmp.txt\", \"w\") as f:\n        f.write(\"x\")\n        raise RuntimeError(\"boom\")\nexcept RuntimeError:\n    pass\nprint(f.closed)",
+      "answer": "True",
+      "accepted": [],
+      "explanation": "`with` guarantees the file is closed even when an exception escapes the block — the close happens before the exception propagates.",
+      "tags": [
+        "with",
+        "exception-safety"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-025-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "with open(\"nums.txt\", \"w\") as f:\n    f.write(\"1\\n2\\n3\\n\")\nwith open(\"nums.txt\") as f:\n    print(len(f.read()), len(f.read()))",
+      "answer": "6 0",
+      "accepted": [],
+      "explanation": "Reading moves the file position to the end, so a second `read()` returns an empty string. Re-open the file (or `seek(0)`) to read it again.",
+      "tags": [
+        "read",
+        "file-position"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-025-10",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "count = 7\nwith open(\"n.txt\", \"w\") as f:\n    f.write(count)",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`write` accepts only strings in text mode. Convert first: `f.write(str(count))` or use an f-string.",
+      "tags": [
+        "write",
+        "typeerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-025-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from pathlib import Path\np = Path(\"note.txt\")\nprint(p.exists())\np.write_text(\"done\", encoding=\"utf-8\")\ntext = p.read_text(encoding=\"utf-8\")\nprint(p.exists(), text)",
+      "answer": "False\nTrue done",
+      "accepted": [],
+      "explanation": "`Path.write_text` creates the file and writes the whole string in one call; `exists()` flips to `True` afterwards. `read_text` is the one-line counterpart for reading.",
+      "tags": [
+        "pathlib",
+        "write_text"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-025-12",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "enc = \"utf-8\"\nwith open(\"s.txt\", \"w\", encoding=enc) as f:\n    f.write(\"тест\")\nwith open(\"s.txt\", \"rb\") as f:\n    print(len(f.read()))",
+      "answer": "8",
+      "accepted": [],
+      "explanation": "In UTF-8 each Cyrillic letter takes 2 bytes, so 4 characters become 8 bytes. Mode `\"rb\"` reads raw bytes and takes no `encoding` argument.",
+      "tags": [
+        "encoding",
+        "utf-8",
+        "binary"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

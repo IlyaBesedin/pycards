@@ -1,0 +1,178 @@
+{
+  "topic": 9,
+  "cards": [
+    {
+      "id": "b1-009-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "single = (7,)\nplain = (7)\nprint(type(single).__name__)\nprint(type(plain).__name__)",
+      "answer": "tuple\nint",
+      "accepted": [],
+      "explanation": "Parentheses alone do not make a tuple — the comma does. `(7)` is just the integer 7 in brackets; `(7,)` is a one-element tuple. A classic slip in `parametrize` lists.",
+      "tags": [
+        "tuple",
+        "comma"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-009-02",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "coords = (3, 4)\ncoords[0] = 5\nprint(coords)",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "Tuples are immutable: item assignment is not supported. Build a new tuple instead, e.g. `(5,) + coords[1:]`.",
+      "tags": [
+        "tuple",
+        "immutability"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-009-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def fetch():\n    return 404, \"Not Found\"\n\nresult = fetch()\nprint(type(result).__name__, len(result))",
+      "answer": "tuple 2",
+      "accepted": [],
+      "explanation": "A function does not return \"two values\" — it returns one tuple built by the comma. Unpacking it into `code, text = fetch()` is just tuple unpacking.",
+      "tags": [
+        "tuple",
+        "return",
+        "unpacking"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-009-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "left, right = \"L\", \"R\"\nleft, right = right, left\nprint(left, right)",
+      "answer": "R L",
+      "accepted": [],
+      "explanation": "The right-hand side `right, left` is evaluated into a tuple first, then unpacked into the targets. That is why a swap needs no temporary variable.",
+      "tags": [
+        "unpacking",
+        "swap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-009-05",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "code, text = (500, \"Error\", \"retry\")\nprint(code)",
+      "answer": "ValueError",
+      "accepted": [],
+      "explanation": "Unpacking needs exactly as many targets as items: 2 targets for 3 values raises `ValueError: too many values to unpack`. Use `code, text, *rest` to absorb extras.",
+      "tags": [
+        "unpacking",
+        "valueerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-009-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "head, *tail = [\"setup\", \"t1\", \"t2\"]\nprint(head)\nprint(tail)",
+      "answer": "setup\n['t1', 't2']",
+      "accepted": [],
+      "explanation": "A starred target collects everything that is left into a list. `head` gets the first item, `tail` the rest — always a `list`, even if the source was a tuple.",
+      "tags": [
+        "unpacking",
+        "star"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-009-07",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "*levels, top = (1, 2, 3)\nlevels",
+      "answer": "[1, 2]",
+      "accepted": [],
+      "explanation": "The star can sit anywhere in the target list. `top` takes the last item and `levels` collects the rest — as a `list`, not a tuple, even though the source was a tuple.",
+      "tags": [
+        "unpacking",
+        "star"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-009-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "record = (1, [2, 3])\nrecord[1].append(4)\nprint(record)",
+      "answer": "(1, [2, 3, 4])",
+      "accepted": [],
+      "explanation": "Tuple immutability is shallow: the tuple cannot change which objects it holds, but a mutable object inside it can still be mutated in place.",
+      "tags": [
+        "tuple",
+        "immutability",
+        "mutability"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-009-09",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "hits = {}\nhits[[\"GET\", \"/users\"]] = 1\nprint(hits)",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "Dict keys must be hashable. A list is mutable and therefore unhashable; a tuple `(\"GET\", \"/users\")` works as a key.",
+      "tags": [
+        "tuple",
+        "dict",
+        "hashable"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-009-10",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "hits = {}\nlog = [(\"GET\", 1), (\"POST\", 1), (\"GET\", 1)]\nfor key in log:\n    hits[key] = hits.get(key, 0) + 1\nprint(hits[(\"GET\", 1)], len(hits))",
+      "answer": "2 2",
+      "accepted": [],
+      "explanation": "Equal tuples hash equally, so `(\"GET\", 1)` is the same key each time it appears. Two distinct keys end up in the dict, and the GET one is counted twice.",
+      "tags": [
+        "tuple",
+        "dict",
+        "hashable"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-009-11",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "data = (1, [2])\ndata[1] += [3]\nprint(data)",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`+=` on a list mutates it in place and then tries to assign the result back to `data[1]` — and that assignment fails because tuples are immutable. Sneaky: the list is already `[2, 3]` when the error fires.",
+      "tags": [
+        "tuple",
+        "immutability",
+        "augmented-assignment"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-009-12",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "size = 1,\nsize",
+      "answer": "(1,)",
+      "accepted": [],
+      "explanation": "A trailing comma turns the assignment into a one-element tuple — the comma, not the parentheses, makes the tuple. `size` is `(1,)`, not `1`.",
+      "tags": [
+        "tuple",
+        "comma"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

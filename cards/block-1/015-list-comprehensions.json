@@ -1,0 +1,181 @@
+{
+  "topic": 15,
+  "cards": [
+    {
+      "id": "b1-015-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "nums = [1, 2, 3]\nprint([n * 10 for n in nums])",
+      "answer": "[10, 20, 30]",
+      "accepted": [],
+      "explanation": "The comprehension applies the expression `n * 10` to every element and collects the results into a new list. The original list is untouched.",
+      "tags": [
+        "comprehension",
+        "transform"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-015-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "codes = \"abc\"\nprint([c.upper() for c in codes])",
+      "answer": "['A', 'B', 'C']",
+      "accepted": [],
+      "explanation": "A comprehension iterates ANY iterable — a string yields its characters, so the result is a list of uppercase single-character strings.",
+      "tags": [
+        "comprehension",
+        "string"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-015-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "runs = [(\"a\", \"fail\"), (\"b\", \"pass\"),\n        (\"c\", \"fail\")]\nbad = [n for n, s in runs if s == \"fail\"]\nprint(bad)",
+      "answer": "['a', 'c']",
+      "accepted": [],
+      "explanation": "The trailing `if` filters, the head expression transforms: only failing pairs pass the filter, and only the name is kept. Tuple unpacking works directly in the `for` clause.",
+      "tags": [
+        "comprehension",
+        "filter",
+        "unpacking"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-015-04",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "nums = [3, -1, 2]\npos = [n if n > 0 for n in nums]\nprint(pos)",
+      "answer": "SyntaxError",
+      "accepted": [],
+      "explanation": "A filter goes at the END: `[n for n in nums if n > 0]`. An `if` before the `for` is a ternary expression and REQUIRES an `else`, so this line does not even compile.",
+      "tags": [
+        "comprehension",
+        "syntaxerror",
+        "if"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-015-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "flags = [True, False, True]\nmarks = [\"PASS\" if f else \"FAIL\"\n         for f in flags]\nprint(marks)",
+      "answer": "['PASS', 'FAIL', 'PASS']",
+      "accepted": [],
+      "explanation": "`A if cond else B` at the head is a ternary that transforms EVERY element — nothing is filtered out; each flag maps to one mark.",
+      "tags": [
+        "comprehension",
+        "ternary"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-015-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "vals = [print(x) for x in [1, 2]]\nprint(vals)",
+      "answer": "1\n2\n[None, None]",
+      "accepted": [],
+      "explanation": "Using a comprehension for side effects builds a useless list: `print()` returns `None`, so `vals` is `[None, None]`. For actions, write a plain `for` loop.",
+      "tags": [
+        "comprehension",
+        "side-effects",
+        "none"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-015-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "suites = [[\"t1\", \"t2\"], [\"t3\"]]\ntests = [t for s in suites for t in s]\nprint(tests)",
+      "answer": "['t1', 't2', 't3']",
+      "accepted": [],
+      "explanation": "Two `for` clauses read left to right like nested loops: outer over suites, inner over each suite's tests — one flat list out.",
+      "tags": [
+        "comprehension",
+        "flatten"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-015-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "raw = [\" A@x.io\", \"b@X.io \"]\nclean = [e.strip().lower() for e in raw]\nprint(clean)",
+      "answer": "['a@x.io', 'b@x.io']",
+      "accepted": [],
+      "explanation": "Methods chain inside the expression: each email is stripped, then lowercased — the one-line idiom for normalizing test data.",
+      "tags": [
+        "comprehension",
+        "strings",
+        "normalize"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-015-09",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "squares = [n * n for n in range(3)]\nprint(n)",
+      "answer": "NameError",
+      "accepted": [],
+      "explanation": "In Python 3 the comprehension has its own scope: the loop variable `n` does not leak out, so the final `print(n)` raises `NameError`.",
+      "tags": [
+        "comprehension",
+        "scope",
+        "nameerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-015-10",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "[n for n in range(6) if n % 2 == 0]",
+      "answer": "[0, 2, 4]",
+      "accepted": [],
+      "explanation": "`range(6)` yields 0–5 and the filter keeps even numbers only. Note that `range` starts at 0, so 0 is included.",
+      "tags": [
+        "comprehension",
+        "filter",
+        "range"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-015-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "pairs = [(b, e) for b in [\"ff\", \"cr\"]\n         for e in [1, 2]]\nprint(len(pairs))\nprint(pairs[1])",
+      "answer": "4\n('ff', 2)",
+      "accepted": [],
+      "explanation": "Two independent `for` clauses form a cartesian product: the FIRST clause is the outer loop, so `ff` is paired with both numbers before `cr` starts. Index 1 is `('ff', 2)`.",
+      "tags": [
+        "comprehension",
+        "nested",
+        "product"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-015-12",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "count = 0\ndef norm(s):\n    global count\n    count += 1\n    return s.strip()\nraw = [\"a \", \" b\"]\nout = [norm(s) for s in raw if norm(s)]\nprint(count)",
+      "answer": "4",
+      "accepted": [],
+      "explanation": "`norm` runs once in the filter and again in the head — 2 calls per element. With an expensive call (an API request) this doubles the cost; use a nested generator or a plain loop instead.",
+      "tags": [
+        "comprehension",
+        "performance",
+        "trap"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

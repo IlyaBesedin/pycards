@@ -1,0 +1,179 @@
+{
+  "topic": 23,
+  "cards": [
+    {
+      "id": "b1-023-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "try:\n    n = int(\"7a\")\nexcept ValueError:\n    n = 0\nprint(n)",
+      "answer": "0",
+      "accepted": [],
+      "explanation": "`int(\"7a\")` raises `ValueError`, the matching `except` branch runs, and execution continues normally after the `try` statement.",
+      "tags": [
+        "try-except",
+        "valueerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-023-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "try:\n    n = int(\"7\")\nexcept ValueError:\n    print(\"bad\")\nelse:\n    print(\"ok\", n)\nfinally:\n    print(\"done\")",
+      "answer": "ok 7\ndone",
+      "accepted": [],
+      "explanation": "`else` runs only when the `try` block raised nothing; `finally` runs in every case. So the success path is try → else → finally.",
+      "tags": [
+        "else",
+        "finally",
+        "order"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-023-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "try:\n    n = int(\"x\")\nexcept ValueError:\n    print(\"bad\")\nelse:\n    print(\"ok\")\nfinally:\n    print(\"done\")",
+      "answer": "bad\ndone",
+      "accepted": [],
+      "explanation": "On the failure path `except` handles the error and `else` is skipped — it is reserved for the no-exception case. `finally` still runs.",
+      "tags": [
+        "else",
+        "finally",
+        "order"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-023-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def load():\n    try:\n        return \"data\"\n    finally:\n        print(\"closed\")\n\nprint(load())",
+      "answer": "closed\ndata",
+      "accepted": [],
+      "explanation": "`finally` runs even when `try` returns: the return value is computed, `finally` executes (printing `closed`), and only then does the function actually return.",
+      "tags": [
+        "finally",
+        "return"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-023-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def status():\n    try:\n        return \"ok\"\n    finally:\n        return \"cleanup\"\n\nprint(status())",
+      "answer": "cleanup",
+      "accepted": [],
+      "explanation": "A `return` in `finally` runs last and overrides the `return` from `try`. This is legal but confusing — avoid returning from `finally`.",
+      "tags": [
+        "finally",
+        "return",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-023-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def risky():\n    try:\n        raise ValueError(\"boom\")\n    finally:\n        return \"saved\"\n\nprint(risky())",
+      "answer": "saved",
+      "accepted": [],
+      "explanation": "A `return` in `finally` swallows the in-flight exception entirely — the `ValueError` simply disappears. One more reason never to `return` from `finally`.",
+      "tags": [
+        "finally",
+        "exception-swallowing",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-023-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "try:\n    {}[\"id\"]\nexcept LookupError:\n    print(\"lookup\")\nexcept KeyError:\n    print(\"key\")",
+      "answer": "lookup",
+      "accepted": [],
+      "explanation": "The first matching branch wins, and `KeyError` is a subclass of `LookupError`, so the specific branch below is dead code. Order `except` branches from specific to general.",
+      "tags": [
+        "hierarchy",
+        "order",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-023-08",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "vals = [1, 2]\ntry:\n    print(vals[5])\nexcept KeyError:\n    print(\"missing\")",
+      "answer": "IndexError",
+      "accepted": [],
+      "explanation": "Bad index on a list raises `IndexError`, not `KeyError` — siblings under `LookupError` do not catch each other, so the exception propagates and crashes.",
+      "tags": [
+        "indexerror",
+        "hierarchy"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-023-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def read(cfg, key):\n    try:\n        return cfg[key]\n    except LookupError:\n        return \"default\"\n\nprint(read({\"a\": 1}, \"b\"))",
+      "answer": "default",
+      "accepted": [],
+      "explanation": "An `except` for a base class catches every subclass: the `KeyError` here is a `LookupError`. Handy when one reaction fits a whole family of errors.",
+      "tags": [
+        "hierarchy",
+        "keyerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-023-10",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "try:\n    reslt = 5\n    print(result)\nexcept Exception:\n    print(\"network issue\")",
+      "answer": "network issue",
+      "accepted": [],
+      "explanation": "`except Exception` swallows everything — including the `NameError` from the `reslt` typo — and blames the network. Catch specific exceptions so your own bugs stay visible.",
+      "tags": [
+        "bare-except",
+        "antipattern",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-023-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def parse(x):\n    try:\n        return 10 // x\n    except ZeroDivisionError:\n        return \"zero\"\n    except TypeError:\n        return \"type\"\n\nprint(parse(0), parse(\"2\"))",
+      "answer": "zero type",
+      "accepted": [],
+      "explanation": "Multiple `except` branches let you react differently: `10 // 0` hits `ZeroDivisionError`, `10 // \"2\"` hits `TypeError`. Only the matching branch runs.",
+      "tags": [
+        "try-except",
+        "branches"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-023-12",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "try:\n    print(\"start\")\n    print(1 / 0)\nfinally:\n    print(\"cleanup\")",
+      "answer": "ZeroDivisionError",
+      "accepted": [],
+      "explanation": "With no `except`, `finally` still runs (`start` and `cleanup` are printed) but cannot handle the error — the `ZeroDivisionError` propagates and the program crashes.",
+      "tags": [
+        "finally",
+        "propagation"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

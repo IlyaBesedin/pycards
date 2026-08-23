@@ -1,0 +1,183 @@
+{
+  "topic": 14,
+  "cards": [
+    {
+      "id": "b1-014-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "times = [3, 1, 2]\nresult = times.sort()\nprint(result)\nprint(times)",
+      "answer": "None\n[1, 2, 3]",
+      "accepted": [],
+      "explanation": "`list.sort()` sorts IN PLACE and returns `None` — assigning its result is the classic bug. The list itself is sorted afterwards.",
+      "tags": [
+        "sort",
+        "none",
+        "in-place"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-014-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "runs = [5, 2, 9]\nprint(sorted(runs, reverse=True))\nprint(runs)",
+      "answer": "[9, 5, 2]\n[5, 2, 9]",
+      "accepted": [],
+      "explanation": "`sorted()` builds a NEW list — the original is untouched, which is why it is the safe choice inside tests. `reverse=True` flips the order.",
+      "tags": [
+        "sorted",
+        "reverse"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-014-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "ids = [\"10\", \"2\", \"1\"]\nprint(sorted(ids))\nprint(sorted(ids, key=int))",
+      "answer": "['1', '10', '2']\n['1', '2', '10']",
+      "accepted": [],
+      "explanation": "Strings sort lexicographically, character by character, so `\"10\"` comes before `\"2\"`. `key=int` compares the numeric values instead.",
+      "tags": [
+        "sorted",
+        "key",
+        "strings"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-014-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "words = [\"apple\", \"Zebra\"]\nprint(sorted(words))\nprint(sorted(words, key=str.lower))",
+      "answer": "['Zebra', 'apple']\n['apple', 'Zebra']",
+      "accepted": [],
+      "explanation": "Uppercase letters have smaller code points, so `\"Zebra\"` sorts before `\"apple\"`. For a human-friendly order, normalize with `key=str.lower`.",
+      "tags": [
+        "sorted",
+        "key",
+        "case"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-014-05",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "data = [3, \"2\", 1]\nprint(sorted(data))",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "Python 3 refuses to compare `int` with `str`, so sorting a mixed list raises `TypeError`. Convert to one type first, e.g. `key=str` or `key=int`.",
+      "tags": [
+        "sorted",
+        "typeerror",
+        "mixed-types"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-014-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "bugs = [{\"id\": 3, \"sev\": \"minor\"},\n        {\"id\": 1, \"sev\": \"major\"}]\nby_id = sorted(bugs,\n               key=lambda b: b[\"id\"])\nprint([b[\"id\"] for b in by_id])",
+      "answer": "[1, 3]",
+      "accepted": [],
+      "explanation": "`key` computes a sort value per element: each dict is represented by its `id`, so the bugs are ordered 1, 3 regardless of their original position.",
+      "tags": [
+        "sorted",
+        "key",
+        "lambda"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-014-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "rank = {\"crit\": 0, \"maj\": 1, \"min\": 2}\nsevs = [\"min\", \"crit\", \"maj\"]\nprint(sorted(sevs, key=lambda s: rank[s]))",
+      "answer": "['crit', 'maj', 'min']",
+      "accepted": [],
+      "explanation": "Custom category order is done with a weights dict: the key maps each severity to its rank and the ints are what actually get compared.",
+      "tags": [
+        "sorted",
+        "key",
+        "custom-order"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-014-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "rows = [(\"ui\", 2), (\"api\", 2), (\"ui\", 1)]\nrows.sort(key=lambda r: (r[0], r[1]))\nprint(rows)",
+      "answer": "[('api', 2), ('ui', 1), ('ui', 2)]",
+      "accepted": [],
+      "explanation": "A key returning a tuple sorts by several criteria at once: tuples compare element by element, so suite name decides first and the number breaks ties.",
+      "tags": [
+        "sort",
+        "key",
+        "tuple",
+        "multi-key"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-014-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "tests = [(\"b\", 1), (\"a\", 2), (\"c\", 1)]\nby_n = sorted(tests, key=lambda t: t[1])\nprint(by_n)",
+      "answer": "[('b', 1), ('c', 1), ('a', 2)]",
+      "accepted": [],
+      "explanation": "Python's sort is stable: elements with equal keys (both 1) keep their original relative order, so `('b', 1)` stays ahead of `('c', 1)`.",
+      "tags": [
+        "sorted",
+        "stability"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-014-10",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "from operator import itemgetter\nrows = [{\"t\": 5}, {\"t\": 2}]\nsorted(rows, key=itemgetter(\"t\"))",
+      "answer": "[{'t': 2}, {'t': 5}]",
+      "accepted": [],
+      "explanation": "`itemgetter(\"t\")` is a ready-made key function equivalent to `lambda r: r[\"t\"]` — slightly faster and more declarative for simple field access.",
+      "tags": [
+        "sorted",
+        "itemgetter"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-014-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "report = {\"b\": 2, \"a\": 1}\nprint(sorted(report))",
+      "answer": "['a', 'b']",
+      "accepted": [],
+      "explanation": "Iterating a dict yields its keys, so `sorted(report)` returns the sorted KEYS, not values or pairs. Use `report.items()` if you want pairs.",
+      "tags": [
+        "sorted",
+        "dict",
+        "keys"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-014-12",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "bugs = [{\"id\": 2}, {\"id\": 1}]\ntop = sorted(bugs,\n             key=lambda b: b[\"prio\"])\nprint(top)",
+      "answer": "KeyError",
+      "accepted": [],
+      "explanation": "The key function runs on every element during the sort; the first dict lacking `prio` raises `KeyError` from inside `sorted`. Use `b.get(\"prio\", 0)` if the field is optional.",
+      "tags": [
+        "sorted",
+        "key",
+        "keyerror"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

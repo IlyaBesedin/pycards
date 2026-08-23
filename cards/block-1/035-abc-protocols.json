@@ -1,0 +1,147 @@
+{
+  "topic": 35,
+  "cards": [
+    {
+      "id": "b1-035-01",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "from abc import ABC, abstractmethod\n\nclass Storage(ABC):\n    @abstractmethod\n    def save(self, data): ...\n\ns = Storage()",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`Storage` has an unimplemented `@abstractmethod`, so instantiation is blocked with `TypeError` immediately — the contract cannot be skipped.",
+      "tags": [
+        "abc",
+        "abstractmethod"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-035-02",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "from abc import ABC, abstractmethod\nclass Gateway(ABC):\n    @abstractmethod\n    def charge(self, n): ...\n    @abstractmethod\n    def refund(self, n): ...\n\nclass Fake(Gateway):\n    def charge(self, n):\n        return n\n\nFake()",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`Fake` implements `charge` but not `refund`, so it is still abstract; instantiating it raises `TypeError`. abc fails at object creation, not at the first missed call.",
+      "tags": [
+        "abc",
+        "abstractmethod"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-035-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from abc import ABC, abstractmethod\n\nclass Sink(ABC):\n    @abstractmethod\n    def push(self, x): ...\n\nclass ListSink(Sink):\n    def push(self, x):\n        return [x]\n\nprint(ListSink().push(7))",
+      "answer": "[7]",
+      "accepted": [],
+      "explanation": "`ListSink` implements every abstract method, so it instantiates and works normally — the ABC contract is satisfied.",
+      "tags": [
+        "abc",
+        "abstractmethod"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-035-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from abc import ABC, abstractmethod\nclass Job(ABC):\n    @abstractmethod\n    def run(self): ...\n    def twice(self):\n        return self.run() * 2\n\nclass Ping(Job):\n    def run(self):\n        return \"p\"\n\nprint(Ping().twice())",
+      "answer": "pp",
+      "accepted": [],
+      "explanation": "An ABC may mix abstract and concrete methods: `twice` is inherited as-is and calls whatever `run` the child provides.",
+      "tags": [
+        "abc",
+        "template-method"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-035-05",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "from abc import abstractmethod\n\nclass Report:\n    @abstractmethod\n    def render(self): ...\n\nr = Report()\nprint(\"made it\")",
+      "answer": "no error",
+      "accepted": [],
+      "explanation": "`@abstractmethod` only takes effect in a class whose metaclass is `ABCMeta` (i.e. one inheriting from `ABC`). On a plain class it is inert, so `Report()` is created without complaint.",
+      "tags": [
+        "abc",
+        "abstractmethod",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-035-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from typing import Protocol\nfrom typing import runtime_checkable\n\n@runtime_checkable\nclass Quacker(Protocol):\n    def quack(self): ...\n\nclass Toy:\n    def quack(self):\n        return \"q\"\n\nprint(isinstance(Toy(), Quacker))",
+      "answer": "True",
+      "accepted": [],
+      "explanation": "`Protocol` is structural: `Toy` never inherits from `Quacker` but has a matching `quack` method. With `@runtime_checkable`, `isinstance` performs that structural check.",
+      "tags": [
+        "protocol",
+        "structural-typing"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-035-07",
+      "kind": "truth",
+      "question": "True or False?",
+      "code": "from typing import Protocol\nfrom typing import runtime_checkable\n\n@runtime_checkable\nclass Closer(Protocol):\n    def close(self): ...\n\nclass Door:\n    def shut(self):\n        return 0\n\nisinstance(Door(), Closer)",
+      "answer": "False",
+      "accepted": [],
+      "explanation": "`Door` has `shut`, not `close`, so it does not structurally match the `Closer` protocol — `isinstance` returns `False`.",
+      "tags": [
+        "protocol",
+        "structural-typing"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-035-08",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "from typing import Protocol\n\nclass Sender(Protocol):\n    def send(self): ...\n\nclass Mail:\n    def send(self):\n        return 1\n\nprint(isinstance(Mail(), Sender))",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "`isinstance` against a protocol requires the `@runtime_checkable` decorator; without it Python raises `TypeError`. Plain protocols exist for static checkers like mypy.",
+      "tags": [
+        "protocol",
+        "runtime-checkable"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-035-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "from abc import ABC, abstractmethod\n\nclass Fmt(ABC):\n    @abstractmethod\n    def head(self):\n        return \"# \"\n\nclass Md(Fmt):\n    def head(self):\n        return super().head() + \"Title\"\n\nprint(Md().head())",
+      "answer": "# Title",
+      "accepted": [],
+      "explanation": "An abstract method may still have a body; the override can reuse it through `super().head()`. Abstract means 'must be overridden', not 'must be empty'.",
+      "tags": [
+        "abc",
+        "abstractmethod",
+        "super"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-035-10",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "from abc import ABC\n\nclass Empty(ABC):\n    pass\n\ne = Empty()\ntype(e).__name__",
+      "answer": "'Empty'",
+      "accepted": [],
+      "explanation": "An ABC with no abstract methods can be instantiated — inheriting from `ABC` alone blocks nothing; only `@abstractmethod` markers do.",
+      "tags": [
+        "abc",
+        "trap"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "topic": 4,
+  "cards": [
+    {
+      "id": "b1-004-01",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "9 / 3",
+      "answer": "3.0",
+      "accepted": [],
+      "explanation": "`/` is true division and always yields a `float`, even when the result is a whole number. Use `//` when you need an `int`.",
+      "tags": [
+        "division",
+        "float"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-004-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "print(9 // 2, 9 % 4, 2 ** -1)",
+      "answer": "4 1 0.5",
+      "accepted": [],
+      "explanation": "`//` keeps the whole part (4 full pairs in 9), `%` gives the remainder (9 = 2·4 + 1), and a negative exponent turns `**` into a fraction, so the result is a `float`.",
+      "tags": [
+        "floor-division",
+        "modulo",
+        "power"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-004-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "print(-9 // 2, -9 % 2)",
+      "answer": "-5 1",
+      "accepted": [],
+      "explanation": "Floor division rounds toward negative infinity, not toward zero: `-4.5` floors to `-5`. The remainder is chosen so that `-5 * 2 + 1 == -9`, which is why `%` stays non-negative for a positive divisor.",
+      "tags": [
+        "floor-division",
+        "modulo",
+        "negative"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-004-04",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "pages = 7 % 0\nprint(pages)",
+      "answer": "ZeroDivisionError",
+      "accepted": [],
+      "explanation": "Modulo is division in disguise, so a zero divisor raises `ZeroDivisionError` just like `/` and `//` do.",
+      "tags": [
+        "modulo",
+        "zerodivisionerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-004-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "print(2 or 5, 0 or 5, 2 and 5)",
+      "answer": "2 5 5",
+      "accepted": [],
+      "explanation": "`and`/`or` return an operand, not a bool. `or` returns the first truthy operand (`2`, then `5`); `and` returns the first falsy operand, or the last one if all are truthy (`5`).",
+      "tags": [
+        "and",
+        "or",
+        "short-circuit"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-004-06",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "None or 0",
+      "answer": "0",
+      "accepted": [],
+      "explanation": "`or` evaluates left to right and returns the first truthy operand; when every operand is falsy it returns the last one. Wrap in `bool(...)` if you really need `True`/`False`.",
+      "tags": [
+        "or",
+        "falsy"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-004-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "port = 0\nprint(port or 8080)\nprint(port if port is not None else 8080)",
+      "answer": "8080\n0",
+      "accepted": [],
+      "explanation": "`x or default` swaps out every falsy value, including a legitimate `0`, `\"\"` or `[]`. When zero is valid, test for `None` explicitly with a conditional expression.",
+      "tags": [
+        "or",
+        "default",
+        "none"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-004-08",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "items = []\nif items[0] == \"x\" and items:\n    print(\"x first\")",
+      "answer": "IndexError",
+      "accepted": [],
+      "explanation": "Operands are evaluated left to right, so `items[0]` runs before the emptiness check has a chance to short-circuit. Put the cheap guard first: `items and items[0] == \"x\"`.",
+      "tags": [
+        "short-circuit",
+        "indexerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-004-09",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "items = []\nif items and items[0] == \"x\":\n    print(\"x first\")\nprint(\"checked\")",
+      "answer": "no error",
+      "accepted": [],
+      "explanation": "`and` short-circuits: the empty list is falsy, so the right operand is never evaluated and `items[0]` never runs. This is why guards go on the left. The program just prints `checked`.",
+      "tags": [
+        "short-circuit",
+        "guard"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-004-10",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "print(5 > 3 > 1, 5 > 3 < 1)",
+      "answer": "True False",
+      "accepted": [],
+      "explanation": "Comparisons chain: `a > b > c` means `a > b and b > c` with `b` evaluated once. The second expression is `5 > 3 and 3 < 1`, which is `False`.",
+      "tags": [
+        "comparison",
+        "chaining"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-004-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "print(not True or True, not (True or True))",
+      "answer": "True False",
+      "accepted": [],
+      "explanation": "`not` binds tighter than `or`, so the first expression is `(not True) or True` → `True`. Parentheses change the grouping: `not (True or True)` → `False`. Precedence: `not` > `and` > `or`.",
+      "tags": [
+        "precedence",
+        "not",
+        "or"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-004-12",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "errors = [\"e1\", \"e2\", \"e3\"]\nif (n := len(errors)) > 2:\n    print(n, \"errors\")",
+      "answer": "3 errors",
+      "accepted": [],
+      "explanation": "The walrus operator `:=` assigns inside an expression: `n` receives `len(errors)` and the comparison uses it immediately. The name stays available afterwards, here inside the `if` body.",
+      "tags": [
+        "walrus",
+        "assignment-expression"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

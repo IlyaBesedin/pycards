@@ -1,0 +1,90 @@
+{
+  "topic": 27,
+  "cards": [
+    {
+      "id": "b1-027-01",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "__name__",
+      "answer": "'__main__'",
+      "accepted": [],
+      "explanation": "When a file is run directly, Python sets its `__name__` to the string `\"__main__\"`. When the same file is imported, `__name__` is the module's own name instead — that is what the `if __name__ == \"__main__\":` guard checks.",
+      "tags": [
+        "name-main",
+        "modules"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-027-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "import math\nprint(math.__name__)",
+      "answer": "math",
+      "accepted": [],
+      "explanation": "Inside an imported module `__name__` equals the module's name, not `\"__main__\"`. That is why code under the `__main__` guard does not run on import.",
+      "tags": [
+        "name-main",
+        "import"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-027-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "import math\nmath.run_count = 7\nimport math\nprint(math.run_count)",
+      "answer": "7",
+      "accepted": [],
+      "explanation": "A module is executed once, on first import, and cached in `sys.modules`. The second `import math` returns the very same module object, so the attribute is still there.",
+      "tags": [
+        "import",
+        "caching",
+        "sys-modules"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-027-04",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "from math import floor\nprint(floor(9.5))\nprint(math.floor(9.5))",
+      "answer": "NameError",
+      "accepted": [],
+      "explanation": "`from math import floor` binds only the name `floor`; the name `math` is never defined, so the last line raises `NameError`. Use `import math` if you want the module itself.",
+      "tags": [
+        "from-import",
+        "nameerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-027-05",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "from math import cube\nprint(cube(3))",
+      "answer": "ImportError",
+      "accepted": [],
+      "explanation": "The module is found, but it has no name `cube`, so Python raises `ImportError` (subclass `ModuleNotFoundError` is for a missing module). `math` offers `pow`, `sqrt`, etc.",
+      "tags": [
+        "from-import",
+        "importerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-027-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "import json as j\ndata = j.loads(\"[10, 20]\")\nprint(data[1])",
+      "answer": "20",
+      "accepted": [],
+      "explanation": "`import json as j` binds the module only under the alias `j`; the name `json` does not exist in this file. Aliases shorten long or clashing module names.",
+      "tags": [
+        "import-as",
+        "alias"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

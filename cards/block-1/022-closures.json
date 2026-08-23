@@ -1,0 +1,180 @@
+{
+  "topic": 22,
+  "cards": [
+    {
+      "id": "b1-022-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def make_checker(lo, hi):\n    def check(n):\n        return lo <= n <= hi\n    return check\n\nok = make_checker(200, 299)\nprint(ok(204), ok(404))",
+      "answer": "True False",
+      "accepted": [],
+      "explanation": "`check` is a closure: it captures `lo` and `hi` from the factory call that created it and keeps them alive after `make_checker` returns.",
+      "tags": [
+        "closure",
+        "factory"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-022-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def prefixer(prefix):\n    def add(s):\n        return prefix + s\n    return add\n\nbug = prefixer(\"BUG-\")\ntask = prefixer(\"TASK-\")\nprint(bug(\"7\"), task(\"7\"))",
+      "answer": "BUG-7 TASK-7",
+      "accepted": [],
+      "explanation": "Each factory call creates a fresh closure with its own captured `prefix`. The two functions do not share state.",
+      "tags": [
+        "closure",
+        "factory"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-022-03",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "def make_counter():\n    count = 0\n    def bump():\n        count += 1\n        return count\n    return bump\n\nprint(make_counter()())",
+      "answer": "UnboundLocalError",
+      "accepted": [],
+      "explanation": "`count += 1` is an assignment, which makes `count` local to `bump` — read before it exists. Rebinding a captured variable requires `nonlocal count`.",
+      "tags": [
+        "closure",
+        "nonlocal",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-022-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def make_counter():\n    count = 0\n    def bump():\n        nonlocal count\n        count += 1\n        return count\n    return bump\n\nhit = make_counter()\nhit()\nprint(hit(), make_counter()())",
+      "answer": "2 1",
+      "accepted": [],
+      "explanation": "`nonlocal` lets `bump` rebind the captured `count`, so state survives between calls: 1, then 2. The second `make_counter()` builds a brand-new counter starting from 0.",
+      "tags": [
+        "closure",
+        "nonlocal",
+        "state"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-022-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "funcs = []\nfor code in [200, 404, 500]:\n    funcs.append(lambda: code)\n\nprint(funcs[0](), funcs[1]())",
+      "answer": "500 500",
+      "accepted": [],
+      "explanation": "Late binding: each lambda captures the variable `code`, not its value at append time. By the time they are called the loop has finished and `code` is `500` for all of them.",
+      "tags": [
+        "closure",
+        "late-binding",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-022-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "funcs = []\nfor code in [200, 404, 500]:\n    funcs.append(lambda c=code: c)\n\nprint(funcs[0](), funcs[1]())",
+      "answer": "200 404",
+      "accepted": [],
+      "explanation": "The default `c=code` is evaluated when each lambda is defined, freezing the current loop value into the function. The standard fix for the late-binding trap.",
+      "tags": [
+        "closure",
+        "late-binding",
+        "default-arg"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-022-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def outer():\n    msg = \"first\"\n    def show():\n        return msg\n    msg = \"second\"\n    return show\n\nprint(outer()())",
+      "answer": "second",
+      "accepted": [],
+      "explanation": "A closure stores a reference to the variable, not a snapshot: `msg` is read when `show` is called, after it was rebound to `\"second\"`.",
+      "tags": [
+        "closure",
+        "late-binding"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-022-08",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def recorder():\n    seen = []\n    def add(x):\n        seen.append(x)\n        return seen\n    return add\n\nlog = recorder()\nlog(\"a\")\nprint(log(\"b\"))",
+      "answer": "['a', 'b']",
+      "accepted": [],
+      "explanation": "Mutating a captured object needs no `nonlocal` — only rebinding the name does. `seen.append` just reads the name and calls a method on the shared list.",
+      "tags": [
+        "closure",
+        "mutation",
+        "nonlocal"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-022-09",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "def report():\n    nonlocal total\n    total = 5\n\nreport()",
+      "answer": "SyntaxError",
+      "accepted": [],
+      "explanation": "`nonlocal` requires an existing binding in an enclosing function. At module level there is none — this is a compile-time `SyntaxError`, raised before anything runs.",
+      "tags": [
+        "nonlocal",
+        "scope"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-022-10",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def build():\n    secret = \"t0ken\"\n    def reveal():\n        return secret\n    return reveal\n\nget = build()\ndel build\nprint(get())",
+      "answer": "t0ken",
+      "accepted": [],
+      "explanation": "The closure keeps `secret` alive even after the outer function has returned and its name was deleted. Captured variables live as long as the inner function does.",
+      "tags": [
+        "closure",
+        "lifetime"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-022-11",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "fs = [lambda: i for i in range(3)]\nfs[0]()",
+      "answer": "2",
+      "accepted": [],
+      "explanation": "Late binding strikes in comprehensions too: all three lambdas share the comprehension's `i`, which is `2` after the last iteration.",
+      "tags": [
+        "closure",
+        "late-binding",
+        "comprehension"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-022-12",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def make():\n    n = 0\n    def step():\n        nonlocal n\n        n += 2\n        return n\n    return step\n\na = make()\nb = a\nprint(a(), b(), a())",
+      "answer": "2 4 6",
+      "accepted": [],
+      "explanation": "`b = a` is just a second name for the same closure, so all three calls advance one shared `n`. Independent state would need a second `make()` call.",
+      "tags": [
+        "closure",
+        "state",
+        "aliasing"
+      ],
+      "verify": "exec"
+    }
+  ]
+}

@@ -1,0 +1,176 @@
+{
+  "topic": 5,
+  "cards": [
+    {
+      "id": "b1-005-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "role = \"guest\"\nif role == \"admin\" or \"editor\":\n    print(\"can edit\")\nelse:\n    print(\"read only\")",
+      "answer": "can edit",
+      "accepted": [],
+      "explanation": "This parses as `(role == \"admin\") or \"editor\"`. The non-empty string `\"editor\"` is always truthy, so the branch always runs. Test membership instead: `role in (\"admin\", \"editor\")`.",
+      "tags": [
+        "or",
+        "truthiness",
+        "trap"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-005-02",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "role = \"guest\"\nif role in (\"admin\", \"editor\"):\n    print(\"can edit\")\nelse:\n    print(\"read only\")",
+      "answer": "read only",
+      "accepted": [],
+      "explanation": "`in` against a tuple checks each value properly: `\"guest\"` is neither `\"admin\"` nor `\"editor\"`, so the `else` branch runs. This is the correct form of the `x == a or b` mistake.",
+      "tags": [
+        "in",
+        "membership"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-005-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "status = 302\nif status < 500:\n    kind = \"client\"\nelif status < 400:\n    kind = \"redirect\"\nelse:\n    kind = \"server\"\nprint(kind)",
+      "answer": "client",
+      "accepted": [],
+      "explanation": "Branches are tested top to bottom and only the first match runs. `302 < 500` is already true, so the narrower `< 400` branch is unreachable. Order `elif` checks from narrowest to widest.",
+      "tags": [
+        "elif",
+        "order"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-005-04",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "for v in [0, 0.0, \"\", [], {}, \"0\", [0]]:\n    print(bool(v), end=\" \")",
+      "answer": "False False False False False True True",
+      "accepted": [],
+      "explanation": "Zero of any numeric type and every empty container are falsy. Anything non-empty is truthy — including the string `\"0\"` and a list that contains only `0`.",
+      "tags": [
+        "truthiness",
+        "bool"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-005-05",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "ok = 0\n\"PASS\" if ok else \"FAIL\"",
+      "answer": "'FAIL'",
+      "accepted": [],
+      "explanation": "The conditional expression evaluates its condition first: `0` is falsy, so the `else` value is chosen. It is an expression, so the whole thing has a value and can be assigned or returned.",
+      "tags": [
+        "ternary",
+        "conditional-expression"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-005-06",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "flag = \"yes\"\nflag == True",
+      "answer": "False",
+      "accepted": [],
+      "explanation": "`\"yes\"` is truthy but not equal to `True` — equality compares values, and a string is never equal to a bool. Write `if flag:` to test truthiness; `== True` only works for actual booleans.",
+      "tags": [
+        "truthiness",
+        "equality"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-005-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "event = {\"type\": \"click\", \"target\": \"btn\"}\nmatch event:\n    case {\"type\": \"submit\"}:\n        print(\"submit\")\n    case {\"type\": \"click\", \"target\": t}:\n        print(\"click\", t)\n    case _:\n        print(\"unknown\")",
+      "answer": "click btn",
+      "accepted": [],
+      "explanation": "A mapping pattern matches when the listed keys exist with the given values; `\"target\": t` captures the value into `t`. Cases are tried in order, and `_` is the catch-all that should come last.",
+      "tags": [
+        "match",
+        "mapping-pattern"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-005-08",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "cmd = \"stop\"\nmatch cmd:\n    case \"start\":\n        print(\"starting\")\n    case other:\n        print(\"got\", other)\n    case \"stop\":\n        print(\"stopping\")",
+      "answer": "SyntaxError",
+      "accepted": [],
+      "explanation": "`case other:` is a capture pattern that matches anything, which makes every later case unreachable. Python rejects this at compile time with `SyntaxError` — the program never starts. Put the catch-all (`_` or a name) last.",
+      "tags": [
+        "match",
+        "capture-pattern",
+        "syntaxerror"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-005-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "payload = {\"id\": 7, \"name\": \"qa\"}\nmatch payload:\n    case {\"id\": 7}:\n        print(\"partial match\")\n    case _:\n        print(\"no match\")",
+      "answer": "partial match",
+      "accepted": [],
+      "explanation": "Mapping patterns only require the listed keys to be present and matching; extra keys in the subject are ignored. Use `**rest` in the pattern if you need to capture the remaining keys.",
+      "tags": [
+        "match",
+        "mapping-pattern"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-005-10",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "code = 500\nmatch code:\n    case 200:\n        print(\"ok\")\nprint(\"end\")",
+      "answer": "no error",
+      "accepted": [],
+      "explanation": "When no case matches and there is no `case _:`, the `match` statement simply does nothing — no exception is raised. That silence is exactly why a default branch is recommended.",
+      "tags": [
+        "match",
+        "default"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-005-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "def check(user):\n    if not user:\n        return \"skip\"\n    return \"send\"\n\nprint(check({}), check({\"id\": 1}))",
+      "answer": "skip send",
+      "accepted": [],
+      "explanation": "A guard clause exits early for the bad case so the main path stays flat. An empty dict is falsy, so `{}` is skipped, while a non-empty dict is truthy and goes on to `send`.",
+      "tags": [
+        "guard-clause",
+        "truthiness"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-005-12",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "score = 40\nif score > 50:\n    grade = \"pass\"\nprint(grade)",
+      "answer": "NameError",
+      "accepted": [],
+      "explanation": "`grade` is assigned only inside the `if` body, which did not run, so the name was never created. Initialize the variable before the `if` or add an `else` branch.",
+      "tags": [
+        "if",
+        "nameerror",
+        "scope"
+      ],
+      "verify": "exec"
+    }
+  ]
+}
