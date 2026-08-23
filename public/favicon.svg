@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#0f1117"/>
+  <rect x="96" y="128" width="320" height="256" rx="32" fill="#1c2130" stroke="#3b82f6" stroke-width="16"/>
+  <text x="256" y="292" font-family="Menlo, Monaco, 'DejaVu Sans Mono', monospace" font-size="120" font-weight="700" fill="#facc15" text-anchor="middle">&gt;&gt;&gt;</text>
+  <circle cx="400" cy="144" r="40" fill="#22c55e"/>
+</svg>
