@@ -7,10 +7,10 @@
     "dev": "python3 tools/build_bank.py && vite",
     "build": "python3 tools/build_bank.py && tsc -b && vite build",
     "preview": "vite preview",
-    "test": "vitest run --passWithNoTests",
+    "test": "python3 tools/build_bank.py && vitest run --passWithNoTests",
     "test:watch": "vitest",
     "lint": "oxlint",
-    "typecheck": "tsc -b",
+    "typecheck": "python3 tools/build_bank.py && tsc -b",
     "verify-cards": "python3 tools/verify_cards.py",
     "build-bank": "python3 tools/build_bank.py"
   },

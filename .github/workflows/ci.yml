@@ -27,6 +27,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: npm ci
+      - run: python3 tools/build_bank.py   # generate src/data/bank.json (git-ignored) before typecheck
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
