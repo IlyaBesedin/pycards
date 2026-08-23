@@ -1,0 +1,1135 @@
+{
+  "blocks": [
+    {
+      "id": 1,
+      "name": "Python basics",
+      "nameRu": "База Python",
+      "from": 1,
+      "to": 38
+    },
+    {
+      "id": 2,
+      "name": "Algorithms",
+      "nameRu": "Алгоритмы",
+      "from": 39,
+      "to": 52
+    },
+    {
+      "id": 3,
+      "name": "Test automation basics",
+      "nameRu": "Основы автоматизации",
+      "from": 53,
+      "to": 68
+    },
+    {
+      "id": 4,
+      "name": "UI / API / DB",
+      "nameRu": "UI / API / БД",
+      "from": 69,
+      "to": 84
+    },
+    {
+      "id": 5,
+      "name": "PyTest",
+      "nameRu": "PyTest",
+      "from": 85,
+      "to": 98
+    },
+    {
+      "id": 6,
+      "name": "Requests",
+      "nameRu": "Requests",
+      "from": 99,
+      "to": 108
+    },
+    {
+      "id": 7,
+      "name": "Playwright",
+      "nameRu": "Playwright",
+      "from": 109,
+      "to": 120
+    }
+  ],
+  "topics": [
+    {
+      "n": 1,
+      "block": 1,
+      "week": 1,
+      "difficulty": "basic",
+      "title": "Старт: установка Python, venv, pip, IDE",
+      "titleEn": "Getting started: Python install, venv, pip, IDE",
+      "url": "https://app.notion.com/39177233684e8122a10cd3b39b6832f2"
+    },
+    {
+      "n": 2,
+      "block": 1,
+      "week": 1,
+      "difficulty": "basic",
+      "title": "Переменные и базовые типы данных",
+      "titleEn": "Variables and basic data types",
+      "url": "https://app.notion.com/39177233684e8113ae2af4fc588a7c34"
+    },
+    {
+      "n": 3,
+      "block": 1,
+      "week": 1,
+      "difficulty": "basic",
+      "title": "Строки: срезы, методы, f-строки",
+      "titleEn": "Strings: slices, methods, f-strings",
+      "url": "https://app.notion.com/39177233684e816888bcfaf6463ac162"
+    },
+    {
+      "n": 4,
+      "block": 1,
+      "week": 1,
+      "difficulty": "basic",
+      "title": "Операторы и выражения",
+      "titleEn": "Operators and expressions",
+      "url": "https://app.notion.com/39177233684e810f9818d62c47573661"
+    },
+    {
+      "n": 5,
+      "block": 1,
+      "week": 1,
+      "difficulty": "basic",
+      "title": "Условия: if/elif/else, match-case",
+      "titleEn": "Conditionals: if/elif/else, match-case",
+      "url": "https://app.notion.com/39177233684e8122bcdee40452fd0c8f"
+    },
+    {
+      "n": 6,
+      "block": 1,
+      "week": 1,
+      "difficulty": "basic",
+      "title": "Цикл while",
+      "titleEn": "The while loop",
+      "url": "https://app.notion.com/39177233684e81c88c33e91b2579c768"
+    },
+    {
+      "n": 7,
+      "block": 1,
+      "week": 1,
+      "difficulty": "basic",
+      "title": "Цикл for, range, вложенные циклы",
+      "titleEn": "The for loop, range, nested loops",
+      "url": "https://app.notion.com/39177233684e817eb96dd5e336ad3a4b"
+    },
+    {
+      "n": 8,
+      "block": 1,
+      "week": 1,
+      "difficulty": "basic",
+      "title": "Списки",
+      "titleEn": "Lists",
+      "url": "https://app.notion.com/39177233684e81679639dc2ef34f0820"
+    },
+    {
+      "n": 9,
+      "block": 1,
+      "week": 1,
+      "difficulty": "basic",
+      "title": "Кортежи и распаковка",
+      "titleEn": "Tuples and unpacking",
+      "url": "https://app.notion.com/39177233684e812aa4c9fac4562162a0"
+    },
+    {
+      "n": 10,
+      "block": 1,
+      "week": 1,
+      "difficulty": "basic",
+      "title": "Словари",
+      "titleEn": "Dictionaries",
+      "url": "https://app.notion.com/39177233684e8175a508f95e40551941"
+    },
+    {
+      "n": 11,
+      "block": 1,
+      "week": 1,
+      "difficulty": "basic",
+      "title": "Множества",
+      "titleEn": "Sets",
+      "url": "https://app.notion.com/39177233684e81c08ac4c4108a45dc06"
+    },
+    {
+      "n": 12,
+      "block": 1,
+      "week": 1,
+      "difficulty": "basic",
+      "title": "Вложенные структуры данных (JSON-подобные)",
+      "titleEn": "Nested data structures (JSON-like)",
+      "url": "https://app.notion.com/39177233684e811f816af7063d726384"
+    },
+    {
+      "n": 13,
+      "block": 1,
+      "week": 1,
+      "difficulty": "basic",
+      "title": "enumerate, zip и идиомы итерации",
+      "titleEn": "enumerate, zip and iteration idioms",
+      "url": "https://app.notion.com/39177233684e81688f40f9e32361c0cd"
+    },
+    {
+      "n": 14,
+      "block": 1,
+      "week": 1,
+      "difficulty": "basic",
+      "title": "Сортировка: sorted, sort, key",
+      "titleEn": "Sorting: sorted, sort, key",
+      "url": "https://app.notion.com/39177233684e8198b332d8e87cc42e58"
+    },
+    {
+      "n": 15,
+      "block": 1,
+      "week": 2,
+      "difficulty": "basic",
+      "title": "List comprehensions",
+      "titleEn": "List comprehensions",
+      "url": "https://app.notion.com/39177233684e817fb38de3aed3829a8b"
+    },
+    {
+      "n": 16,
+      "block": 1,
+      "week": 2,
+      "difficulty": "intermediate",
+      "title": "Dict/set comprehensions",
+      "titleEn": "Dict and set comprehensions",
+      "url": "https://app.notion.com/39177233684e81c69afbc8dd19869e0c"
+    },
+    {
+      "n": 17,
+      "block": 1,
+      "week": 2,
+      "difficulty": "basic",
+      "title": "Функции: параметры, return, области видимости",
+      "titleEn": "Functions: parameters, return, scope",
+      "url": "https://app.notion.com/39177233684e81eab5eee19f70eba8e6"
+    },
+    {
+      "n": 18,
+      "block": 1,
+      "week": 2,
+      "difficulty": "intermediate",
+      "title": "args, *kwargs и параметры по умолчанию",
+      "titleEn": "*args, **kwargs and default parameters",
+      "url": "https://app.notion.com/39177233684e81209131f0936799a073"
+    },
+    {
+      "n": 19,
+      "block": 1,
+      "week": 2,
+      "difficulty": "intermediate",
+      "title": "lambda и функции высшего порядка",
+      "titleEn": "lambda and higher-order functions",
+      "url": "https://app.notion.com/39177233684e8179a60ee5308b9ad012"
+    },
+    {
+      "n": 20,
+      "block": 1,
+      "week": 2,
+      "difficulty": "intermediate",
+      "title": "map, filter, reduce",
+      "titleEn": "map, filter, reduce",
+      "url": "https://app.notion.com/39177233684e81fcb56becbf7fbbde6f"
+    },
+    {
+      "n": 21,
+      "block": 1,
+      "week": 2,
+      "difficulty": "intermediate",
+      "title": "Изменяемость и копирование",
+      "titleEn": "Mutability and copying",
+      "url": "https://app.notion.com/39177233684e812abf6ac394d6e67664"
+    },
+    {
+      "n": 22,
+      "block": 1,
+      "week": 2,
+      "difficulty": "intermediate",
+      "title": "Замыкания (closures)",
+      "titleEn": "Closures",
+      "url": "https://app.notion.com/39177233684e81a19ffccbc0cfc7afa7"
+    },
+    {
+      "n": 23,
+      "block": 1,
+      "week": 2,
+      "difficulty": "intermediate",
+      "title": "Исключения: try/except/else/finally",
+      "titleEn": "Exceptions: try/except/else/finally",
+      "url": "https://app.notion.com/39177233684e81079832ef1df3e62002"
+    },
+    {
+      "n": 24,
+      "block": 1,
+      "week": 2,
+      "difficulty": "intermediate",
+      "title": "raise и собственные исключения",
+      "titleEn": "raise and custom exceptions",
+      "url": "https://app.notion.com/39177233684e8149afc9f364ca3b1801"
+    },
+    {
+      "n": 25,
+      "block": 1,
+      "week": 2,
+      "difficulty": "basic",
+      "title": "Файлы и контекстный менеджер with",
+      "titleEn": "Files and the with context manager",
+      "url": "https://app.notion.com/39177233684e81b4b3efcbe2ffedb33f"
+    },
+    {
+      "n": 26,
+      "block": 1,
+      "week": 2,
+      "difficulty": "basic",
+      "title": "Форматы данных: JSON и CSV",
+      "titleEn": "Data formats: JSON and CSV",
+      "url": "https://app.notion.com/39177233684e811ca642dc1cca16eeab"
+    },
+    {
+      "n": 27,
+      "block": 1,
+      "week": 2,
+      "difficulty": "intermediate",
+      "title": "Модули, пакеты и структура проекта",
+      "titleEn": "Modules, packages and project layout",
+      "url": "https://app.notion.com/39177233684e8188a1ddecd90de15805"
+    },
+    {
+      "n": 28,
+      "block": 1,
+      "week": 2,
+      "difficulty": "intermediate",
+      "title": "Стандартная библиотека: datetime, pathlib, os, random, re",
+      "titleEn": "Standard library: datetime, pathlib, os, random, re",
+      "url": "https://app.notion.com/39177233684e811cbddbf16f3b393cab"
+    },
+    {
+      "n": 29,
+      "block": 1,
+      "week": 3,
+      "difficulty": "intermediate",
+      "title": "collections, itertools, functools",
+      "titleEn": "collections, itertools, functools",
+      "url": "https://app.notion.com/39177233684e81dda712c0c0a8204b7a"
+    },
+    {
+      "n": 30,
+      "block": 1,
+      "week": 3,
+      "difficulty": "intermediate",
+      "title": "ООП: классы, объекты, init, self",
+      "titleEn": "OOP: classes, objects, __init__, self",
+      "url": "https://app.notion.com/39177233684e8183902bf1ab24512b57"
+    },
+    {
+      "n": 31,
+      "block": 1,
+      "week": 3,
+      "difficulty": "intermediate",
+      "title": "Методы: instance, classmethod, staticmethod, property",
+      "titleEn": "Methods: instance, classmethod, staticmethod, property",
+      "url": "https://app.notion.com/39177233684e816c8386c5bc7324ee78"
+    },
+    {
+      "n": 32,
+      "block": 1,
+      "week": 3,
+      "difficulty": "intermediate",
+      "title": "Наследование, super(), MRO",
+      "titleEn": "Inheritance, super(), MRO",
+      "url": "https://app.notion.com/39177233684e81238d04effa36579005"
+    },
+    {
+      "n": 33,
+      "block": 1,
+      "week": 3,
+      "difficulty": "intermediate",
+      "title": "Инкапсуляция: _protected, __private",
+      "titleEn": "Encapsulation: _protected, __private",
+      "url": "https://app.notion.com/39177233684e813c9f30e7c1e1591baf"
+    },
+    {
+      "n": 34,
+      "block": 1,
+      "week": 3,
+      "difficulty": "intermediate",
+      "title": "Полиморфизм и утиная типизация",
+      "titleEn": "Polymorphism and duck typing",
+      "url": "https://app.notion.com/39177233684e81f697b7fb2399c7ab48"
+    },
+    {
+      "n": 35,
+      "block": 1,
+      "week": 3,
+      "difficulty": "advanced",
+      "title": "Абстрактные классы (abc) и протоколы",
+      "titleEn": "Abstract classes (abc) and protocols",
+      "url": "https://app.notion.com/39177233684e8187ad42df5479b2966e"
+    },
+    {
+      "n": 36,
+      "block": 1,
+      "week": 3,
+      "difficulty": "intermediate",
+      "title": "Магические методы",
+      "titleEn": "Magic methods",
+      "url": "https://app.notion.com/39177233684e8140af9ec0675ce950d2"
+    },
+    {
+      "n": 37,
+      "block": 1,
+      "week": 3,
+      "difficulty": "advanced",
+      "title": "Композиция vs наследование, обзор SOLID",
+      "titleEn": "Composition vs inheritance, SOLID overview",
+      "url": "https://app.notion.com/39177233684e81e6a4c1d57f9e73afc6"
+    },
+    {
+      "n": 38,
+      "block": 1,
+      "week": 3,
+      "difficulty": "intermediate",
+      "title": "Dataclasses и аннотации типов",
+      "titleEn": "Dataclasses and type annotations",
+      "url": "https://app.notion.com/39177233684e81d99e08dfb250431489"
+    },
+    {
+      "n": 39,
+      "block": 2,
+      "week": 3,
+      "difficulty": "intermediate",
+      "title": "Сложность алгоритмов: Big O",
+      "titleEn": "Algorithmic complexity: Big O",
+      "url": "https://app.notion.com/39177233684e8170a3d7fad258bb07af"
+    },
+    {
+      "n": 40,
+      "block": 2,
+      "week": 3,
+      "difficulty": "intermediate",
+      "title": "Линейный и бинарный поиск",
+      "titleEn": "Linear and binary search",
+      "url": "https://app.notion.com/39177233684e818581aeebe7690cfb93"
+    },
+    {
+      "n": 41,
+      "block": 2,
+      "week": 3,
+      "difficulty": "intermediate",
+      "title": "Простые сортировки: пузырёк, вставки, выбор",
+      "titleEn": "Simple sorts: bubble, insertion, selection",
+      "url": "https://app.notion.com/39177233684e81e6b03cc312acf0b850"
+    },
+    {
+      "n": 42,
+      "block": 2,
+      "week": 3,
+      "difficulty": "advanced",
+      "title": "Эффективные сортировки: merge, quick, timsort",
+      "titleEn": "Efficient sorts: merge, quick, timsort",
+      "url": "https://app.notion.com/39177233684e810d9bb3d8577f27e98b"
+    },
+    {
+      "n": 43,
+      "block": 2,
+      "week": 4,
+      "difficulty": "intermediate",
+      "title": "Приём «два указателя»",
+      "titleEn": "Two pointers technique",
+      "url": "https://app.notion.com/39177233684e811395f1f4c5f700c97e"
+    },
+    {
+      "n": 44,
+      "block": 2,
+      "week": 4,
+      "difficulty": "intermediate",
+      "title": "Приём «скользящее окно»",
+      "titleEn": "Sliding window technique",
+      "url": "https://app.notion.com/39177233684e811cb92ecbf6d9a56c5b"
+    },
+    {
+      "n": 45,
+      "block": 2,
+      "week": 4,
+      "difficulty": "intermediate",
+      "title": "Хеш-структуры в задачах",
+      "titleEn": "Hash structures in problems",
+      "url": "https://app.notion.com/39177233684e81e0aee6c7458af5c44e"
+    },
+    {
+      "n": 46,
+      "block": 2,
+      "week": 4,
+      "difficulty": "intermediate",
+      "title": "Стек и очередь",
+      "titleEn": "Stack and queue",
+      "url": "https://app.notion.com/39177233684e8154994ec240c0f2f03e"
+    },
+    {
+      "n": 47,
+      "block": 2,
+      "week": 4,
+      "difficulty": "intermediate",
+      "title": "Рекурсия и мемоизация",
+      "titleEn": "Recursion and memoization",
+      "url": "https://app.notion.com/39177233684e81deab15d5a84e126f50"
+    },
+    {
+      "n": 48,
+      "block": 2,
+      "week": 4,
+      "difficulty": "intermediate",
+      "title": "Строковые задачи",
+      "titleEn": "String problems",
+      "url": "https://app.notion.com/39177233684e81a8842cca126dae7fab"
+    },
+    {
+      "n": 49,
+      "block": 2,
+      "week": 4,
+      "difficulty": "intermediate",
+      "title": "Матрицы и двумерные списки",
+      "titleEn": "Matrices and 2D lists",
+      "url": "https://app.notion.com/39177233684e8138b10ae37a16580830"
+    },
+    {
+      "n": 50,
+      "block": 2,
+      "week": 4,
+      "difficulty": "advanced",
+      "title": "Жадные алгоритмы",
+      "titleEn": "Greedy algorithms",
+      "url": "https://app.notion.com/39177233684e81dcb724c54f9caad85f"
+    },
+    {
+      "n": 51,
+      "block": 2,
+      "week": 4,
+      "difficulty": "advanced",
+      "title": "Деревья и обходы BFS/DFS",
+      "titleEn": "Trees and BFS/DFS traversal",
+      "url": "https://app.notion.com/39177233684e8139b7fbf9bf8dc0f6dd"
+    },
+    {
+      "n": 52,
+      "block": 2,
+      "week": 4,
+      "difficulty": "advanced",
+      "title": "Практикум: задачи собеседований — обычное и оптимальное решение",
+      "titleEn": "Practice: interview problems, naive vs optimal",
+      "url": "https://app.notion.com/39177233684e81c7a924e78dedb180c5"
+    },
+    {
+      "n": 53,
+      "block": 3,
+      "week": 4,
+      "difficulty": "basic",
+      "title": "Автотесты: пирамида тестирования и стратегия",
+      "titleEn": "Test automation: pyramid and strategy",
+      "url": "https://app.notion.com/39177233684e812bab83d60ee5fff974"
+    },
+    {
+      "n": 54,
+      "block": 3,
+      "week": 4,
+      "difficulty": "intermediate",
+      "title": "Итераторы и генераторы: yield",
+      "titleEn": "Iterators and generators: yield",
+      "url": "https://app.notion.com/39177233684e8147874ffbc35389a5d6"
+    },
+    {
+      "n": 55,
+      "block": 3,
+      "week": 4,
+      "difficulty": "intermediate",
+      "title": "Генераторы в тестах: тестовые данные",
+      "titleEn": "Generators in tests: test data",
+      "url": "https://app.notion.com/39177233684e812a9306f2527fbbaa5d"
+    },
+    {
+      "n": 56,
+      "block": 3,
+      "week": 4,
+      "difficulty": "intermediate",
+      "title": "Декораторы: синтаксис и functools.wraps",
+      "titleEn": "Decorators: syntax and functools.wraps",
+      "url": "https://app.notion.com/39177233684e81d7be0bf29276648e70"
+    },
+    {
+      "n": 57,
+      "block": 3,
+      "week": 5,
+      "difficulty": "advanced",
+      "title": "Декораторы с параметрами: retry, замеры, логирование",
+      "titleEn": "Parametrized decorators: retry, timing, logging",
+      "url": "https://app.notion.com/39177233684e817a954ece0bd61781a3"
+    },
+    {
+      "n": 58,
+      "block": 3,
+      "week": 5,
+      "difficulty": "intermediate",
+      "title": "Контекстные менеджеры для тестов",
+      "titleEn": "Context managers for tests",
+      "url": "https://app.notion.com/39177233684e81a4ab5edb4144119367"
+    },
+    {
+      "n": 59,
+      "block": 3,
+      "week": 5,
+      "difficulty": "basic",
+      "title": "Первый автотест: pytest vs unittest",
+      "titleEn": "First autotest: pytest vs unittest",
+      "url": "https://app.notion.com/39177233684e81e39cb5e2f841a9ca79"
+    },
+    {
+      "n": 60,
+      "block": 3,
+      "week": 5,
+      "difficulty": "intermediate",
+      "title": "Фикстуры: концепция setup/teardown и scope",
+      "titleEn": "Fixtures: setup/teardown and scope",
+      "url": "https://app.notion.com/39177233684e8120b1e5fcd2d54bd8f4"
+    },
+    {
+      "n": 61,
+      "block": 3,
+      "week": 5,
+      "difficulty": "intermediate",
+      "title": "Тестовые данные: фабрики и Faker",
+      "titleEn": "Test data: factories and Faker",
+      "url": "https://app.notion.com/39177233684e815b9bb6ca4512683a8e"
+    },
+    {
+      "n": 62,
+      "block": 3,
+      "week": 5,
+      "difficulty": "intermediate",
+      "title": "Паттерн AAA и независимость тестов",
+      "titleEn": "AAA pattern and test independence",
+      "url": "https://app.notion.com/39177233684e810dae8dc4c328747a86"
+    },
+    {
+      "n": 63,
+      "block": 3,
+      "week": 5,
+      "difficulty": "advanced",
+      "title": "Моки и стабы: unittest.mock, monkeypatch",
+      "titleEn": "Mocks and stubs: unittest.mock, monkeypatch",
+      "url": "https://app.notion.com/39177233684e81d2892dec16baf0330a"
+    },
+    {
+      "n": 64,
+      "block": 3,
+      "week": 5,
+      "difficulty": "intermediate",
+      "title": "Логирование и отчётность: logging, Allure",
+      "titleEn": "Logging and reporting: logging, Allure",
+      "url": "https://app.notion.com/39177233684e8100ab69c82d2f917453"
+    },
+    {
+      "n": 65,
+      "block": 3,
+      "week": 5,
+      "difficulty": "intermediate",
+      "title": "Фермы и удалённый запуск: Grid, Selenoid, облака",
+      "titleEn": "Farms and remote runs: Grid, Selenoid, clouds",
+      "url": "https://app.notion.com/39177233684e81eba2daf170722585ae"
+    },
+    {
+      "n": 66,
+      "block": 3,
+      "week": 5,
+      "difficulty": "intermediate",
+      "title": "CI/CD для тестов: GitLab CI / GitHub Actions",
+      "titleEn": "CI/CD for tests: GitLab CI / GitHub Actions",
+      "url": "https://app.notion.com/39177233684e81efbe22e9b95cbf738f"
+    },
+    {
+      "n": 67,
+      "block": 3,
+      "week": 5,
+      "difficulty": "intermediate",
+      "title": "Организация тестового проекта: структура и слои",
+      "titleEn": "Test project organization: structure and layers",
+      "url": "https://app.notion.com/39177233684e81b08df1c53caeb982ef"
+    },
+    {
+      "n": 68,
+      "block": 3,
+      "week": 5,
+      "difficulty": "advanced",
+      "title": "Флаки-тесты: причины, ожидания, ретраи",
+      "titleEn": "Flaky tests: causes, waits, retries",
+      "url": "https://app.notion.com/39177233684e81e1902ff2f38f38ce04"
+    },
+    {
+      "n": 69,
+      "block": 4,
+      "week": 5,
+      "difficulty": "basic",
+      "title": "Основы веба: HTML, CSS-селекторы, XPath",
+      "titleEn": "Web basics: HTML, CSS selectors, XPath",
+      "url": "https://app.notion.com/39177233684e81599b30df7a02263dc9"
+    },
+    {
+      "n": 70,
+      "block": 4,
+      "week": 5,
+      "difficulty": "intermediate",
+      "title": "Локаторы: стратегии и устойчивость",
+      "titleEn": "Locators: strategies and robustness",
+      "url": "https://app.notion.com/39177233684e81ccaecdefc843daa952"
+    },
+    {
+      "n": 71,
+      "block": 4,
+      "week": 6,
+      "difficulty": "intermediate",
+      "title": "DOM и динамика: ожидания вместо sleep",
+      "titleEn": "DOM and dynamics: waits instead of sleep",
+      "url": "https://app.notion.com/39177233684e816987dec1bf32728b59"
+    },
+    {
+      "n": 72,
+      "block": 4,
+      "week": 6,
+      "difficulty": "intermediate",
+      "title": "Page Object Model",
+      "titleEn": "Page Object Model",
+      "url": "https://app.notion.com/39177233684e81a191cbe3c03bafde42"
+    },
+    {
+      "n": 73,
+      "block": 4,
+      "week": 6,
+      "difficulty": "intermediate",
+      "title": "UI-паттерны: компоненты, фреймы, окна, алерты",
+      "titleEn": "UI patterns: components, frames, windows, alerts",
+      "url": "https://app.notion.com/39177233684e812dad21d195471b69f9"
+    },
+    {
+      "n": 74,
+      "block": 4,
+      "week": 6,
+      "difficulty": "basic",
+      "title": "HTTP: методы, статус-коды, заголовки, cookies",
+      "titleEn": "HTTP: methods, status codes, headers, cookies",
+      "url": "https://app.notion.com/39177233684e81358b7cfa3484122812"
+    },
+    {
+      "n": 75,
+      "block": 4,
+      "week": 6,
+      "difficulty": "intermediate",
+      "title": "REST API и инструменты: curl, Postman, Proxyman",
+      "titleEn": "REST API and tools: curl, Postman, Proxyman",
+      "url": "https://app.notion.com/39177233684e818bb0bbfaace184f7ee"
+    },
+    {
+      "n": 76,
+      "block": 4,
+      "week": 6,
+      "difficulty": "intermediate",
+      "title": "Аутентификация: Basic, токены, JWT, OAuth2",
+      "titleEn": "Authentication: Basic, tokens, JWT, OAuth2",
+      "url": "https://app.notion.com/39177233684e81538f39f51a78b75435"
+    },
+    {
+      "n": 77,
+      "block": 4,
+      "week": 6,
+      "difficulty": "intermediate",
+      "title": "Валидация ответов: jsonschema и pydantic",
+      "titleEn": "Response validation: jsonschema and pydantic",
+      "url": "https://app.notion.com/39177233684e81ee806bc0fbbad2a245"
+    },
+    {
+      "n": 78,
+      "block": 4,
+      "week": 6,
+      "difficulty": "intermediate",
+      "title": "Уровни API-тестов: smoke, контрактные, e2e",
+      "titleEn": "API test levels: smoke, contract, e2e",
+      "url": "https://app.notion.com/39177233684e812e94dff15974fa270f"
+    },
+    {
+      "n": 79,
+      "block": 4,
+      "week": 6,
+      "difficulty": "intermediate",
+      "title": "SQL для тестировщика: SELECT, JOIN, GROUP BY",
+      "titleEn": "SQL for testers: SELECT, JOIN, GROUP BY",
+      "url": "https://app.notion.com/39177233684e81548362e3119e602ebe"
+    },
+    {
+      "n": 80,
+      "block": 4,
+      "week": 6,
+      "difficulty": "intermediate",
+      "title": "Подключение к БД из Python",
+      "titleEn": "Connecting to a database from Python",
+      "url": "https://app.notion.com/39177233684e81ae9088ef8c45b08050"
+    },
+    {
+      "n": 81,
+      "block": 4,
+      "week": 6,
+      "difficulty": "intermediate",
+      "title": "Тестовые данные в БД: подготовка и очистка",
+      "titleEn": "Test data in the DB: setup and cleanup",
+      "url": "https://app.notion.com/39177233684e8128a9b0c4636860622c"
+    },
+    {
+      "n": 82,
+      "block": 4,
+      "week": 6,
+      "difficulty": "advanced",
+      "title": "ORM (SQLAlchemy) в тестах: за и против",
+      "titleEn": "ORM (SQLAlchemy) in tests: pros and cons",
+      "url": "https://app.notion.com/39177233684e8125b478d128bf64520a"
+    },
+    {
+      "n": 83,
+      "block": 4,
+      "week": 6,
+      "difficulty": "advanced",
+      "title": "Транзакции и изоляция (для тестировщика)",
+      "titleEn": "Transactions and isolation (for testers)",
+      "url": "https://app.notion.com/39177233684e81bebf9cf70b64391499"
+    },
+    {
+      "n": 84,
+      "block": 4,
+      "week": 6,
+      "difficulty": "advanced",
+      "title": "Комбинированные сценарии: UI + API + БД",
+      "titleEn": "Combined scenarios: UI + API + DB",
+      "url": "https://app.notion.com/39177233684e812990b3e330510bd83b"
+    },
+    {
+      "n": 85,
+      "block": 5,
+      "week": 7,
+      "difficulty": "basic",
+      "title": "Устройство pytest: discovery и CLI",
+      "titleEn": "How pytest works: discovery and CLI",
+      "url": "https://app.notion.com/39177233684e817a908bcc8232d00fbb"
+    },
+    {
+      "n": 86,
+      "block": 5,
+      "week": 7,
+      "difficulty": "intermediate",
+      "title": "Assert-интроспекция, pytest.raises, approx",
+      "titleEn": "Assert introspection, pytest.raises, approx",
+      "url": "https://app.notion.com/39177233684e816cb62ed5d0dc346a59"
+    },
+    {
+      "n": 87,
+      "block": 5,
+      "week": 7,
+      "difficulty": "intermediate",
+      "title": "Фикстуры глубоко: scope, yield, финализация",
+      "titleEn": "Fixtures in depth: scope, yield, finalization",
+      "url": "https://app.notion.com/39177233684e8100a107efe45a8ea82c"
+    },
+    {
+      "n": 88,
+      "block": 5,
+      "week": 7,
+      "difficulty": "intermediate",
+      "title": "conftest.py, autouse, фабричные фикстуры",
+      "titleEn": "conftest.py, autouse, factory fixtures",
+      "url": "https://app.notion.com/39177233684e812bbe6cf742583b8475"
+    },
+    {
+      "n": 89,
+      "block": 5,
+      "week": 7,
+      "difficulty": "intermediate",
+      "title": "Параметризация: parametrize, ids, indirect",
+      "titleEn": "Parametrization: parametrize, ids, indirect",
+      "url": "https://app.notion.com/39177233684e8125ac4fc05f1e5ce6ef"
+    },
+    {
+      "n": 90,
+      "block": 5,
+      "week": 7,
+      "difficulty": "intermediate",
+      "title": "Маркеры: skip, xfail, выборочный запуск",
+      "titleEn": "Markers: skip, xfail, selective runs",
+      "url": "https://app.notion.com/39177233684e8187bafdfc5ea490c0c2"
+    },
+    {
+      "n": 91,
+      "block": 5,
+      "week": 7,
+      "difficulty": "intermediate",
+      "title": "Плагины: xdist, rerunfailures, timeout",
+      "titleEn": "Plugins: xdist, rerunfailures, timeout",
+      "url": "https://app.notion.com/39177233684e81818c59c25b13e095be"
+    },
+    {
+      "n": 92,
+      "block": 5,
+      "week": 7,
+      "difficulty": "advanced",
+      "title": "Хуки pytest и мини-плагин",
+      "titleEn": "pytest hooks and a mini plugin",
+      "url": "https://app.notion.com/39177233684e815cb4c4fa211bd55932"
+    },
+    {
+      "n": 93,
+      "block": 5,
+      "week": 7,
+      "difficulty": "intermediate",
+      "title": "Встроенные фикстуры: monkeypatch, tmp_path, capsys, caplog",
+      "titleEn": "Built-in fixtures: monkeypatch, tmp_path, capsys, caplog",
+      "url": "https://app.notion.com/39177233684e812b8239dceb0fb613a8"
+    },
+    {
+      "n": 94,
+      "block": 5,
+      "week": 7,
+      "difficulty": "intermediate",
+      "title": "Конфигурация: pytest.ini, addopts, окружения",
+      "titleEn": "Configuration: pytest.ini, addopts, environments",
+      "url": "https://app.notion.com/39177233684e81e198bfcba0e5cd27d3"
+    },
+    {
+      "n": 95,
+      "block": 5,
+      "week": 7,
+      "difficulty": "intermediate",
+      "title": "Отчёты: pytest-html, allure-pytest, junit-xml",
+      "titleEn": "Reports: pytest-html, allure-pytest, junit-xml",
+      "url": "https://app.notion.com/39177233684e811f809fd6031d16cd48"
+    },
+    {
+      "n": 96,
+      "block": 5,
+      "week": 7,
+      "difficulty": "advanced",
+      "title": "Паттерны организации: слои фикстур, клиенты, шаги",
+      "titleEn": "Organization patterns: fixture layers, clients, steps",
+      "url": "https://app.notion.com/39177233684e81818479c17f095f0f6b"
+    },
+    {
+      "n": 97,
+      "block": 5,
+      "week": 7,
+      "difficulty": "intermediate",
+      "title": "pytest + данные: фабрики, faker, внешние источники",
+      "titleEn": "pytest + data: factories, faker, external sources",
+      "url": "https://app.notion.com/39177233684e8123b300e62250753626"
+    },
+    {
+      "n": 98,
+      "block": 5,
+      "week": 7,
+      "difficulty": "advanced",
+      "title": "Антипаттерны pytest и ревью тестового кода",
+      "titleEn": "pytest anti-patterns and test code review",
+      "url": "https://app.notion.com/39177233684e8112be25c5a25ba3b2a6"
+    },
+    {
+      "n": 99,
+      "block": 6,
+      "week": 8,
+      "difficulty": "basic",
+      "title": "Requests базово: запросы и параметры",
+      "titleEn": "Requests basics: requests and parameters",
+      "url": "https://app.notion.com/39177233684e8186887bf0ee07319bb8"
+    },
+    {
+      "n": 100,
+      "block": 6,
+      "week": 8,
+      "difficulty": "intermediate",
+      "title": "Тело запроса: json vs data, files",
+      "titleEn": "Request body: json vs data, files",
+      "url": "https://app.notion.com/39177233684e81d8aa56c531e38a1dff"
+    },
+    {
+      "n": 101,
+      "block": 6,
+      "week": 8,
+      "difficulty": "basic",
+      "title": "Response: разбор ответа полностью",
+      "titleEn": "Response: dissecting a response",
+      "url": "https://app.notion.com/39177233684e81d08c8bdc37c23cb566"
+    },
+    {
+      "n": 102,
+      "block": 6,
+      "week": 8,
+      "difficulty": "intermediate",
+      "title": "Session: cookies, заголовки, переиспользование",
+      "titleEn": "Session: cookies, headers, reuse",
+      "url": "https://app.notion.com/39177233684e814a8147ec8c1aee3145"
+    },
+    {
+      "n": 103,
+      "block": 6,
+      "week": 8,
+      "difficulty": "intermediate",
+      "title": "Аутентификация в requests: auth, токены, AuthBase",
+      "titleEn": "Authentication in requests: auth, tokens, AuthBase",
+      "url": "https://app.notion.com/39177233684e8198931ed171f4182efe"
+    },
+    {
+      "n": 104,
+      "block": 6,
+      "week": 8,
+      "difficulty": "intermediate",
+      "title": "Надёжность: таймауты, ретраи, обработка ошибок",
+      "titleEn": "Reliability: timeouts, retries, error handling",
+      "url": "https://app.notion.com/39177233684e8139a3d8d9ac9d5db214"
+    },
+    {
+      "n": 105,
+      "block": 6,
+      "week": 8,
+      "difficulty": "advanced",
+      "title": "Паттерн API-клиента",
+      "titleEn": "The API client pattern",
+      "url": "https://app.notion.com/39177233684e810d941de703dd41c8c2"
+    },
+    {
+      "n": 106,
+      "block": 6,
+      "week": 8,
+      "difficulty": "intermediate",
+      "title": "Валидация ответов: pydantic в API-тестах",
+      "titleEn": "Response validation: pydantic in API tests",
+      "url": "https://app.notion.com/39177233684e81248274f11ecf006d59"
+    },
+    {
+      "n": 107,
+      "block": 6,
+      "week": 8,
+      "difficulty": "advanced",
+      "title": "Полный API-тест-сьют: requests + pytest",
+      "titleEn": "Full API test suite: requests + pytest",
+      "url": "https://app.notion.com/39177233684e8101a6e5cd41227676cd"
+    },
+    {
+      "n": 108,
+      "block": 6,
+      "week": 8,
+      "difficulty": "advanced",
+      "title": "Requests продвинуто: hooks, прокси, SSL; httpx",
+      "titleEn": "Requests advanced: hooks, proxies, SSL; httpx",
+      "url": "https://app.notion.com/39177233684e8112bb14d84af28ac3a0"
+    },
+    {
+      "n": 109,
+      "block": 7,
+      "week": 8,
+      "difficulty": "intermediate",
+      "title": "Playwright: архитектура, установка, первый тест",
+      "titleEn": "Playwright: architecture, install, first test",
+      "url": "https://app.notion.com/39177233684e818ebbc3faf880f7cfd8"
+    },
+    {
+      "n": 110,
+      "block": 7,
+      "week": 8,
+      "difficulty": "intermediate",
+      "title": "Локаторы Playwright: get_by_role, get_by_test_id",
+      "titleEn": "Playwright locators: get_by_role, get_by_test_id",
+      "url": "https://app.notion.com/39177233684e81119475efaaa10497ab"
+    },
+    {
+      "n": 111,
+      "block": 7,
+      "week": 8,
+      "difficulty": "intermediate",
+      "title": "Auto-waiting и web-first assertions (expect)",
+      "titleEn": "Auto-waiting and web-first assertions (expect)",
+      "url": "https://app.notion.com/39177233684e814e9825db2e3be9d47e"
+    },
+    {
+      "n": 112,
+      "block": 7,
+      "week": 8,
+      "difficulty": "intermediate",
+      "title": "Действия: клики, ввод, селекты, файлы",
+      "titleEn": "Actions: clicks, typing, selects, files",
+      "url": "https://app.notion.com/39177233684e81b7b741d7ee2fa96241"
+    },
+    {
+      "n": 113,
+      "block": 7,
+      "week": 9,
+      "difficulty": "intermediate",
+      "title": "Фикстуры pytest-playwright и конфигурация",
+      "titleEn": "pytest-playwright fixtures and configuration",
+      "url": "https://app.notion.com/39177233684e8133955ac6deb9a4d1fa"
+    },
+    {
+      "n": 114,
+      "block": 7,
+      "week": 9,
+      "difficulty": "intermediate",
+      "title": "Page Object Model на Playwright",
+      "titleEn": "Page Object Model with Playwright",
+      "url": "https://app.notion.com/39177233684e81f2b4a4ef3f12e7c1f3"
+    },
+    {
+      "n": 115,
+      "block": 7,
+      "week": 9,
+      "difficulty": "advanced",
+      "title": "Сеть: перехват запросов, route, моки API",
+      "titleEn": "Network: request interception, route, API mocks",
+      "url": "https://app.notion.com/39177233684e8169bb8bc4edfae47a4e"
+    },
+    {
+      "n": 116,
+      "block": 7,
+      "week": 9,
+      "difficulty": "advanced",
+      "title": "Аутентификация и storage_state: обход логина",
+      "titleEn": "Authentication and storage_state: skipping login",
+      "url": "https://app.notion.com/39177233684e819182b6ce135c8cc03d"
+    },
+    {
+      "n": 117,
+      "block": 7,
+      "week": 9,
+      "difficulty": "intermediate",
+      "title": "Отладка: trace viewer, codegen, скриншоты, видео",
+      "titleEn": "Debugging: trace viewer, codegen, screenshots, video",
+      "url": "https://app.notion.com/39177233684e819dbcc5e6c0defab455"
+    },
+    {
+      "n": 118,
+      "block": 7,
+      "week": 9,
+      "difficulty": "advanced",
+      "title": "Параллельный запуск и CI для Playwright",
+      "titleEn": "Parallel runs and CI for Playwright",
+      "url": "https://app.notion.com/39177233684e817188abedcca2008674"
+    },
+    {
+      "n": 119,
+      "block": 7,
+      "week": 9,
+      "difficulty": "advanced",
+      "title": "APIRequestContext: API-тесты и гибриды в Playwright",
+      "titleEn": "APIRequestContext: API tests and hybrids in Playwright",
+      "url": "https://app.notion.com/39177233684e81cabf05cc545dd1b9da"
+    },
+    {
+      "n": 120,
+      "block": 7,
+      "week": 9,
+      "difficulty": "advanced",
+      "title": "Итоговый проект: e2e-фреймворк Playwright + PyTest",
+      "titleEn": "Capstone: e2e framework with Playwright + PyTest",
+      "url": "https://app.notion.com/39177233684e81308d7fd63a09c3b141"
+    }
+  ]
+}

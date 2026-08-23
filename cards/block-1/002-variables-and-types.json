@@ -1,0 +1,203 @@
+{
+  "topic": 2,
+  "cards": [
+    {
+      "id": "b1-002-01",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "count = 10\ncount = \"ten\"\nprint(type(count).__name__)",
+      "answer": "str",
+      "accepted": [],
+      "explanation": "Python is dynamically typed: the type belongs to the value, not the variable. Rebinding `count` to a string makes it a `str`.",
+      "tags": [
+        "dynamic-typing",
+        "type"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-002-02",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "price = int(\"3.5\")\nprint(price)",
+      "answer": "ValueError",
+      "accepted": [],
+      "explanation": "`int()` parses only integer literals. Convert through `float(\"3.5\")` first, then `int()` to truncate.",
+      "tags": [
+        "conversion",
+        "int"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-002-03",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "print(int(\"  42 \"))",
+      "answer": "42",
+      "accepted": [],
+      "explanation": "`int()` strips surrounding whitespace before parsing, so padded input from text still converts.",
+      "tags": [
+        "conversion",
+        "int"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-002-04",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "width = int(\"42px\")\nprint(width)",
+      "answer": "ValueError",
+      "accepted": [],
+      "explanation": "Whitespace is forgiven, letters are not: `\"42px\"` is not a valid integer literal. Validate input before converting.",
+      "tags": [
+        "conversion",
+        "int"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-002-05",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "print(0.1 + 0.2 == 0.3)",
+      "answer": "False",
+      "accepted": [],
+      "explanation": "Binary floats cannot represent 0.1 or 0.2 exactly; the sum is `0.30000000000000004`. Compare floats with `math.isclose` or `pytest.approx`.",
+      "tags": [
+        "float",
+        "precision"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-002-06",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "total = 0.1 + 0.2\nprint(round(total, 2) == 0.3)",
+      "answer": "True",
+      "accepted": [],
+      "explanation": "`round(total, 2)` yields the float closest to 0.30, which is the same object value as the literal `0.3`. A quick fix, but `math.isclose` is the proper tool.",
+      "tags": [
+        "float",
+        "round"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-002-07",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "flag = \"False\"\nprint(bool(flag))",
+      "answer": "True",
+      "accepted": [],
+      "explanation": "Any non-empty string is truthy — including `\"False\"`. Classic bug when reading flags from environment variables, which are always strings.",
+      "tags": [
+        "bool",
+        "truthiness"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-002-08",
+      "kind": "exception",
+      "question": "Does it crash? With what?",
+      "code": "status = 200\nprint(\"Code: \" + status)",
+      "answer": "TypeError",
+      "accepted": [],
+      "explanation": "Python never converts implicitly: concatenating `str` and `int` raises `TypeError`. Use `str(status)` or an f-string.",
+      "tags": [
+        "conversion",
+        "str"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-002-09",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "middle_name = None\nprint(type(middle_name).__name__)",
+      "answer": "NoneType",
+      "accepted": [],
+      "explanation": "`None` is the single instance of its own type, `NoneType`. That is why identity checks (`is None`) are the idiom.",
+      "tags": [
+        "none",
+        "type"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-002-10",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "print(\"a\", \"b\", sep=\"\")\nprint(\"c\", end=\"\")\nprint(\"d\")",
+      "answer": "ab\ncd",
+      "accepted": [],
+      "explanation": "`sep` is placed between arguments, `end` replaces the trailing newline. The second `print` ends with nothing, so `d` lands on the same line.",
+      "tags": [
+        "print",
+        "sep",
+        "end"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-002-11",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "print(int(3.99), int(-3.99))",
+      "answer": "3 -3",
+      "accepted": [],
+      "explanation": "`int()` truncates toward zero — it does not round. Use `round()` or `math.floor()` when you want rounding.",
+      "tags": [
+        "conversion",
+        "int",
+        "float"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-002-12",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "print(round(2.5), round(3.5))",
+      "answer": "2 4",
+      "accepted": [],
+      "explanation": "Python uses banker's rounding: exact halves go to the nearest even number. `2.5 → 2`, `3.5 → 4`.",
+      "tags": [
+        "float",
+        "round"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-002-13",
+      "kind": "output",
+      "question": "What does this print?",
+      "code": "result = None\nprint(result == 0, result == False)\nprint(not result)",
+      "answer": "False False\nTrue",
+      "accepted": [],
+      "explanation": "`None` equals nothing but itself — not `0`, not `False`. It is falsy though, so `not None` is `True`.",
+      "tags": [
+        "none",
+        "truthiness"
+      ],
+      "verify": "exec"
+    },
+    {
+      "id": "b1-002-14",
+      "kind": "value",
+      "question": "What is the value of the last expression?",
+      "code": "isinstance(True, int)",
+      "answer": "True",
+      "accepted": [],
+      "explanation": "`bool` is a subclass of `int`: `True` is an `int` with value 1. That is why `True + True == 2` and `isinstance(True, int)` holds.",
+      "tags": [
+        "bool",
+        "isinstance"
+      ],
+      "verify": "exec"
+    }
+  ]
+}
