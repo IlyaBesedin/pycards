@@ -1,0 +1,25 @@
+# dependencies / build
+node_modules/
+dist/
+dev-dist/
+.vite/
+
+# tests
+coverage/
+test-results/
+playwright-report/
+blob-report/
+
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+
+# env / os / editors
+.env
+.env.*
+.DS_Store
+*.log
+.idea/
+.vscode/
