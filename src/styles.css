@@ -28,6 +28,10 @@
 
 * { box-sizing: border-box; }
 html, body, #root { height: 100%; }
+/* Auto-layout overflow containment: nothing may push the page past the screen.
+   `clip` prevents any horizontal scroll (incl. the card's fly-out transform on iOS)
+   without creating a scroll container the way `hidden` would. */
+html, body, #root { overflow-x: clip; max-width: 100%; }
 body {
   margin: 0;
   background: var(--bg);
@@ -39,10 +43,18 @@ body {
 button { font-family: inherit; }
 a { color: var(--accent); }
 
+/* Every flex column that can hold a wide child (code, chip bar, long text) needs
+   min-width:0 so the child shrinks and scrolls inside its own box on iOS Safari,
+   instead of its intrinsic width stretching the parent past the viewport. */
+.app, .content, .card, .answerwrap, .verdict, .answerbox, .histitem,
+.sessionbar, .summary, .field { min-width: 0; }
+
 .app {
+  width: 100%;
   max-width: 560px;
   margin: 0 auto;
   min-height: 100dvh;
+  overflow-x: clip;
   display: flex;
   flex-direction: column;
   padding-top: env(safe-area-inset-top);
@@ -176,17 +188,20 @@ a { color: var(--accent); }
 
 pre.code {
   margin: 0;
+  max-width: 100%;
   background: var(--code-bg);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 14px;
+  padding: 12px;
   overflow-x: auto;
   font-family: var(--mono);
-  font-size: 13.5px;
+  font-size: 13px;
   line-height: 1.5;
   -webkit-overflow-scrolling: touch;
+  /* long lines can still be reached, but the box never grows the page */
+  overscroll-behavior-x: contain;
 }
-pre.code .ln { color: var(--muted); user-select: none; padding-right: 14px; display: inline-block; text-align: right; min-width: 22px; }
+pre.code .ln { color: var(--muted); user-select: none; padding-right: 12px; display: inline-block; text-align: right; min-width: 20px; }
 
 /* answer input */
 .answerwrap { display: flex; flex-direction: column; gap: 10px; }
@@ -268,4 +283,14 @@ pre.code .ln { color: var(--muted); user-select: none; padding-right: 14px; disp
 
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
+}
+
+/* Narrow phones (iPhone 13 Pro is 390pt): trim horizontal chrome so a worst-case
+   44-char code line fits without horizontal scroll. Placed last so it wins the
+   cascade over the base .card / pre.code rules above. */
+@media (max-width: 400px) {
+  .content { padding: 12px; }
+  .card { padding: 12px; }
+  pre.code { font-size: 12px; padding: 10px; line-height: 1.45; }
+  .chipbar button { padding: 8px 9px; }
 }

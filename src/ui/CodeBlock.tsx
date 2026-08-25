@@ -10,7 +10,7 @@ function isLight(): boolean {
   return window.matchMedia?.('(prefers-color-scheme: light)').matches ?? false
 }
 
-export function CodeBlock({ code, numbered = true }: { code: string; numbered?: boolean }) {
+export function CodeBlock({ code, numbered = false }: { code: string; numbered?: boolean }) {
   const theme = isLight() ? lightTheme : darkTheme
   return (
     <Highlight code={code} language="python" theme={theme}>
