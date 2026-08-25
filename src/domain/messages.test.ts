@@ -27,6 +27,16 @@ describe('message pool', () => {
       expect(buckets.has(b)).toBe(true)
     }
   })
+  it('every message is an emoji rebus of 1–5 visible symbols', () => {
+    const seg = new Intl.Segmenter('en', { granularity: 'grapheme' })
+    for (const m of messagesData as Array<{ text: string }>) {
+      const graphemes = [...seg.segment(m.text)].map((s) => s.segment).filter((g) => g.trim().length)
+      expect(graphemes.length, m.text).toBeGreaterThanOrEqual(1)
+      expect(graphemes.length, m.text).toBeLessThanOrEqual(5)
+      // no plain ASCII letters/digits — these are emoji, not words
+      expect(/[A-Za-z0-9]/.test(m.text), m.text).toBe(false)
+    }
+  })
 })
 
 describe('pickMessage', () => {

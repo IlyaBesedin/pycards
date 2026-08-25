@@ -94,7 +94,7 @@ export function pickMessage(input: PickInput): string {
   if (pick) return pick.text
 
   // 3. Absolute fallback.
-  return state.session >= 0 ? 'Keep going.' : 'Shake it off — next one.'
+  return state.session >= 0 ? '🙂' : '💪'
 }
 
 /** Update the recent-messages ring buffer. */

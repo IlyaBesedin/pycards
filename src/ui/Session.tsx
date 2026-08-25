@@ -67,8 +67,8 @@ export function Session({ onExit }: { onExit: () => void }) {
     <div className="app">
       <div className="topbar">
         <button className="iconbtn" onClick={onExit}>Exit</button>
-        <div className="spacer" />
-        <span className={'score ' + (score < 0 ? 'neg' : score > 0 ? 'pos' : '')} style={{ fontWeight: 700 }}>
+        <div className="rebus" key={runtime.message} aria-live="polite" aria-label="progress reaction">{runtime.message}</div>
+        <span className={'score ' + (score < 0 ? 'neg' : score > 0 ? 'pos' : 'zero')}>
           {score > 0 ? '+' : ''}{score}
         </span>
       </div>
@@ -125,8 +125,6 @@ export function Session({ onExit }: { onExit: () => void }) {
             )}
           </motion.div>
         </AnimatePresence>
-
-        <div className="message">{runtime.message}</div>
       </div>
 
       <div className="stickybottom">
