@@ -66,10 +66,10 @@ export interface CardProgress {
 
 export type Grade = 'correct' | 'wrong'
 
-/** Verdict shown after "Show answer", before any override. */
+/** Verdict shown after the learner checks (or reveals) the answer, before any override. */
 export interface Verdict {
   grade: Grade
-  /** True when the learner typed an answer; false in "Just show me" mode. */
+  /** True when the learner typed an answer; false in reveal ("Answer") mode. */
   typed: boolean
   /** The normalized comparison matched exactly (vs. accepted / self-graded). */
   matched: boolean

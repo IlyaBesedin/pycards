@@ -11,7 +11,7 @@ Python basics, algorithms, test automation, UI/API/DB, PyTest, Requests, Playwri
 ## How it works
 
 - Pick a block (and optionally topics / difficulty), start a session.
-- Type the answer, then **Show answer** — or **Just show me** and grade yourself.
+- Type the answer, then tap **Check** — or tap **Answer** to reveal it and grade yourself.
 - Correct cards swipe right, wrong ones swipe left and come back after 10–15 other cards.
 - Spaced repetition across days (SM-2, Anki-style): 1 → 3 → 8 → 20 → 50 → 125 days.
 - 20 new cards per day by default (Anki default) with a visible daily counter.
