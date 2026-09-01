@@ -16,7 +16,23 @@ if ('serviceWorker' in navigator) {
     window.location.reload()
   })
 }
-registerSW({ immediate: true })
+
+// Actively poll for a new deploy so the fix reaches the device without the user
+// having to clear the cache manually: check on registration, whenever the tab is
+// refocused, and every few minutes.
+const updateSW = registerSW({
+  immediate: true,
+  onRegisteredSW(_swUrl, registration) {
+    if (!registration) return
+    const check = () => registration.update().catch(() => {})
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') check()
+    })
+    window.addEventListener('online', check)
+    setInterval(check, 5 * 60 * 1000)
+  },
+})
+void updateSW
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

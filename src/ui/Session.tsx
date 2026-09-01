@@ -128,12 +128,12 @@ export function Session({ onExit }: { onExit: () => void }) {
 
       <div className="stickybottom">
         {!answered && !selfMode && (
-          <>
-            <button className="btn primary" onClick={onReveal}>Show answer</button>
+          <div className="btnrow">
             <button className="btn ghost" onClick={() => { setSelfMode(true); reveal('self') }}>
-              Just show me
+              Answer
             </button>
-          </>
+            <button className="btn primary" onClick={onReveal}>Check</button>
+          </div>
         )}
         {answered && selfMode && !verdict && (
           <div className="btnrow">

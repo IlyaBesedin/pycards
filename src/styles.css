@@ -27,11 +27,17 @@
 }
 
 * { box-sizing: border-box; }
-html, body, #root { height: 100%; }
-/* Auto-layout overflow containment: nothing may push the page past the screen.
-   `clip` prevents any horizontal scroll (incl. the card's fly-out transform on iOS)
-   without creating a scroll container the way `hidden` would. */
-html, body, #root { overflow-x: clip; max-width: 100%; }
+/* Lock the document itself: it never scrolls in either axis. Only .content does.
+   This is what stops the whole page (header included) from scrolling under the iOS
+   Safari address bar, and it also removes any horizontal scroll at the root. */
+html, body, #root {
+  height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+/* iOS: prevent the body from being draggable/rubber-banding the page. */
+body { position: relative; }
 body {
   margin: 0;
   background: var(--bg);
