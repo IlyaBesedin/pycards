@@ -25,10 +25,9 @@ export function Session({ onExit }: { onExit: () => void }) {
 
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const [selfMode, setSelfMode] = useState(false)
-
-  useEffect(() => {
-    if (phase === 'question' && !selfMode) inputRef.current?.focus()
-  }, [phase, card?.id, selfMode])
+  // The answer input is not auto-focused: the learner reads the code first and
+  // taps the field themselves only when they want to type. This also keeps the
+  // on-screen keyboard from popping up on every card.
 
   if (!card || !runtime) {
     return <SessionSummary onExit={onExit} />
