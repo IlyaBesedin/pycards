@@ -53,7 +53,7 @@ a { color: var(--accent); }
    min-width:0 so the child shrinks and scrolls inside its own box on iOS Safari,
    instead of its intrinsic width stretching the parent past the viewport. */
 .app, .content, .card, .answerwrap, .verdict, .answerbox, .histitem,
-.sessionbar, .summary, .field { min-width: 0; }
+.sessionbar, .summary, .field, .chipbar, .topbar, .stickybottom { min-width: 0; }
 
 /* App-shell layout: the app is exactly one viewport tall and does not scroll.
    The top bar and bottom bar are non-scrolling flex rails; only .content scrolls.
@@ -117,13 +117,14 @@ a { color: var(--accent); }
 }
 .iconbtn:active { transform: scale(0.96); }
 
-/* The only scrolling region. min-height:0 lets it shrink inside the flex column;
-   overflow-x:clip on this scroll container reliably contains the card fly-out. */
+/* The only scrolling region. min-height:0 lets it shrink inside the flex column.
+   overflow-x:hidden on this scroll container reliably contains the card fly-out on
+   every browser (hidden is more widely supported on older iOS WebKit than clip). */
 .content {
   flex: 1 1 auto;
   min-height: 0;
   overflow-y: auto;
-  overflow-x: clip;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
   padding: 16px;
   display: flex;
@@ -261,6 +262,8 @@ pre.code .ln { color: var(--muted); user-select: none; padding-right: 12px; disp
   font-family: var(--mono);
   font-size: 15px;
   resize: none;
+  overflow-y: auto;
+  line-height: 1.4;
 }
 .answerinput:focus { outline: none; border-color: var(--accent); }
 .chipbar { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; -webkit-overflow-scrolling: touch; }

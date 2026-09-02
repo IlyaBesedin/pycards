@@ -25,9 +25,13 @@ export function Session({ onExit }: { onExit: () => void }) {
 
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const [selfMode, setSelfMode] = useState(false)
+  const cardId = card?.id
   // The answer input is not auto-focused: the learner reads the code first and
   // taps the field themselves only when they want to type. This also keeps the
-  // on-screen keyboard from popping up on every card.
+  // on-screen keyboard from popping up on every card. Reset its height per card.
+  useEffect(() => {
+    if (inputRef.current) inputRef.current.style.height = 'auto'
+  }, [cardId])
 
   if (!card || !runtime) {
     return <SessionSummary onExit={onExit} />
@@ -35,6 +39,11 @@ export function Session({ onExit }: { onExit: () => void }) {
 
   const topic = topicOf(card.topic)
   const score = runtime.score.session
+  // Grow the answer field to fit multi-line answers (up to ~4 lines), then stop.
+  const grow = (el: HTMLTextAreaElement) => {
+    el.style.height = 'auto'
+    el.style.height = Math.min(el.scrollHeight, 132) + 'px'
+  }
   const insertChip = (chip: string) => {
     const el = inputRef.current
     if (!el) { setTyped(typed + chip); return }
@@ -101,15 +110,17 @@ export function Session({ onExit }: { onExit: () => void }) {
                   className="answerinput"
                   rows={1}
                   value={typed}
-                  onChange={(e) => setTyped(e.target.value)}
+                  onChange={(e) => { setTyped(e.target.value); grow(e.target) }}
                   onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); onReveal() }
+                    // Enter inserts a newline so multi-line answers can be typed.
+                    // Submit with Cmd/Ctrl+Enter (or the Check button).
+                    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); onReveal() }
                   }}
-                  placeholder="Type the answer…"
+                  placeholder="Type the answer…  (⏎ for a new line)"
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck={false}
-                  enterKeyHint="go"
+                  enterKeyHint="enter"
                 />
                 <div className="chipbar">
                   {CHIPS.map((c) => (
