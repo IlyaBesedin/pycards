@@ -175,11 +175,9 @@ function Verdict({ card, typed }: { card: import('../domain/types').Card; typed:
         <div className="val">{card.answer}</div>
       </div>
       <div className="explanation" dangerouslySetInnerHTML={{ __html: renderExplanation(card.explanation) }} />
-      {grade && (
+      {grade === 'wrong' && (
         <div className="overriderow">
-          {grade === 'wrong'
-            ? <button onClick={() => override('correct')}>Actually, I was right</button>
-            : <button onClick={() => override('wrong')}>Actually, I was wrong</button>}
+          <button onClick={() => override('correct')}>Actually, I was right</button>
         </div>
       )}
     </div>
