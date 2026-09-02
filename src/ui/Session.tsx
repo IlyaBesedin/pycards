@@ -4,7 +4,15 @@ import { bank, useApp } from '../store/appStore'
 import { CodeBlock } from './CodeBlock'
 import type { Grade } from '../domain/types'
 
-const CHIPS = ['None', 'True', 'False', '[]', '{}', '()', "''", ',', ':', 'Error', 'no error']
+// The iOS iPhone keyboard has no number row on its letter layout (only iPad does),
+// and it cannot be forced from the web. So the common numeric answers live here as
+// one-tap chips, alongside the literals and punctuation, so the learner rarely needs
+// to switch the keyboard to "123".
+const CHIPS = [
+  'None', 'True', 'False',
+  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+  '[]', '{}', '()', "''", ',', ':', 'Error', 'no error',
+]
 
 function topicOf(topicN: number) {
   return bank.topics.find((t) => t.n === topicN)
