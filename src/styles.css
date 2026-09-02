@@ -336,3 +336,16 @@ pre.code .ln { color: var(--muted); user-select: none; padding-right: 12px; disp
   pre.code { font-size: 12px; padding: 10px; line-height: 1.45; }
   .chipbar button { padding: 8px 9px; }
 }
+
+/* Installed as a standalone PWA (added to the home screen) there is no browser
+   chrome, and iOS already lays the web view out above the home indicator — so the
+   extra safe-area-inset-bottom reserve is double spacing and is dropped here.
+   `display-mode: standalone` is the reliable signal; the User-Agent string does not
+   distinguish a PWA from an in-Safari tab. The top inset (notch) is left intact. */
+@media (display-mode: standalone) {
+  .stickybottom { padding-bottom: 12px; }
+  .app:not(:has(.stickybottom)) .content { padding-bottom: 16px; }
+}
+@media (max-width: 400px) and (display-mode: standalone) {
+  .app:not(:has(.stickybottom)) .content { padding-bottom: 12px; }
+}
