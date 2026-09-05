@@ -116,7 +116,7 @@ export function Session({ onExit }: { onExit: () => void }) {
                     // Submit with Cmd/Ctrl+Enter (or the Check button).
                     if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); onReveal() }
                   }}
-                  placeholder="Type the answer…  (⏎ for a new line)"
+                  placeholder="Type the answer…"
                   autoCapitalize="off"
                   autoCorrect="off"
                   spellCheck={false}
