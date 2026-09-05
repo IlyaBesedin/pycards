@@ -42,8 +42,6 @@ python3 tools/verify_cards.py   # validate all cards
 
 Deployed to GitHub Pages from `main` by GitHub Actions.
 
-See [PLAN.md](PLAN.md) (in Russian) for the full design and roadmap.
-
 ## License
 
 MIT
